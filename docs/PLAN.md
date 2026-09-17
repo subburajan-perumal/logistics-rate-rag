@@ -22,6 +22,16 @@ reasons. **No code, prompt text, or schema from that repository is
 reused** — it is production-shaped work; this project stays clean-room
 (§4).
 
+**Companion documents (added 2026-09-17, D-39):** this file is the
+decision and phase record. The developer-facing contracts live next to
+it — [`CORPUS.md`](CORPUS.md) (every data file, value rule and question),
+[`SPEC.md`](SPEC.md) (module APIs, data models, algorithms, verbatim
+prompt, config files, CLI, formats, tests) and
+[`architecture.md`](architecture.md) (request/index paths, who decides
+what). [`README.md`](README.md) in this folder says which to read when.
+Where this file sketches a shape (a schema table, a manifest example,
+a command list), SPEC.md and CORPUS.md are the exact versions.
+
 Written after a full audit of the existing scaffold on the Windows
 machine (`D:\projects\logistics-rate-rag`), the installed virtualenv, the
 Gemini and Pinecone documentation, and PyPI metadata for every dependency
@@ -152,6 +162,7 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-35 | **Pinned global context.** Chunks whose metadata `scope == "global"` (all `policy_md` sections; set by the loader from `config/retrieval.yaml: pinned_doc_types`) are appended to every prompt after the retrieved top-6, de-duplicated, capped at 9. Recall metrics are computed on the retrieved set only, before pinning. | The reference keeps "entire document" chunks in a separate always-included store instead of hoping retrieval finds them. Our `cross` questions need a policy section plus a tariff row; pinning makes the policy side deterministic and leaves retrieval to do the hard part (the row). |
 | D-36 | **Token and cost accounting.** Every LLM call records `input_tokens`, `output_tokens`, `thought_tokens` from `AIMessage.usage_metadata`; `config/prices.yaml` holds per-model USD per 1M tokens; eval results carry per-question and per-run totals and `cost_usd`; `LATEST.md` and the README state the cost of one full eval. Cache hits record zero tokens and are counted separately. | The reference tracks per-task tokens and cost per operation via litellm. Cheap to add, and "the entire evaluation costs $0.0X" is a concrete README line. |
 | D-37 | **Context rendered in document order.** The final top-6 (+ pinned) chunks are rendered in the prompt sorted by `(source_doc, chunk index)`, not by score; `rank`, `similarity_norm`, `rerank_score` stay in metadata for the gates. | The reference sorts retrieved chunks by page before generation so tables read coherently. Costs nothing; keeps split tables adjacent. |
+| D-39 | **Developer-proof documentation set.** `docs/CORPUS.md`, `docs/SPEC.md`, `docs/architecture.md`, `docs/README.md` written before Phase 1 so that no implementation question is left to the coding session: exact chunk text formats, all 45 questions, the verbatim prompt, every config file's contents, every module's signatures, the result-file schema, CLI output layout, exception hierarchy, exit codes, test fixtures. Rule of change: these files are edited only together with a Decision Log row naming the section. | User request 2026-09-17: "no software developer can ask a question". Also resolved while writing them: `unknown_port` added as a Gate 1 reason (ports outside `ports.yaml`); the manifest gains a `rates` array and per-document metadata; `rate-rag recall` becomes its own command; the PDF is made byte-stable with `reportlab.rl_config.invariant = 1` so `test_corpus_frozen.py` can compare bytes for every file. |
 | D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
@@ -234,7 +245,8 @@ Sanctioned refusal: candidate.answerable == false ──► REFUSED(nearest sour
 | `ANSWER` | passed all gates | yes |
 | `NEEDS_REVIEW` | passed Gates 1–3 grounding, confidence below threshold | **no** — sources only |
 | `REFUSED` | model set `answerable=false` | no |
-| `REJECT` | a gate failed; `reason` is one of `parse_error`, `unknown_source`, `rule:<name>`, `ungrounded:<field>` | no |
+| `REJECT` | a gate failed; `reason` is one of `parse_error`, `unknown_port`, `unknown_source`, `rule:<name>`, `ungrounded:<field>` | no |
+| `ERROR` | the runner caught an exception for this question (eval only); never produced by `ask` | no |
 
 Design rules (playbook §3–§6 applied):
 
@@ -262,16 +274,15 @@ Design rules (playbook §3–§6 applied):
 | `eval/` | question-set loader, runner, metrics, report writer | everything above |
 | `cli/` | `argparse` commands | everything above |
 
-## 6. Corpus specification
+## 6. Corpus specification — exact definition in CORPUS.md
 
 Four files under `data/corpus/`, generated by `scripts/generate_corpus.py`
 (seed `20260917`), plus `manifest.json`. The generator is committed, the
 output is committed, and a unit test regenerates into a temp dir and
-asserts byte-equality with the committed text files and **table-equality**
-(extracted rows) with the committed PDF — reportlab embeds a creation
-timestamp, so the PDF is compared by content, not bytes (the generator
-pins `invariant=1` and a fixed `creationDate` to keep even the bytes
-stable where reportlab allows it).
+asserts byte-equality with every committed file, the PDF included:
+the generator sets `reportlab.rl_config.invariant = 1`, which fixes the
+producer string and creation date, so two builds of the same data are
+byte-identical (CORPUS.md §4.4; D-39).
 
 ### 6.1 Entities
 
@@ -409,7 +420,7 @@ The Markdown shape shown in §6.3 with: reference `MER-2026-Q2-FCL`, valid
 `2026-04-01` → `2026-06-30`, header line `- Status: SUPERSEDED by
 MER-2026-H2-FCL on 2026-07-01`, different values per §6.2.
 
-### 6.7 `manifest.json` (generated)
+### 6.7 `manifest.json` (generated) — exact shape in CORPUS.md §5
 
 ```json
 {
@@ -425,7 +436,7 @@ MER-2026-H2-FCL on 2026-07-01`, different values per §6.2.
 lane (Gate 2 `rate_in_range` is a sanity bound, not the temporal check —
 that is `not_expired`'s job).
 
-## 7. Question sets — golden and adversarial
+## 7. Question sets — golden and adversarial — full lists in CORPUS.md §6
 
 Files: `data/eval/golden.yaml` (30) and `data/eval/adversarial.yaml`
 (15). Every question has an id, a tag, the question text, `as_of`, and an
@@ -759,6 +770,8 @@ Fails with:
 - `parse_error` — `parsed is None` or Pydantic validation error on
   re-validation.
 - `parse_error` — `answerable=true` but any required field is null.
+- `unknown_port` — `origin`/`destination` is neither a LOCODE nor a city
+  in `ports.yaml` (SPEC.md §6.2 step 4).
 - `unknown_source` — `source_doc` or `source_chunk_id` (or
   `policy_source_chunk_id`) not in the retrieved set for **this**
   question.
@@ -833,7 +846,7 @@ The threshold is tuned separately per reranker mode and stored under
 
 The threshold is never hand-edited afterwards; re-tuning is a logged run.
 
-## 13. Evaluation harness and metrics
+## 13. Evaluation harness and metrics — exact CLI and file schema in SPEC.md §7–§8
 
 ### 13.1 Commands
 
@@ -905,7 +918,7 @@ The baseline run (`--mode baseline`) reports the same metrics with gates
 off; `fabricated_values_surfaced` and `wrong_values_surfaced` from that
 run are the "before" numbers in the README.
 
-## 14. Configuration and secrets
+## 14. Configuration and secrets — verbatim file contents in SPEC.md §9
 
 ### 14.1 Environment (`.env`, listed in `.env.example`)
 
@@ -1136,7 +1149,7 @@ confirmed 768.
 
 **Acceptance:** 4 docs (1 PDF) + manifest committed; 45 questions with
 expected outcomes committed and hand-verified; regeneration is
-byte-identical for text files and table-identical for the PDF.
+byte-identical for every file, PDF included.
 
 ### Phase 2 — Package layout, ingestion, Chroma (2 sessions)
 
@@ -1386,6 +1399,7 @@ section and this plan.
 | 2026-09-17 | Windows | 0 | Key in `.env`; 2.5 family 404s on this key → `gemini-3.6-flash` minimal thinking; embedding-001 @768 + cosine; first end-to-end run (ingest + 6 questions) | D-25–D-27; 6/6 answers correct incl. refusal + injection; 3.4–6.3 s/question; embedding norm 0.60 (unnormalised) | Rest of Phase 0: pyproject, lock, gitattributes, LICENSE, `.env.example`, GitHub private repo + push |
 | 2026-09-17 | Windows | plan | Scope amendment at user request: re-ranking + PDF. Installed `flashrank 0.2.10`, `pdfplumber 0.11.10`, `reportlab 5.0.1` in the venv and verified both paths live | D-28–D-32; PDF round-trip 24/24 rows verbatim; FlashRank 0.05 s / 5 passages, deterministic; current-vs-superseded margin only 0.77 vs 0.71 | Phase 0 remainder unchanged |
 | 2026-09-17 | Windows | plan | Gap analysis against `rate-agent@feature/rag` (private; clone read, then deleted from the scratchpad). Verified `rank_bm25` on LOCODE / tariff-ref / acronym queries | D-33–D-38 adopted / rejected with reasons; no code or prompts reused | Phase 0 remainder unchanged |
+| 2026-09-17 | Windows | plan | Wrote `docs/CORPUS.md`, `docs/SPEC.md`, `docs/architecture.md`, `docs/README.md`; verified remaining library signatures (`thinking_level` alias, Chroma by-vector query, Pinecone v10 index/query/rerank, FlashRank `Ranker`) | D-39; `unknown_port` reason; byte-stable PDF; `rate-rag recall` command | Phase 0 remainder unchanged |
 
 ## Appendix B — Sources checked on 2026-09-17
 
