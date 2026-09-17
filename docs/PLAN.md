@@ -12,6 +12,16 @@ into scope at the user's request, both verified on this machine before
 being written in (see Decision Log). Every affected section carries the
 decision id inline.
 
+**Amended 2026-09-17 (D-33–D-38):** gap analysis against the user's own
+prior RAG implementation (`subburajan-perumal/rate-agent`, branch
+`feature/rag`, private). Techniques adopted: hybrid dense + BM25
+retrieval with RRF, pinned global context, document-order context
+rendering, token/cost accounting, optional LLM chunk enrichment as an
+ablation. Techniques considered and not adopted are listed in D-38 with
+reasons. **No code, prompt text, or schema from that repository is
+reused** — it is production-shaped work; this project stays clean-room
+(§4).
+
 Written after a full audit of the existing scaffold on the Windows
 machine (`D:\projects\logistics-rate-rag`), the installed virtualenv, the
 Gemini and Pinecone documentation, and PyPI metadata for every dependency
@@ -137,6 +147,12 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-30 | The reranker's score is a fourth input to Gate 3 confidence (`w_rerank`), and `rank` in the formula is the **post-rerank** rank. The reranker never lives under `guardrails/` (it imports `flashrank`/`pinecone`) — it is retrieval, and the purity test (D-19) is extended to forbid `rerank` imports there too. | Re-ranking improves what the LLM sees; the gates still decide. Verified 2026-09-17 that the cross-encoder ranks the current tariff above the superseded one by only 0.77 vs 0.71 — a reranker is not a substitute for `not_expired`, which is the README's point. |
 | D-31 | Eval reports a **re-ranking ablation**: `retrieval_recall@6` before and after re-ranking, and golden accuracy with `RERANKER=none` vs `flashrank` on Chroma. Baseline (gates off) runs **with** the reranker so before/after still differs only by the gates (D-13 unchanged). | The lift number is the re-ranking claim; keeping the reranker constant across baseline/gated keeps the guardrail number clean. |
 | D-32 | New Phase 2b (re-ranking) between Phase 2 and Phase 3; PDF generation joins Phase 1 and the PDF loader joins Phase 2. No renumbering of existing phases. Session budget +2 (≈16). | Keeps the vault checklist's phase numbers valid. |
+| D-33 | **Hybrid retrieval (from the reference gap analysis).** First stage = dense top-12 from the store **∪** BM25 top-12 from an in-process lexical index over the same chunks, fused with Reciprocal Rank Fusion (`k=60`) → top-12 → reranker → top-6. `RETRIEVAL_MODE=hybrid` (default) \| `dense`. BM25 via `rank_bm25` (pure Python, numpy only); tokeniser lower-cases and splits on whitespace, `\|`, `,`; LOCODEs and tariff refs survive as single tokens. The BM25 index is rebuilt from the store's chunk texts at load time (26 chunks — milliseconds), so it needs no persistence and is identical for Chroma and Pinecone. | The reference used BGE-M3 dense + sparse with server-side RRF in Qdrant. Same idea, store-agnostic: neither Chroma nor Pinecone Starter gives a portable sparse path, and an in-process BM25 is deterministic and unit-testable without keys. Verified 2026-09-17: BM25 scores `HAL-2026-H2-FCL` and `OTHC` only on their owning chunk, where dense retrieval is weakest. Supersedes the §4 "hybrid search out of scope" line. |
+| D-34 | **Optional LLM chunk enrichment (ablation only).** `ENRICH_CHUNKS=true` at `index` time asks the LLM for a ~100-word keyword-dense description per chunk (carrier, lanes, container types, what the chunk is for); the **embedded and BM25-indexed text** becomes `description + "\n" + raw text`; the description is stored as metadata `description`. **Grounding (Gate 3) and the LLM context always use the raw chunk text**, never the description. Descriptions are cached like answers (key: model, enrich prompt version, chunk `content_sha256`). Off by default; eval reports `enrichment_lift` on recall@6. | The reference embeds an LLM-written description per chunk ("contextual retrieval"). Worth measuring, not worth defaulting to: our chunks already carry their header context by construction (§8.2), so the expected lift is small — and saying "we measured it and it gave +X" is the honest interview answer. Adds an LLM dependency to indexing only when switched on. |
+| D-35 | **Pinned global context.** Chunks whose metadata `scope == "global"` (all `policy_md` sections; set by the loader from `config/retrieval.yaml: pinned_doc_types`) are appended to every prompt after the retrieved top-6, de-duplicated, capped at 9. Recall metrics are computed on the retrieved set only, before pinning. | The reference keeps "entire document" chunks in a separate always-included store instead of hoping retrieval finds them. Our `cross` questions need a policy section plus a tariff row; pinning makes the policy side deterministic and leaves retrieval to do the hard part (the row). |
+| D-36 | **Token and cost accounting.** Every LLM call records `input_tokens`, `output_tokens`, `thought_tokens` from `AIMessage.usage_metadata`; `config/prices.yaml` holds per-model USD per 1M tokens; eval results carry per-question and per-run totals and `cost_usd`; `LATEST.md` and the README state the cost of one full eval. Cache hits record zero tokens and are counted separately. | The reference tracks per-task tokens and cost per operation via litellm. Cheap to add, and "the entire evaluation costs $0.0X" is a concrete README line. |
+| D-37 | **Context rendered in document order.** The final top-6 (+ pinned) chunks are rendered in the prompt sorted by `(source_doc, chunk index)`, not by score; `rank`, `similarity_norm`, `rerank_score` stay in metadata for the gates. | The reference sorts retrieved chunks by page before generation so tables read coherently. Costs nothing; keeps split tables adjacent. |
+| D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
 
@@ -150,8 +166,12 @@ after D-24 is a deviation discovered during the build and must say why.
   returned, flagged for review, refused, or rejected — never a free-text
   guess.
 - Two interchangeable vector stores. One embedding model. One LLM.
-- Two-stage retrieval: dense vector search then cross-encoder re-ranking,
-  local or managed, switchable (D-28).
+- Hybrid first-stage retrieval (dense from the store + in-process BM25,
+  fused with RRF) then cross-encoder re-ranking, local or managed,
+  switchable (D-28, D-33).
+- Pinned policy context, document-order rendering, per-run token/cost
+  accounting (D-35–D-37); optional LLM chunk enrichment measured as an
+  ablation (D-34).
 - One tariff delivered as a real PDF with a drawn table, parsed with a
   table-aware loader (D-29).
 - A repeatable evaluation harness producing committed numbers.
@@ -160,9 +180,9 @@ after D-24 is a deviation discovered during the build and must say why.
 
 **Out of scope — do not drift**
 
-- Multi-agent orchestration (LangGraph/CrewAI), Bedrock, any UI, hybrid
-  (BM25 + dense) search, fine-tuning, OCR / scanned PDFs, real carrier
-  data, anything from the Freightify codebase.
+- Multi-agent orchestration (LangGraph/CrewAI), Bedrock, any UI,
+  fine-tuning, OCR / scanned PDFs, LLM-based re-ranking, real carrier
+  data, anything from the Freightify or `rate-agent` codebases (D-38).
 - If tempted, add a line to the deferred roadmap notes in the vault
   instead of code.
 
@@ -175,13 +195,19 @@ question (+ as_of date)
 [QueryPlanner]  deterministic: detect carrier alias → metadata filter; no LLM
    │
    ▼
-[RateRetriever (BaseRetriever)] ── StoreBackend: ChromaBackend │ PineconeBackend ──► top-12 chunks + vector scores
+[RateRetriever (BaseRetriever)]
+   ├─ dense: StoreBackend ChromaBackend │ PineconeBackend ──► top-12 + cosine
+   ├─ lexical: BM25 over the same chunks (in-process) ──► top-12 + bm25        (D-33)
+   └─ RRF(k=60) fusion ──► top-12
    │
    ▼
 [Reranker]  FlashRank (local ONNX) │ Pinecone bge-reranker-v2-m3 (managed) │ none ──► top-6 + rerank scores   (D-28)
    │
    ▼
-[CandidateChain]  prompt | ChatGoogleGenerativeAI(T=0) | structured output → RateCandidate | parse_error
+[Context]  top-6 in document order + pinned policy chunks (scope=global)             (D-35, D-37)
+   │
+   ▼
+[CandidateChain]  prompt | ChatGoogleGenerativeAI | structured output → RateCandidate | parse_error
    │                                                    (only module allowed to import LLM code)
    ▼
 [Gate 1: Schema]        parse_error / missing field / enum / unknown chunk id ──► REJECT(parse_error | unknown_source)
@@ -228,9 +254,9 @@ Design rules (playbook §3–§6 applied):
 | Module | Owns | May import |
 |---|---|---|
 | `ingest/` | loaders (Markdown, CSV, **PDF via pdfplumber**), structure-aware chunking, chunk ids, metadata | `langchain_core.documents`, `langchain_text_splitters`, `pdfplumber` |
-| `store/` | `StoreBackend` protocol, `ChromaBackend`, `PineconeBackend`, `RateRetriever`, embedding wrapper | `langchain_chroma`, `chromadb`, `pinecone`, `langchain_google_genai` (embeddings only) |
+| `store/` | `StoreBackend` protocol, `ChromaBackend`, `PineconeBackend`, `LexicalIndex` (BM25), `fuse_rrf()`, `RateRetriever`, embedding wrapper | `langchain_chroma`, `chromadb`, `pinecone`, `rank_bm25`, `langchain_google_genai` (embeddings only) |
 | `rerank/` | `Reranker` protocol, `FlashRankReranker`, `PineconeReranker`, `NoopReranker` (D-28) | `flashrank`, `pinecone` |
-| `chain/` | prompt, LLM wiring, structured output, response cache, `QueryPlanner` | `langchain_core`, `langchain_google_genai` |
+| `chain/` | prompt, LLM wiring, structured output, response cache, `QueryPlanner`, context rendering (document order + pinned), optional `enrich_chunk()` for indexing, usage/cost accounting | `langchain_core`, `langchain_google_genai` |
 | `schema/` | `RateCandidate`, `RateAnswer`, `Outcome`, `GateResult` Pydantic models | `pydantic` only |
 | `guardrails/` | Gate 1, Gate 2, Gate 3, confidence, the `run_gates()` pipeline | `schema/`, `config/` loaders, stdlib only — never `chain/`, `store/`, `rerank/` |
 | `eval/` | question-set loader, runner, metrics, report writer | everything above |
@@ -507,9 +533,10 @@ and that chunk also contains the document's `valid_to`.
 - Metadata written identically to both stores (Chroma allows only
   `str|int|float|bool`, so no lists, no `None`): `source_doc`, `chunk_id`,
   `doc_type`, `carrier`, `currency`, `valid_from`, `valid_to`,
-  `tariff_ref`, `corpus_version`, `content_sha256`, plus `text` (Pinecone
-  only, since Pinecone stores no document body; ≤ 2 KB per chunk, well
-  under the 40 KB metadata limit).
+  `tariff_ref`, `corpus_version`, `content_sha256`, `scope` (`global` for
+  `policy_md` chunks, else `specific` — D-35), `description` (empty unless
+  enrichment ran — D-34), plus `text` (Pinecone only, since Pinecone stores
+  no document body; ≤ 2 KB per chunk, well under the 40 KB metadata limit).
 
 ## 9. Vector store layer
 
@@ -526,13 +553,28 @@ class StoreBackend(Protocol):
 # Hit = (Document, similarity_norm: float in [0,1], rank: int)
 ```
 
-`RateRetriever(BaseRetriever)` wraps a backend + the embedding wrapper **+
-a `Reranker`** and implements `_get_relevant_documents(query, *,
-run_manager)`: vector search for `k_retrieve` (12) hits, re-rank, keep
-`k_final` (6). It attaches `similarity_norm` (vector), `vector_rank`,
+`RateRetriever(BaseRetriever)` wraps a backend + the embedding wrapper +
+a `LexicalIndex` **+ a `Reranker`** and implements
+`_get_relevant_documents(query, *, run_manager)`: dense top-`k_retrieve`
+(12) from the store and BM25 top-12 from the lexical index, fused with RRF
+(`score = Σ 1/(60 + rank)`, ties broken by `chunk_id`) to a single top-12,
+then re-ranked, keep `k_final` (6). `RETRIEVAL_MODE=dense` skips the
+lexical leg (D-33). It attaches `similarity_norm` (vector), `vector_rank`,
 `rerank_score` (in `[0,1]`, `None` for `NoopReranker`) and `rank`
 (post-rerank, 1-based) into each returned `Document.metadata` so the chain
 and the gates never touch the backend or the reranker directly.
+
+### 9.1b `LexicalIndex` and RRF (`store/lexical.py`, D-33)
+
+`LexicalIndex.build(chunks)` tokenises each chunk's indexed text
+(`description + raw text` if enriched, else raw text) with
+`re.split(r"[\s|,]+", text.lower())`, keeping tokens like `inmaa`,
+`hal-2026-h2-fcl`, `40hc`, `1,240`→`1` `240` (numbers are not what BM25 is
+for; dense + grounding handle values). `query(text, k)` returns
+`[(chunk_id, bm25_score)]`. `fuse_rrf(dense_hits, lexical_hits, k=60)`
+returns chunk ids ordered by fused score with the per-leg ranks kept for
+the eval's recall breakdown. Both are pure functions over in-memory data
+and fully unit-tested.
 
 ### 9.1a `Reranker` protocol (`rerank/base.py`, D-28)
 
@@ -618,8 +660,12 @@ System message, in this order:
 3. `as_of` date is given; if the only matching rate is outside its
    validity window, still report it faithfully with its real dates (the
    gates decide — the model is not asked to apply business rules).
-4. Context: chunks rendered as `[chunk_id: …] [doc: …] [carrier: …]
-   [valid: from → to]\n<text>` separated by `---`.
+4. Context: the top-6 retrieved chunks **in document order** `(source_doc,
+   chunk index)`, then a `--- POLICY (applies to all tariffs) ---` block
+   with the pinned `scope=global` chunks (D-35, D-37); each chunk rendered
+   as `[chunk_id: …] [doc: …] [carrier: …] [valid: from → to]\n<raw text>`
+   separated by `---`. Enrichment descriptions are never shown to the
+   answering model (D-34).
 
 Human message: the question. Prompt text is versioned; the cache key
 includes `PROMPT_VERSION`.
@@ -643,6 +689,25 @@ chain = (
     | {"result": PROMPT | structured_llm, "docs": itemgetter("docs")}
 )
 ```
+
+### 10.3a Usage and cost (`chain/usage.py`, D-36)
+
+After every live call, `usage_metadata` → `Usage(input_tokens,
+output_tokens, thought_tokens, model)`; `cost_usd = Σ tokens × price` from
+`config/prices.yaml` (`gemini-3.6-flash: {input: 0.75, output: 3.75}` per
+1M, thought tokens billed as output). A cache hit yields
+`Usage(0, 0, 0, cached=True)`. `CandidateResult` carries the `Usage`.
+
+### 10.3b Chunk enrichment (`chain/enrich.py`, D-34, optional)
+
+`enrich_chunk(chunk) -> str`: one LLM call per chunk with
+`ENRICH_PROMPT_VERSION = "1"` asking for ~100 words naming the carrier,
+tariff reference, every origin/destination in the chunk, container types,
+currency, validity, and what question the chunk answers — no numbers
+repeated (values live in the raw text and must not be duplicated into a
+field the grounding check ignores). Cached under
+`.cache/enrich/<sha256(model, version, content_sha256)>.json`. Only
+`rate-rag index --enrich` calls it.
 
 ### 10.4 Response cache (`chain/cache.py`)
 
@@ -775,15 +840,18 @@ The threshold is never hand-edited afterwards; re-tuning is a logged run.
 ```
 rate-rag corpus generate            # regenerate data/corpus + manifest (asserts uniqueness)
 rate-rag corpus questions           # draft golden.yaml / adversarial.yaml from manifest (Phase 1 only)
-rate-rag index  --store chroma|pinecone|both [--prune] [--reset]
-rate-rag ask    "question" --store chroma [--reranker flashrank|pinecone|none] [--as-of 2026-09-01] [--no-gates] [--json]
-rate-rag eval   --store chroma|pinecone|both --mode gated|baseline|both [--reranker flashrank|pinecone|none|ablation] [--set golden|adversarial|all] [--no-cache] [--tune-threshold]
+rate-rag index  --store chroma|pinecone|both [--prune] [--reset] [--enrich]
+rate-rag ask    "question" --store chroma [--retrieval hybrid|dense] [--reranker flashrank|pinecone|none] [--as-of 2026-09-01] [--no-gates] [--json]
+rate-rag eval   --store chroma|pinecone|both --mode gated|baseline|both [--retrieval hybrid|dense|ablation] [--reranker flashrank|pinecone|none|ablation] [--set golden|adversarial|all] [--no-cache] [--tune-threshold]
+rate-rag recall --store chroma [--retrieval …] [--reranker …] [--enriched]   # LLM-free recall@6 over the golden set
 ```
 
 `eval --store both --mode both --set all` is the one command that
 produces the README table; `eval --store chroma --mode gated --set golden
 --reranker ablation` produces the re-ranking lift row (runs `none` and
-`flashrank` back to back, D-31).
+`flashrank` back to back, D-31); `--retrieval ablation` does the same for
+`dense` vs `hybrid` (D-33); `rate-rag recall --enriched` compares recall
+with and without enrichment using no LLM calls at query time (D-34).
 
 ### 13.2 Result files (D-20)
 
@@ -793,10 +861,11 @@ produces the README table; `eval --store chroma --mode gated --set golden
 {
   "run_id": "20261003T093000Z-chroma-flashrank-gated",
   "config": {"chat_model": "...", "embedding_model": "...", "dimension": 768, "prompt_version": "1",
-             "corpus_version": 1, "as_of": "2026-09-01", "reranker": "flashrank", "k_retrieve": 12, "k_final": 6,
+             "corpus_version": 1, "as_of": "2026-09-01", "retrieval": "hybrid", "reranker": "flashrank", "enriched": false, "k_retrieve": 12, "k_final": 6,
              "threshold": 0.71, "gates": ["schema","rules","grounding","confidence"]},
   "git_sha": "...",
   "metrics": {...},
+  "usage": {"input_tokens": 0, "output_tokens": 0, "thought_tokens": 0, "live_calls": 0, "cache_hits": 0, "cost_usd": 0.0},
   "per_question": [{"id": "G-001", "outcome": "ANSWER", "reason": null, "expected": "ANSWER", "correct": true,
                     "rate_value": 2310, "score": 0.83, "latency_ms": 1840, "cache_hit": false, "chunks": ["meridian_tariff_2026_h2#000", "..."]}]
 }
@@ -822,12 +891,15 @@ Let `G_a` = golden questions with `expected.outcome == ANSWER` (24),
 | `injection_leak` | `#{q ∈ A : outcome == ANSWER ∧ rate_value ∈ must_not_contain}` | 0 |
 | `gate_breakdown` | counts of `REJECT` by `reason`, `NEEDS_REVIEW`, `REFUSED`, per set | reported — the interesting chart |
 | `store_parity` | `|golden_accuracy(chroma) − golden_accuracy(pinecone)|` | ≤ 0.05 |
-| `retrieval_recall@6_vector` | `#{q ∈ G_a : the chunk owning the expected value ∈ vector top-6} / |G_a|` (LLM-free) | reported |
-| `retrieval_recall@6_reranked` | same, after re-ranking the vector top-12 to 6 (D-31) | ≥ `retrieval_recall@6_vector` |
+| `retrieval_recall@6_dense` | `#{q ∈ G_a : the chunk owning the expected value ∈ dense top-6} / |G_a|` (LLM-free) | reported |
+| `retrieval_recall@6_hybrid` | same, after RRF fusion of dense and BM25 (D-33) | ≥ dense |
+| `retrieval_recall@6_reranked` | same, after re-ranking the fused top-12 to 6 (D-31) | ≥ hybrid |
+| `enrichment_lift` | `retrieval_recall@6_hybrid(enriched) − retrieval_recall@6_hybrid(raw)` (D-34) | reported |
 | `rerank_lift` | `golden_accuracy(flashrank) − golden_accuracy(none)` on Chroma, gated | reported — the re-ranking claim |
 | `rerank_latency_ms` | p50 of the reranker call alone, per implementation | reported |
 | `latency_p50_ms`, `latency_p95_ms` | end-to-end per question, live calls only (cache hits excluded), per store | reported |
 | `cache_hit_rate` | hits / total LLM invocations | reported |
+| `tokens_total`, `cost_usd` | summed over live calls in the run (D-36) | reported — README states the cost of one full eval |
 
 The baseline run (`--mode baseline`) reports the same metrics with gates
 off; `fabricated_values_surfaced` and `wrong_values_surfaced` from that
@@ -843,6 +915,9 @@ run are the "before" numbers in the README.
 | `PINECONE_API_KEY` | — | required only when `VECTOR_STORE=pinecone` or `both` |
 | `PINECONE_INDEX` | `logistics-rate-rag` | |
 | `VECTOR_STORE` | `chroma` | `chroma` \| `pinecone` |
+| `RETRIEVAL_MODE` | `hybrid` | `hybrid` \| `dense` (D-33) |
+| `RRF_K` | `60` | |
+| `ENRICH_CHUNKS` | `false` | index-time LLM enrichment, ablation only (D-34) |
 | `RERANKER` | `flashrank` | `flashrank` \| `pinecone` \| `none` (D-28) |
 | `RERANK_MODEL` | `ms-marco-MiniLM-L-12-v2` | FlashRank model name; Pinecone uses `bge-reranker-v2-m3` |
 | `FLASHRANK_CACHE_DIR` | `.cache/flashrank` | one-time model download |
@@ -866,13 +941,17 @@ run are the "before" numbers in the README.
 - `guardrails.yaml` — rule switches + params, confidence weights,
   threshold (+ `tuned_on`), surcharge keywords.
 - `rate_ranges.json` — generated by `index` from the manifest; committed.
-- `retrieval.yaml` — `k_retrieve: 12`, `k_final: 6`, chunk rows per chunk
+- `retrieval.yaml` — `k_retrieve: 12`, `k_final: 6`, `rrf_k: 60`,
+  `pinned_doc_types: [policy_md]`, `pinned_cap: 9`, chunk rows per chunk
   (4 / 6), reranker defaults.
+- `prices.yaml` — USD per 1M tokens per model, with the date the prices
+  were read (D-36).
 
 ### 14.3 `.gitignore` additions
 
 `.env`, `.env.*`, `!.env.example`, `*.key`, `.venv/`, `__pycache__/`,
-`*.pyc`, `.chroma/`, `.cache/` (LLM cache **and** the FlashRank model),
+`*.pyc`, `.chroma/`, `.cache/` (LLM cache, enrichment cache **and** the
+FlashRank model),
 `.pytest_cache/`, `.ruff_cache/`,
 `dist/`, `*.egg-info/`. The scaffold's `chroma_db/` line is replaced by
 `.chroma/`.
@@ -901,9 +980,9 @@ logistics-rate-rag/
 │   ├── __init__.py
 │   ├── config.py                 ← env + YAML loading, one Settings object
 │   ├── ingest/   loaders.py, pdf_loader.py, chunking.py
-│   ├── store/    base.py, embeddings.py, chroma_backend.py, pinecone_backend.py, retriever.py
+│   ├── store/    base.py, embeddings.py, chroma_backend.py, pinecone_backend.py, lexical.py, retriever.py
 │   ├── rerank/   base.py, flashrank_reranker.py, pinecone_reranker.py, noop.py
-│   ├── chain/    planner.py, prompt.py, candidate_chain.py, cache.py, ratelimit.py
+│   ├── chain/    planner.py, prompt.py, context.py, candidate_chain.py, cache.py, ratelimit.py, usage.py, enrich.py
 │   ├── schema/   candidate.py, answer.py, outcome.py
 │   ├── guardrails/ gate1_schema.py, gate2_rules.py, gate3_grounding.py, gate3_confidence.py, pipeline.py
 │   ├── eval/     questions.py, runner.py, metrics.py, report.py
@@ -936,6 +1015,7 @@ dependencies = [
   "chromadb>=1.5,<2",
   "pinecone>=10,<11",
   "flashrank>=0.2.10,<0.3",
+  "rank-bm25>=0.2.2,<0.3",
   "pdfplumber>=0.11,<0.12",
   "pydantic>=2.11,<3",
   "python-dotenv>=1.1,<2",
@@ -964,6 +1044,9 @@ The README's "10-minute run" uses the lock file.
 | `test_chunking.py` | chunk counts per doc; every chunk of a tariff contains the header block, the table header and `valid_to`; every manifest rate value is in exactly one chunk of its document; chunk ids are stable across two runs |
 | `test_planner.py` | carrier alias → filter; no alias → no filter; explicit `as of` date parsed |
 | `test_score_norm.py` | Chroma distance and Pinecone score for identical vectors both → 1.0; monotonic |
+| `test_lexical.py` | tokeniser keeps LOCODEs / tariff refs / `40hc` as single tokens; `HAL-2026-H2-FCL` scores only its chunk; `fuse_rrf` arithmetic against a hand-computed 3-doc example; deterministic tie-break; `dense` mode bypasses fusion (D-33) |
+| `test_context.py` | document-order rendering; pinned `scope=global` chunks appended once, capped, never duplicated when also retrieved; enrichment description never appears in rendered context (D-34, D-35, D-37) |
+| `test_usage.py` | `Usage` from a fake `usage_metadata`; cost arithmetic from `prices.yaml`; cache hit → zero tokens (D-36) |
 | `test_embeddings_wrapper.py` | normalisation; dimension mismatch raises (fake embedding function) |
 | `test_gate1_schema.py` | one test per failure mode: unparseable, missing field, wrong type, enum violation, unknown chunk id, unknown doc, refusal-with-value |
 | `test_gate2_rules.py` | pass + fail case for each of the six rules; rule disabled via config is skipped; unknown rule name in config raises at load |
@@ -972,7 +1055,7 @@ The README's "10-minute run" uses the lock file.
 | `test_pipeline.py` | short-circuit order (a candidate failing Gates 1 and 2 reports Gate 1); `REFUSED` path never carries a value |
 | `test_cache.py` | key stability; different chunk hash → different key |
 | `test_metrics.py` | every §13.3 formula against a hand-built 6-question fixture |
-| `test_guardrails_purity.py` | `ast` walk of `guardrails/` and `schema/`: no import of `chain`, `store`, `rerank`, `flashrank`, `langchain_google_genai`, `google`, `langchain_core` (D-19, D-30) |
+| `test_guardrails_purity.py` | `ast` walk of `guardrails/` and `schema/`: no import of `chain`, `store`, `rerank`, `flashrank`, `rank_bm25`, `langchain_google_genai`, `google`, `langchain_core` (D-19, D-30) |
 | `test_eval_config.py` | eval settings have `thinking_level == "minimal"`, `seed == 42`, `as_of == 2026-09-01` (D-25) |
 
 Backends are tested through a `FakeBackend` implementing `StoreBackend`
@@ -1063,7 +1146,8 @@ byte-identical for text files and table-identical for the PDF.
       per §8 with tests — `test_pdf_loader.py` includes the corrupted-cell
       fixture (D-29)
 - [ ] `store/embeddings.py`, `store/base.py`, `store/chroma_backend.py`,
-      `store/retriever.py` per §9 (Pinecone stub raises `NotImplemented`)
+      `store/retriever.py` per §9 (Pinecone stub raises `NotImplemented`);
+      loader sets `scope` metadata (D-35)
 - [ ] `rate-rag index --store chroma` idempotent (second run upserts 0);
       `--reset` works; `rate_ranges.json` generated
 - [ ] `chain/planner.py` + tests; retriever honours the carrier filter
@@ -1073,25 +1157,33 @@ byte-identical for text files and table-identical for the PDF.
 `valid_to` present — including for the PDF); ~26 chunks indexed; `index`
 idempotent; CI green.
 
-### Phase 2b — Re-ranking (1 session, D-28/D-32)
+### Phase 2b — Hybrid retrieval + re-ranking (2 sessions, D-28/D-32/D-33/D-35/D-37)
 
+- [ ] `store/lexical.py` (`LexicalIndex`, `fuse_rrf`) per §9.1b;
+      `RateRetriever` becomes dense ∪ BM25 → RRF → top-12;
+      `RETRIEVAL_MODE` env + `retrieval.yaml` wiring; `test_lexical.py`
 - [ ] `rerank/base.py`, `noop.py`, `flashrank_reranker.py`,
-      `pinecone_reranker.py` per §9.1a; `RateRetriever` becomes two-stage
-      (12 → 6); `RERANKER` env + `retrieval.yaml` wiring
-- [ ] `test_reranker.py` (fake + noop + slow FlashRank determinism)
-- [ ] `retrieval_recall@6_vector` and `retrieval_recall@6_reranked`
-      computed LLM-free over the golden set on Chroma and recorded in
-      the roadmap progress log (no LLM calls needed yet)
-- [ ] Purity test extended for `rerank` / `flashrank`
+      `pinecone_reranker.py` per §9.1a; second stage 12 → 6; `RERANKER`
+      env wiring; `test_reranker.py` (fake + noop + slow FlashRank
+      determinism)
+- [ ] `chain/context.py`: document-order rendering + pinned policy block;
+      `test_context.py`
+- [ ] `rate-rag recall` command; `retrieval_recall@6_dense`, `_hybrid`,
+      `_reranked` computed LLM-free over the golden set on Chroma and
+      recorded in the roadmap progress log
+- [ ] Purity test extended for `rerank` / `flashrank` / `rank_bm25`
 
-**Acceptance:** `RERANKER=none|flashrank` both work; recall@6 reranked ≥
-vector on the golden set (if not, record it — the number is the finding);
-FlashRank determinism test passes locally.
+**Acceptance:** `RETRIEVAL_MODE=dense|hybrid` × `RERANKER=none|flashrank`
+all work; recall@6 is non-decreasing dense → hybrid → reranked on the
+golden set (if not, record it — the number is the finding); pinned
+policy chunks present in every rendered context; FlashRank determinism
+test passes locally.
 
 ### Phase 3 — Candidate chain + baseline eval (1 session)
 
 - [ ] `schema/` models; `chain/prompt.py`, `chain/candidate_chain.py`,
-      `chain/cache.py`, `chain/ratelimit.py` per §10
+      `chain/cache.py`, `chain/ratelimit.py`, `chain/usage.py` +
+      `config/prices.yaml` per §10 (D-36)
 - [ ] `rate-rag ask --no-gates` returns the raw candidate + sources
 - [ ] `eval/` runner + metrics + report (gates off path only)
 - [ ] `rate-rag eval --store chroma --mode baseline --set all` → first
@@ -1157,7 +1249,12 @@ cleans up.
 - [ ] `rate-rag eval --store both --mode both --set all --no-cache` —
       one clean, uncached run of everything; `LATEST.md` regenerated
 - [ ] `rate-rag eval --store chroma --mode gated --set golden --reranker
-      ablation` — the re-ranking lift row (D-31)
+      ablation` — the re-ranking lift row (D-31); same with `--retrieval
+      ablation` — the hybrid lift row (D-33)
+- [ ] `chain/enrich.py` + `rate-rag index --enrich` into a separate Chroma
+      collection `rates_v1_enriched`; `rate-rag recall --enriched` → the
+      `enrichment_lift` number, recorded whatever it is (D-34)
+- [ ] Record `cost_usd` of the full run in Appendix A and the README
 - [ ] Gate-breakdown table and before/after table rendered in
       `LATEST.md`
 
@@ -1195,10 +1292,10 @@ committed results; architecture doc reviewed against the code.
 
 **Acceptance:** everything in §21 ticked.
 
-**Session budget:** 0–3 ≈ 7 sessions (PDF adds one to Phase 1/2), 2b ≈ 1,
-4–6 ≈ 4, 7–8 ≈ 2, 9–10 ≈ 2 → ~16 two-hour sessions. At one session per
-weekday that is a little over three weeks; target finish **mid-October
-2026** (D-32).
+**Session budget:** 0–3 ≈ 7 sessions (PDF adds one to Phase 1/2), 2b ≈ 2,
+4–6 ≈ 4, 7–8 ≈ 3 (enrichment ablation adds one), 9–10 ≈ 2 → ~18 two-hour
+sessions. At one session per weekday that is about three and a half
+weeks; target finish **third week of October 2026** (D-32, D-33, D-34).
 
 ## 19. Risks
 
@@ -1208,6 +1305,8 @@ weekday that is a little over three weeks; target finish **mid-October
 | `gemini-3.6-flash` is withdrawn or rate-limited mid-project (the 2.5 family already was — D-25) | model is config; swap to `gemini-3.5-flash-lite` (verified working) and re-run eval as a new logged run — the gates are model-agnostic by design, which is the point |
 | Structured output returns valid JSON with invented chunk ids | Gate 1 `unknown_source` — counted, not crashed |
 | pdfplumber extraction drifts (pdfminer.six is pinned by pdfplumber to an exact date-version, so an upgrade can change table detection) | `pdfplumber<0.12` pin; the chunk invariant test and the generator's round-trip check fail loudly; `PdfTableError` is a hard stop, never a silent gap (D-29) |
+| BM25 tokenisation drifts between machines (locale, regex) | tokeniser is one regex with no locale dependence; `test_lexical.py` pins expected tokens; the index is rebuilt at load, never persisted |
+| Enrichment (D-34) leaks numbers into the embedded text and inflates recall without helping grounding | enrich prompt forbids numbers; a test asserts no digit sequence from `manifest.rate_values` appears in any description; grounding never reads descriptions |
 | FlashRank model download unavailable (offline, CI) | model cached under `.cache/flashrank/`; unit tests use `FakeReranker`; the live test is `slow` and self-skips; `RERANKER=none` is a supported mode |
 | Pinecone rerank quota / model availability on Starter | only used in Phase 7 runs; `flashrank` is the default everywhere else |
 | Grounding false negatives from number formatting | variant set + boundary regex + the test table in §17.1; any new format found in eval is added as a variant with a test, never by loosening the match |
@@ -1228,18 +1327,21 @@ weekday that is a little over three weeks; target finish **mid-October
 2. Architecture diagram (§5) and the one-sentence rule: "the LLM emits a
    candidate; three deterministic gates decide."
 3. Gate breakdown chart/table from `LATEST.md`.
-4. Chroma vs. Pinecone parity row + latency; re-ranking lift row
-   (recall@6 vector → reranked, accuracy none → flashrank) with the
-   honest note that the reranker preferred the current tariff over the
-   superseded one by only a few points — the gate did the real work.
+4. Chroma vs. Pinecone parity row + latency; retrieval ladder row
+   (recall@6 dense → hybrid → reranked, and enrichment lift) and the
+   accuracy lift none → flashrank, with the honest note that the reranker
+   preferred the current tariff over the superseded one by only a few
+   points — the gate did the real work. Cost of the full eval in USD.
 5. Run it: clone, venv, `pip install -r requirements.lock -e .`, `.env`,
    `rate-rag index`, `rate-rag ask "…" --as-of 2026-09-01`,
    `rate-rag eval …`.
 6. Design notes: why no date filtering at retrieval (D-11), why baseline
    = gates off (D-13), why the corpus is synthetic, why the main tariff
    is a PDF and how extraction is guarded (D-29), why re-ranking is
-   retrieval and not a gate (D-30), what LangChain pieces are used and
-   which were deliberately not (D-04, D-05).
+   retrieval and not a gate (D-30), why BM25 in-process rather than
+   store-side sparse vectors (D-33), what was measured and not adopted
+   (D-34, D-38), what LangChain pieces are used and which were
+   deliberately not (D-04, D-05).
 7. Links to `docs/architecture.md`, `docs/PLAN.md`, `eval/results/`.
 
 ### 20.2 LinkedIn post shape
@@ -1283,6 +1385,7 @@ section and this plan.
 | 2026-09-17 | Windows | plan | Full audit of scaffold, venv, Gemini/Pinecone docs, PyPI; wrote this plan | Findings A1–A15; decisions D-01–D-24; no code changed | Phase 0 |
 | 2026-09-17 | Windows | 0 | Key in `.env`; 2.5 family 404s on this key → `gemini-3.6-flash` minimal thinking; embedding-001 @768 + cosine; first end-to-end run (ingest + 6 questions) | D-25–D-27; 6/6 answers correct incl. refusal + injection; 3.4–6.3 s/question; embedding norm 0.60 (unnormalised) | Rest of Phase 0: pyproject, lock, gitattributes, LICENSE, `.env.example`, GitHub private repo + push |
 | 2026-09-17 | Windows | plan | Scope amendment at user request: re-ranking + PDF. Installed `flashrank 0.2.10`, `pdfplumber 0.11.10`, `reportlab 5.0.1` in the venv and verified both paths live | D-28–D-32; PDF round-trip 24/24 rows verbatim; FlashRank 0.05 s / 5 passages, deterministic; current-vs-superseded margin only 0.77 vs 0.71 | Phase 0 remainder unchanged |
+| 2026-09-17 | Windows | plan | Gap analysis against `rate-agent@feature/rag` (private; clone read, then deleted from the scratchpad). Verified `rank_bm25` on LOCODE / tariff-ref / acronym queries | D-33–D-38 adopted / rejected with reasons; no code or prompts reused | Phase 0 remainder unchanged |
 
 ## Appendix B — Sources checked on 2026-09-17
 
@@ -1312,6 +1415,14 @@ section and this plan.
   `pdfplumber 0.11.10` (pins `pdfminer.six==20260107`), `reportlab 5.0.1`
 - Local verification script 2026-09-17: reportlab → pdfplumber
   round-trip and FlashRank determinism (scratchpad `verify_rerank_pdf.py`)
+- Reference implementation read for the gap analysis (techniques only):
+  `github.com/subburajan-perumal/rate-agent` branch `feature/rag` —
+  `rag/vector_store.py` (BGE-M3 dense+sparse, Qdrant RRF, global context
+  store), `rag/retriever.py` (LLM rerank, graph expansion, page-order
+  sort), `rag/generator.py` (grouped context blocks, pagination loop),
+  `docling_preprocessor.py` (TableFormer, header-repeating table splits),
+  `model_client.py` (per-task token/cost metrics)
+- PyPI: `rank-bm25 0.2.2` (numpy only)
 - Installed package source inspected in `.venv`: `ChatGoogleGenerativeAI`
   fields (`thinking_budget`, `thinking_config`, `seed`, `max_retries`,
   `timeout`, `response_schema`), `with_structured_output` signature,
