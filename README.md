@@ -9,13 +9,13 @@ Built to close a real, confirmed gap: RAG and LangChain showed up as
 explicit "0 years, not on record" answers across several job applications
 in 2026 (6 of 12 postings asked about RAG specifically, 4 of 12 about
 LangChain). Rather than a generic "chat with a PDF" tutorial project, this
-deliberately reuses the freight/logistics domain from my day job at
-Freightify (an AI agent that extracts freight rates from carrier
+deliberately reuses the freight/logistics domain from my day job
+(an AI agent that extracts freight rates from carrier
 documents) — the *problem domain* is the same, this project adds the
 *retrieval* layer on top instead of just extraction.
 
 **The documents in `data/sample_docs/` are synthetic** — written for this
-project, not real carrier data. The Freightify codebase itself is
+project, not real carrier data. The day-job codebase itself is
 proprietary and isn't reused here.
 
 ## What it does
