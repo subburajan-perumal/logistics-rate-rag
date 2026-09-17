@@ -10,8 +10,11 @@ DATA_DIR = PROJECT_ROOT / "data" / "sample_docs"
 PERSIST_DIR = PROJECT_ROOT / "chroma_db"
 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-EMBEDDING_MODEL = "models/text-embedding-004"
-CHAT_MODEL = "gemini-2.5-flash"
+# text-embedding-004 was shut down by Google on 2026-01-14; the 2.5 family
+# returns 404 for keys created after mid-2026 (verified 2026-09-17).
+EMBEDDING_MODEL = "gemini-embedding-001"
+EMBEDDING_DIM = 768
+CHAT_MODEL = "gemini-3.6-flash"
 
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 150

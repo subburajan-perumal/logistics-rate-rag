@@ -12,6 +12,7 @@ from config import (
     CHUNK_OVERLAP,
     CHUNK_SIZE,
     DATA_DIR,
+    EMBEDDING_DIM,
     EMBEDDING_MODEL,
     PERSIST_DIR,
     require_api_key,
@@ -46,12 +47,15 @@ def build_vector_store():
     print(f"Split into {len(chunks)} chunks "
           f"(size={CHUNK_SIZE}, overlap={CHUNK_OVERLAP})")
 
-    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model=EMBEDDING_MODEL, output_dimensionality=EMBEDDING_DIM
+    )
 
     vector_store = Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
         persist_directory=str(PERSIST_DIR),
+        collection_metadata={"hnsw:space": "cosine"},
     )
     print(f"Persisted vector store to {PERSIST_DIR} "
           f"({vector_store._collection.count()} vectors)")

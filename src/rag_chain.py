@@ -10,7 +10,14 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
-from config import CHAT_MODEL, EMBEDDING_MODEL, PERSIST_DIR, RETRIEVAL_K, require_api_key
+from config import (
+    CHAT_MODEL,
+    EMBEDDING_DIM,
+    EMBEDDING_MODEL,
+    PERSIST_DIR,
+    RETRIEVAL_K,
+    require_api_key,
+)
 
 SYSTEM_PROMPT = """You are a logistics rate-desk assistant. Answer the \
 question using ONLY the context below, which comes from carrier rate \
@@ -40,15 +47,23 @@ def format_docs_with_sources(docs) -> str:
 
 
 def load_vector_store() -> Chroma:
-    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
-    return Chroma(persist_directory=str(PERSIST_DIR), embedding_function=embeddings)
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model=EMBEDDING_MODEL, output_dimensionality=EMBEDDING_DIM
+    )
+    return Chroma(
+        persist_directory=str(PERSIST_DIR),
+        embedding_function=embeddings,
+        collection_metadata={"hnsw:space": "cosine"},
+    )
 
 
 def build_chain():
     require_api_key()
     vector_store = load_vector_store()
     retriever = vector_store.as_retriever(search_kwargs={"k": RETRIEVAL_K})
-    llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, temperature=0)
+    # Gemini 3.x ignores `temperature` (fixed sampling); minimal thinking +
+    # a fixed seed is the closest available to a stable candidate.
+    llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, thinking_level="minimal", seed=42)
 
     # RunnablePassthrough.assign keeps the retrieved docs available downstream
     # (for source citation) while also feeding the formatted context into the
