@@ -18,6 +18,8 @@ documents) — the *problem domain* is the same, this project adds the
 project, not real carrier data. The day-job codebase itself is
 proprietary and isn't reused here.
 
+**Try it:** [live demo](https://logistics-rate-rag.streamlit.app) — ask a question, see the answer and the exact chunks the model was given (Streamlit Community Cloud; may take a minute to wake). It is the Phase 0 baseline chain; the guardrail gates land in later phases.
+
 ## What it does
 
 - Loads the sample rate/tariff/policy documents
