@@ -1,0 +1,15 @@
+carriers:
+  MERIDIAN:
+    display_name: Meridian Ocean Lines
+    aliases: [meridian, meridian ocean, meridian ocean lines, mer]
+    currency: USD
+    baf_included: true
+    thc_included: false
+    tariff_refs: [MER-2026-H2-FCL, MER-2026-Q2-FCL]
+  HALCYON:
+    display_name: Halcyon Container Line
+    aliases: [halcyon, halcyon container, halcyon container line, hal]
+    currency: EUR
+    baf_included: false
+    thc_included: false
+    tariff_refs: [HAL-2026-H2-FCL]

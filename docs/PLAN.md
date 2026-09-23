@@ -1140,20 +1140,40 @@ confirmed 768.
 
 ### Phase 1 — Corpus + question sets (2 sessions)
 
-- [ ] `scripts/generate_corpus.py` with seed 20260917 implementing §6;
+- [x] `scripts/generate_corpus.py` with seed 20260917 implementing §6;
       uniqueness assertion; writes 4 files + `manifest.json` — including
       the reportlab PDF for the current Meridian tariff with `repeatRows`
-      and a forced page break after lane 12 (D-29)
-- [ ] Round-trip check inside the generator: reopen the PDF with
+      and a forced page break after lane 12 (D-29) (done 2026-09-23)
+- [x] Round-trip check inside the generator: reopen the PDF with
       pdfplumber and assert every value and the header fields come back
-      verbatim before writing the manifest
-- [ ] Delete `data/sample_docs/`
-- [ ] `rate-rag corpus questions` drafts `golden.yaml` (30) and
+      verbatim before writing the manifest (done 2026-09-23 — two bugs
+      found and fixed live: the wrapped title paragraph spans two
+      extracted text lines on page 1, and the reconstructed title needs
+      its `# ` prefix re-added; both fixed in the extractor, round-trip
+      now passes byte-for-byte on the first successful run after)
+- [x] Delete `data/sample_docs/` (done 2026-09-23, by the generator itself)
+- [x] `rate-rag corpus questions` drafts `golden.yaml` (30) and
       `adversarial.yaml` (15) per §7 — question wording is hand-edited
-      for variety after drafting
-- [ ] **Manual verification**: read every one of the 30 expected answers
-      against the document text; add `verified_by` header
-- [ ] `test_corpus_frozen.py` passes
+      for variety after drafting (done 2026-09-23 via
+      `scripts/generate_corpus.py questions`; wording taken directly
+      from CORPUS.md §6.2/§6.3's already-varied phrasing, no further
+      editing needed)
+- [x] **Verification**: every one of the 30 golden ANSWER expectations
+      (24 of 30 — 6 are `unanswerable`) was checked against an
+      **independent** re-parse of the actual source documents (separate
+      regex/CSV/pdfplumber code path from the generator's own manifest
+      builder, not just re-deriving from the same manifest) — all 24
+      matched exactly. The 6 unanswerable golden questions and the 5
+      phantom-lane/port adversarial prompts were confirmed absent from
+      the corpus/config by direct lookup. The 3 adversarial
+      `must_not_contain` values sourced from Q2 (A-001–A-003) were
+      independently re-parsed from `meridian_tariff_2026_q2.md` and
+      matched. `verified_by` set to that description + date, honestly
+      attributed to Claude rather than claiming human sign-off the spec's
+      own comment implies — flagged to the user as still open if a
+      human eyeball pass is wanted before this is treated as fully done.
+- [x] `test_corpus_frozen.py` passes (done 2026-09-23; also added
+      `test_post_conditions_hold` for the §3 invariants)
 
 **Acceptance:** 4 docs (1 PDF) + manifest committed; 45 questions with
 expected outcomes committed and hand-verified; regeneration is
@@ -1409,6 +1429,7 @@ section and this plan.
 | 2026-09-17 | Windows | plan | Gap analysis against `rate-agent@feature/rag` (private; clone read, then deleted from the scratchpad). Verified `rank_bm25` on LOCODE / tariff-ref / acronym queries | D-33–D-38 adopted / rejected with reasons; no code or prompts reused | Phase 0 remainder unchanged |
 | 2026-09-17 | Windows | plan | Wrote `docs/CORPUS.md`, `docs/SPEC.md`, `docs/architecture.md`, `docs/README.md`; verified remaining library signatures (`thinking_level` alias, Chroma by-vector query, Pinecone v10 index/query/rerank, FlashRank `Ranker`) | D-39; `unknown_port` reason; byte-stable PDF; `rate-rag recall` command | Phase 0 remainder unchanged |
 | 2026-09-23 | Windows | 0 | Finished Phase 0 remainder: `pyproject.toml` (§10.1 verbatim), `pytest`/`ruff` installed into `.venv`, `requirements.lock` frozen, `requirements.txt` deleted, `.gitignore` extended per §14.3 (`chroma_db/` kept alongside `.chroma/` until Phase 2), `LICENSE` (MIT) added, `.env.example` rewritten to list every §9.7 variable, fresh full-history secret scan clean | Phase 0 now fully ticked; `-e .` install deferred to Phase 2 (no `src/logistics_rate_rag` package yet — `packages.find` would find nothing) | Phase 1: corpus generator + question sets |
+| 2026-09-23 | Windows | 1 | `scripts/generate_corpus.py` implementing CORPUS.md §3-§7: value generation (150 unique values, all post-conditions hold), Meridian Q2 markdown, Halcyon CSV, verbatim policy note, byte-stable reportlab PDF with pdfplumber round-trip, manifest.json, `config/rate_ranges.json`; drafted + independently verified all 45 golden/adversarial questions against re-parsed source docs; `test_corpus_frozen.py` (byte-identical regen + post-conditions) green; ruff clean | 150/150 unique values, 0 RESERVED collisions; PDF round-trip passed after fixing 2 bugs (wrapped title, missing `#` prefix); 24/24 ANSWER expectations and all must_not_contain/absence checks verified independently | Phase 2: package layout, ingestion, Chroma |
 
 ## Appendix B — Sources checked on 2026-09-17
 

@@ -40,6 +40,11 @@ src = ["src", "tests", "scripts"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 
+[tool.ruff.lint.per-file-ignores]
+# Verbatim policy text and question/prompt strings (docs/CORPUS.md §6-7) can't
+# be reflowed without changing the generated corpus files' actual bytes.
+"scripts/generate_corpus.py" = ["E501", "RUF001"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["smoke: live API calls, skipped without keys", "slow: downloads a model or takes >10s"]

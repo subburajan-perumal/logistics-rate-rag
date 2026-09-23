@@ -1,0 +1,7 @@
+k_retrieve: 12
+k_final: 6
+rrf_k: 60
+rows_per_chunk_md: 4
+rows_per_chunk_csv: 6
+pinned_doc_types: [policy_md]
+pinned_cap: 9
