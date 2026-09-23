@@ -1,9 +1,9 @@
 """Gate pipeline (docs/SPEC.md §6.6).
 
 Phase 3 built the `gates_enabled=False` baseline-bypass branch (D-13).
-Phase 4 adds the real `gates_enabled=True` path, but only Gate 1 exists
-so far — a candidate that passes Gate 1 goes straight to ANSWER for now,
-skipping Gates 2-3 (Phase 5 inserts gate2 here, Phase 6 inserts gate3).
+Phase 4 added the real `gates_enabled=True` path with Gate 1. Phase 5
+inserts Gate 2 here — a candidate clean through Gates 1-2 still goes
+straight to ANSWER for now, since Gate 3 (Phase 6) doesn't exist yet.
 `eval`'s `--mode gated` still raises NotImplementedError (Phase 6 wires
 that up once all three gates are real).
 """
@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING
 from logistics_rate_rag.config import Ports, Settings
 from logistics_rate_rag.guardrails.context import QuestionContext
 from logistics_rate_rag.guardrails.gate1_schema import gate1
+from logistics_rate_rag.guardrails.gate2_rules import gate2
 from logistics_rate_rag.schema.answer import RateAnswer, SourceRef, Verdict
 from logistics_rate_rag.schema.candidate import RateCandidate
 from logistics_rate_rag.schema.outcome import Outcome
@@ -78,6 +79,26 @@ def nearest(ctx: QuestionContext, n: int = 3) -> tuple[SourceRef, ...]:
     )
 
 
+def _rate_ref(candidate: RateCandidate) -> SourceRef:
+    return SourceRef(
+        source_doc=candidate.source_doc,
+        chunk_id=candidate.source_chunk_id,
+        span=candidate.source_span,
+        role="rate",
+    )
+
+
+def _policy_ref(candidate: RateCandidate, ctx: QuestionContext) -> SourceRef | None:
+    if not candidate.policy_source_chunk_id:
+        return None
+    return SourceRef(
+        source_doc=ctx.chunks_by_id[candidate.policy_source_chunk_id].source_doc,
+        chunk_id=candidate.policy_source_chunk_id,
+        span=None,
+        role="policy",
+    )
+
+
 def run_gates(
     candidate: RateCandidate | None,
     parsing_error: str | None,
@@ -106,31 +127,28 @@ def run_gates(
                 candidate=None,
                 sources=nearest(ctx),
             )
-        # Phase 4 only: no Gate 2/3 yet, so a Gate-1-clean answerable
-        # candidate goes straight to ANSWER. Phases 5-6 insert the
-        # remaining checks between here and the return below.
-        sources = (
-            SourceRef(
-                source_doc=normalized.source_doc,
-                chunk_id=normalized.source_chunk_id,
-                span=normalized.source_span,
-                role="rate",
-            ),
-        )
-        if normalized.policy_source_chunk_id:
-            sources = (
-                *sources,
-                SourceRef(
-                    source_doc=ctx.chunks_by_id[normalized.policy_source_chunk_id].source_doc,
-                    chunk_id=normalized.policy_source_chunk_id,
-                    span=None,
-                    role="policy",
-                ),
+        g2 = gate2(normalized, ctx, settings)
+        if not g2.passed:
+            return Verdict(
+                outcome=Outcome.REJECT,
+                reason=g2.reason,
+                gate_results=(g1, g2),
+                confidence_score=None,
+                candidate=None,
+                sources=(_rate_ref(normalized), *nearest(ctx)),
             )
+
+        # Phase 5 only: no Gate 3 yet, so a Gate-1/2-clean answerable
+        # candidate goes straight to ANSWER. Phase 6 inserts gate3
+        # between here and the return below.
+        sources = (_rate_ref(normalized),)
+        policy_ref = _policy_ref(normalized, ctx)
+        if policy_ref is not None:
+            sources = (*sources, policy_ref)
         return Verdict(
             outcome=Outcome.ANSWER,
             reason=None,
-            gate_results=(g1,),
+            gate_results=(g1, g2),
             confidence_score=normalized.confidence,
             candidate=normalized,
             sources=sources,

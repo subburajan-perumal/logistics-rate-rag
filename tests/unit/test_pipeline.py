@@ -29,7 +29,9 @@ def _chunk(chunk_id: str, source_doc: str) -> Chunk:
         doc_type="tariff_pdf",
         text="text",
         index_text="text",
-        metadata={},
+        # currency must match _answerable_candidate()'s USD so Gate 2's
+        # currency_matches_source rule doesn't reject these fixtures.
+        metadata={"currency": "USD"},
         content_sha256="sha",
     )
 

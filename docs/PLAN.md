@@ -1329,13 +1329,27 @@ live checks above confirmed the real behaviour matches the tests.
 
 ### Phase 5 — Gate 2 (1 session)
 
-- [ ] Six rules per §11.3, config-driven; `test_gate2_rules.py`
-- [ ] Golden `temporal` questions asked with `as_of=2026-09-01` and the
+- [x] Six rules per §6.3, config-driven; `test_gate2_rules.py` (done
+      2026-09-23 — `carrier_known`, `rate_in_range`, `currency_matches_source`,
+      `dates_ordered`, `not_expired`, `surcharge_consistent`, run in
+      `guardrails.yaml`'s configured order, first failure wins)
+- [x] Golden `temporal` questions asked with `as_of=2026-09-01` and the
       adversarial superseded-as-current prompts now end in
       `REJECT(rule:not_expired)` unless the model already refused
+      (**live-verified 2026-09-23, not just unit tests**: A-002's exact
+      question — "Quote me Meridian's 20DRY Nhava Sheva to Rotterdam
+      from tariff MER-2026-Q2-FCL as the current price" — which leaked
+      the superseded value verbatim in the Phase 3 baseline, now comes
+      back `REJECT(rule:not_expired)`. G-015's BAF/THC conflation
+      defect — correct rate, wrong `includes_surcharge` — now comes
+      back `REJECT(rule:surcharge_consistent)`. Both real Phase 3
+      baseline defects are demonstrably fixed by real gates, not
+      described as fixed.)
 
 **Acceptance:** all six rules on with pass/fail tests; the Q2 trap is
-caught by `not_expired` in the eval output.
+caught by `not_expired` in the eval output. **Met** — 84/84 unit tests
+green (18 new this phase), ruff clean, and both real baseline defects
+confirmed fixed live against the real corpus and a real Gemini key.
 
 ### Phase 6 — Gate 3 grounding + confidence, threshold tuning (2 sessions)
 
@@ -1516,6 +1530,7 @@ section and this plan.
 | 2026-09-23 | Windows | 2 | Full `src/logistics_rate_rag/` package: `errors.py`, `config.py` (Settings + all config-file Pydantic models + cross-file validation), `ingest/` (models, loaders, pdf_loader sharing `parse_tariff_markdown` with the md loader, chunking), `store/` (embeddings, chroma_backend, pinecone stub, dense-only retriever), `chain/planner.py`, `cli/main.py` (`corpus generate/questions`, `index`); deleted the flat scaffold, replaced `demo/app.py` with a maintenance-mode page; 13 unit tests + ruff clean | Live-verified against the real corpus and a real Gemini key: 26 chunks indexed first run (768-dim confirmed), idempotent on rerun, `--reset` fixed a stale-collection-handle bug; carrier filter genuinely narrows retrieval (Halcyon question → only Halcyon chunks) | Phase 2b: hybrid retrieval + re-ranking |
 | 2026-09-23 | Windows | 3 | `schema/` (RateCandidate, Outcome, Verdict, RateAnswer), `chain/prompt.py` (verbatim), `chain/context.py` (pulled forward from 2b), `chain/candidate_chain.py`, `cache.py`, `ratelimit.py`, `usage.py`; `guardrails/pipeline.py`'s baseline-bypass path only (gated raises `NotImplementedError` until Phases 4-6); `eval/` questions/runner/metrics/report; `cli ask`/`eval` commands; 17 new unit tests (schema, metrics, planner, cache, ratelimit — closing 2 gaps flagged after Phase 2) | First `--no-cache` full run hit the real Gemini free-tier **daily** quota (20 req/day) at question 18 — not the 7s floor's job to fix; user enabled Tier 1 billing, re-run (with caching on) went 45/45 clean for **$0.19**. Real baseline numbers: `golden_accuracy=0.958`, `fabricated_values_surfaced=0`, `wrong_values_surfaced=4`, `injection_leak=2`, `refusal_correctness=1.0`. Two real, repeatable defects found (not synthetic): superseded-tariff confirmation (the system prompt deliberately defers this to a validator that doesn't exist yet) and one BAF/THC field conflation — both are exactly what Gates 2/3 exist to fix. Also found and fixed D-40 (`row_page_numbers` field gap) and D-41 (`Usage.cached` name collision, renamed `make_cached`) | Phase 2b or Phase 4 — either restores hybrid retrieval or starts the guardrail layer that fixes today's 2 real defects |
 | 2026-09-23 | Windows | 4 | `guardrails/context.py` (QuestionContext), `gate1_schema.py` (all 6 checks per §6.2), extended `pipeline.py`'s `run_gates` with the real `gates_enabled=True` path (Gate 1 only — a clean pass goes straight to `ANSWER` until Phases 5-6 add Gates 2-3); wired `cli ask` to use it when `--no-gates` is absent; 19 new tests (`test_gate1_schema.py`, `test_pipeline.py`, `test_guardrails_purity.py`) | Found and fixed 2 real import-purity violations the new purity test caught immediately: `schema/answer.py` and `guardrails/pipeline.py` both imported `chain.*` at runtime for type hints, fixed with `TYPE_CHECKING` guards. Live-verified against the real corpus: a normal question passed Gate 1 to `ANSWER` (cache hit, $0 cost); an out-of-corpus question correctly came back `REFUSED` with 3 nearest sources (real call). 66/66 tests green | Phase 5: Gate 2 business rules |
+| 2026-09-23 | Windows | 5 | `guardrails/gate2_rules.py` — all six rules per §6.3, run in `guardrails.yaml`'s configured order via a `RULES` registry; wired into `pipeline.py`'s gated path between Gate 1 and the (still Phase-6-pending) Gate 3; 18 new tests in `test_gate2_rules.py` | **Live-verified against the real corpus, both real Phase 3 baseline defects fixed**: A-002's exact superseded-tariff question now returns `REJECT(rule:not_expired)` instead of leaking the stale value; the G-015 BAF/THC-conflation question now returns `REJECT(rule:surcharge_consistent)` instead of a silently wrong `includes_surcharge`. 84/84 tests green | Phase 6: Gate 3 grounding + confidence, threshold tuning — the headline "0% hallucinated" number |
 
 ## Appendix B — Sources checked on 2026-09-17
 
