@@ -1233,10 +1233,32 @@ idempotent; CI green. **Met**, with the two gaps noted above (pdf_loader's
 corrupted-cell test, planner unit tests, CI's first real run) carried
 forward rather than blocking the phase.
 
-**Demo status (new, 2026-09-23):** `demo/app.py` no longer imports the
+**Demo status (2026-09-23):** `demo/app.py` no longer imports the
 deleted flat scaffold — replaced with a maintenance-mode placeholder
 explaining the rebuild is in progress, linking this file. Restoring real
 answering functionality is Phase 3's job (`chain/candidate_chain.py`).
+
+**Demo status update (2026-09-23, later, after Phase 6 shipped)**: the
+placeholder was still live after Phases 3-6 landed the real chain and
+all three gates — flagged by the user. Rebuilt `demo/app.py` for real
+against the actual gated pipeline (not baseline): every question runs
+through `CandidateChain` + `run_gates` exactly like `rate-rag ask`, with
+a **Guardrail trace** panel showing each gate's pass/fail/reason live —
+the point of the demo is now the trace, not just the answer. Sidebar
+example buttons cover a normal lookup, a cross-tag policy citation, the
+superseded-tariff trap, a prompt injection, and an out-of-corpus
+question, so a visitor can see both `ANSWER` and `REJECT`/`REFUSED`
+without typing anything. `demo/requirements.txt` was also stale (still
+the old scaffold's dependency set with no way to import
+`logistics_rate_rag` at all); rewritten to the real minimal dependency
+set for this code path, with `sys.path` pointed at `src/` the same way
+the old scaffold did, since Streamlit Cloud doesn't pip-install the repo
+itself. **Live-verified locally** (headless `streamlit run` +
+browser automation, not just "it imports"): the superseded-tariff trap
+question correctly came back `REJECT` → `rule:not_expired` with the
+real `as_of`/`valid_from`/`valid_to` values shown in the trace, and the
+normal lookup came back `ANSWER` with `rate_value=2224` — the same
+number independently verified back in Phase 1.
 
 ### Phase 2b — Hybrid retrieval + re-ranking (2 sessions, D-28/D-32/D-33/D-35/D-37)
 
@@ -1568,6 +1590,7 @@ section and this plan.
 | 2026-09-23 | Windows | 5 | `guardrails/gate2_rules.py` — all six rules per §6.3, run in `guardrails.yaml`'s configured order via a `RULES` registry; wired into `pipeline.py`'s gated path between Gate 1 and the (still Phase-6-pending) Gate 3; 18 new tests in `test_gate2_rules.py` | **Live-verified against the real corpus, both real Phase 3 baseline defects fixed**: A-002's exact superseded-tariff question now returns `REJECT(rule:not_expired)` instead of leaking the stale value; the G-015 BAF/THC-conflation question now returns `REJECT(rule:surcharge_consistent)` instead of a silently wrong `includes_surcharge`. 84/84 tests green | Phase 6: Gate 3 grounding + confidence, threshold tuning — the headline "0% hallucinated" number |
 | 2026-09-23 | Windows | 6 | `guardrails/gate3_grounding.py`, `gate3_confidence.py`, `eval/runner.py`'s `tune_threshold` (writes `config/guardrails.yaml` + a tuning result file — the only code path allowed to touch `config/`); full pipeline wiring (Gate 1 → 2 → 3a → 3b, `NEEDS_REVIEW` on low confidence); `eval --mode gated` now real (removed its `NotImplementedError`); 25 new tests across `test_gate3_grounding.py`, `test_gate3_confidence.py`, plus a `NEEDS_REVIEW` regression in `test_pipeline.py` | **D-42, found before trusting the spec's literal regex against real data**: the naive `[\d,.]` comma exclusion breaks grounding for every CSV-delimited (Halcyon) value; refined to only exclude a true thousands-separator shape. Live results, the headline number: tuned `without_reranker` threshold to `0.810893` (23 correct/0 incorrect on the golden set); full 45-question gated run — `fabricated_values_surfaced=0`, `injection_leak=0` (down from 2), `wrong_values_surfaced=1` (down from 4), 0 `ERROR` rows, $0 cost (100% cache hit, reusing earlier live answers). 109/109 tests green | Phase 7: Pinecone, or Phase 9/10 to publish what's already a complete, evidenced story |
 | 2026-09-23 | Windows | - | User reported all 5 GitHub Actions runs (Phases 2-6) had failed; fixed `.github/workflows/ci.yml` — `ruff format --check .` was scanning `docs/*.md` and reformatting their illustrative Python code fences, failing every run even though the real source tree was clean throughout | Never caught locally since every local ruff run this session was scoped to `src tests`/`src tests scripts`, never bare `.`. Rescoped the workflow to match; confirmed green on run `35837040901` | (housekeeping, not a phase) |
+| 2026-09-23 | Windows | - | User flagged the live Streamlit demo was still showing the Phase 2 maintenance-mode placeholder despite Phases 3-6 landing the real chain and all three gates. Rebuilt `demo/app.py` against the actual gated pipeline (`CandidateChain` + `run_gates`, same as `rate-rag ask`) with a live **Guardrail trace** panel and 5 one-click example questions spanning `ANSWER`/`REJECT`/`REFUSED`; rewrote `demo/requirements.txt` (was still the old scaffold's dependency set with no way to even import `logistics_rate_rag`) | Live-verified locally via headless `streamlit run` + browser automation, not just "it imports": the superseded-tariff trap correctly returned `REJECT` → `rule:not_expired` with real `as_of`/`valid_from`/`valid_to` in the trace; the normal lookup returned `ANSWER` with `rate_value=2224`, matching the Phase 1-verified golden value | (housekeeping, not a phase) |
 
 ## Appendix B — Sources checked on 2026-09-17
 
