@@ -63,7 +63,7 @@ langgraph-checkpoint==4.2.0
 langgraph-prebuilt==1.1.0
 langgraph-sdk==0.4.4
 langsmith==0.12.1
--e git+https://github.com/subburajan-perumal/logistics-rate-rag.git@7668287187c68aa10fe3ee074e5c1d5e94478e65#egg=logistics_rate_rag
+-e git+https://github.com/subburajan-perumal/logistics-rate-rag.git@1c472308f55f014eb233007a9fa947fdb9aa023d#egg=logistics_rate_rag
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
 mdurl==0.1.2

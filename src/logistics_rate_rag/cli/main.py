@@ -8,8 +8,10 @@ in later phases as their underlying modules ship.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import logging
 import sys
+from datetime import date
 from pathlib import Path
 
 from logistics_rate_rag.config import Settings, load_settings
@@ -86,6 +88,111 @@ def cmd_index(args: argparse.Namespace, settings: Settings) -> int:
     return 0
 
 
+def _build_retriever_and_chain(settings: Settings, no_cache: bool):
+    from logistics_rate_rag.chain.cache import ResponseCache
+    from logistics_rate_rag.chain.candidate_chain import CandidateChain
+    from logistics_rate_rag.chain.ratelimit import RateLimiter
+    from logistics_rate_rag.store.retriever import RateRetriever
+
+    docs = load_corpus(settings.project_root / "data" / "corpus")
+    chunks = chunk_corpus(docs, settings.retrieval, settings.manifest.corpus_version)
+    embedder = GeminiEmbedder(
+        settings.embedding_model, settings.embedding_dim, settings.google_api_key
+    )
+    backend = _build_chroma_backend(settings, f"rates_v{settings.manifest.corpus_version}")
+    all_chunks = backend.all_chunks() or chunks
+    retriever = RateRetriever(
+        backend=backend,
+        embedder=embedder,
+        k_retrieve=settings.retrieval.k_retrieve,
+        k_final=settings.retrieval.k_final,
+    )
+    cache = None if no_cache else ResponseCache(settings.llm_cache_dir)
+    limiter = RateLimiter(settings.llm_min_interval_s)
+    return CandidateChain(settings, retriever, all_chunks, cache, limiter)
+
+
+def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
+    if args.retrieval not in (None, "dense"):
+        raise NotImplementedError("hybrid retrieval ships in Phase 2b")
+    if args.reranker not in (None, "none"):
+        raise NotImplementedError("re-ranking ships in Phase 2b/7")
+    if args.store not in (None, "chroma"):
+        raise NotImplementedError("Pinecone ships in Phase 7")
+    if not args.no_gates:
+        raise NotImplementedError("gated ask ships in Phases 4-6; pass --no-gates for now")
+
+    from logistics_rate_rag.guardrails.pipeline import run_gates, to_answer
+
+    # Phase 3 only ever runs dense retrieval with no reranker regardless of
+    # settings' env-sourced defaults (hybrid/flashrank) — reflect what
+    # actually ran, not the aspirational config, so the printed line is
+    # honest until Phase 2b/7 make hybrid/rerank real.
+    effective_settings = dataclasses.replace(
+        settings,
+        gates_enabled=False,
+        vector_store="chroma",
+        retrieval_mode="dense",
+        reranker="none",
+    )
+    chain = _build_retriever_and_chain(effective_settings, args.no_cache)
+    as_of = date.fromisoformat(args.as_of) if args.as_of else settings.as_of_default
+    result = chain.run(args.question, as_of)
+    verdict = run_gates(result.candidate, result.parsing_error, None, effective_settings)
+    answer = to_answer(verdict, result, effective_settings)
+
+    if args.json:
+        import json as jsonlib
+
+        print(jsonlib.dumps(dataclasses.asdict(answer), default=str, indent=2))
+    else:
+        print(f"Outcome : {answer.outcome}")
+        if answer.outcome.value == "ANSWER":
+            print(
+                f"Carrier : {answer.carrier}   Lane: {answer.origin} → {answer.destination}   "
+                f"Type: {answer.container_type}"
+            )
+            print(
+                f"Rate    : {answer.rate_value} {answer.currency}   "
+                f"Valid: {answer.valid_from} → {answer.valid_to}   Includes BAF: "
+                f"{'yes' if answer.includes_surcharge else 'no'}"
+            )
+        else:
+            print(f"Reason  : {answer.reason}")
+        for s in answer.sources:
+            print(f"Source  : {s.source_doc}  chunk {s.chunk_id}  ({s.role})")
+        print(
+            f"Store   : {answer.store}   retrieval {answer.retrieval_mode}   "
+            f"reranker {answer.reranker}   {answer.latency_ms} ms   "
+            f"cache {'hit' if answer.cache_hit else 'miss'}   "
+            f"tokens {answer.usage.input_tokens}/{answer.usage.output_tokens}"
+        )
+    return 0
+
+
+def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
+    from logistics_rate_rag.eval.report import write_latest, write_run
+    from logistics_rate_rag.eval.runner import RunConfig, run_eval
+
+    sets = ("golden", "adversarial") if args.set in (None, "all") else (args.set,)
+    run_cfg = RunConfig(
+        store=args.store or settings.vector_store,
+        mode=args.mode or "baseline",
+        retrieval_mode=args.retrieval or settings.retrieval_mode,
+        reranker=args.reranker or settings.reranker,
+        enriched=args.enriched,
+        sets=sets,
+        no_cache=args.no_cache,
+    )
+    result = run_eval(settings, run_cfg)
+    results_dir = settings.project_root / "eval" / "results"
+    path = write_run(result, results_dir)
+    write_latest(results_dir)
+    print(f"Wrote {path}")
+    any_error = any(r.outcome == "ERROR" for r in result.per_question)
+    return 1 if any_error else 0
+
+
 def cmd_corpus(args: argparse.Namespace, settings: Settings) -> int:
     sys.path.insert(0, str(settings.project_root / "scripts"))
     import generate_corpus
@@ -144,10 +251,38 @@ def build_parser() -> argparse.ArgumentParser:
     index.add_argument("--prune", action="store_true")
     index.add_argument("--enrich", action="store_true")
 
+    ask = sub.add_parser("ask")
+    ask.add_argument("question")
+    ask.add_argument("--store", choices=["chroma", "pinecone"], default=None)
+    ask.add_argument("--retrieval", choices=["hybrid", "dense"], default=None)
+    ask.add_argument("--reranker", choices=["flashrank", "pinecone", "none"], default=None)
+    ask.add_argument("--as-of", default=None)
+    ask.add_argument("--no-gates", action="store_true")
+    ask.add_argument("--no-cache", action="store_true")
+    ask.add_argument("--json", action="store_true")
+
+    ev = sub.add_parser("eval")
+    ev.add_argument("--store", choices=["chroma", "pinecone", "both"], default=None)
+    ev.add_argument("--mode", choices=["gated", "baseline", "both"], default=None)
+    ev.add_argument("--retrieval", choices=["hybrid", "dense", "ablation"], default=None)
+    ev.add_argument(
+        "--reranker", choices=["flashrank", "pinecone", "none", "ablation"], default=None
+    )
+    ev.add_argument("--set", choices=["golden", "adversarial", "all"], default="all")
+    ev.add_argument("--no-cache", action="store_true")
+    ev.add_argument("--enriched", action="store_true")
+    ev.add_argument("--tune-threshold", action="store_true")
+
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Windows consoles default to a legacy codepage that can't encode the
+    # arrows used in human-readable output below; UTF-8 is safe everywhere.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+
     parser = build_parser()
     args = parser.parse_args(argv)
     _configure_logging(args.log_level)
@@ -163,6 +298,10 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_corpus(args, settings)
         if args.command == "index":
             return cmd_index(args, settings)
+        if args.command == "ask":
+            return cmd_ask(args, settings)
+        if args.command == "eval":
+            return cmd_eval(args, settings)
         raise ConfigError(f"unknown command: {args.command}")
     except MissingCredential as e:
         print(f"error: {e}", file=sys.stderr)

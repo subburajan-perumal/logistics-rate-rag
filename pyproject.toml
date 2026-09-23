@@ -44,6 +44,9 @@ select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 # Verbatim policy text and question/prompt strings (docs/CORPUS.md §6-7) can't
 # be reflowed without changing the generated corpus files' actual bytes.
 "scripts/generate_corpus.py" = ["E501", "RUF001"]
+# SYSTEM_PROMPT_V1 is verbatim (docs/SPEC.md §5.2) — changing a line break
+# would change the prompt text and require bumping PROMPT_VERSION.
+"src/logistics_rate_rag/chain/prompt.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

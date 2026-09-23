@@ -163,6 +163,8 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-36 | **Token and cost accounting.** Every LLM call records `input_tokens`, `output_tokens`, `thought_tokens` from `AIMessage.usage_metadata`; `config/prices.yaml` holds per-model USD per 1M tokens; eval results carry per-question and per-run totals and `cost_usd`; `LATEST.md` and the README state the cost of one full eval. Cache hits record zero tokens and are counted separately. | The reference tracks per-task tokens and cost per operation via litellm. Cheap to add, and "the entire evaluation costs $0.0X" is a concrete README line. |
 | D-37 | **Context rendered in document order.** The final top-6 (+ pinned) chunks are rendered in the prompt sorted by `(source_doc, chunk index)`, not by score; `rank`, `similarity_norm`, `rerank_score` stay in metadata for the gates. | The reference sorts retrieved chunks by page before generation so tables read coherently. Costs nothing; keeps split tables adjacent. |
 | D-39 | **Developer-proof documentation set.** `docs/CORPUS.md`, `docs/SPEC.md`, `docs/architecture.md`, `docs/README.md` written before Phase 1 so that no implementation question is left to the coding session: exact chunk text formats, all 45 questions, the verbatim prompt, every config file's contents, every module's signatures, the result-file schema, CLI output layout, exception hierarchy, exit codes, test fixtures. Rule of change: these files are edited only together with a Decision Log row naming the section. | User request 2026-09-17: "no software developer can ask a question". Also resolved while writing them: `unknown_port` added as a Gate 1 reason (ports outside `ports.yaml`); the manifest gains a `rates` array and per-document metadata; `rate-rag recall` becomes its own command; the PDF is made byte-stable with `reportlab.rl_config.invariant = 1` so `test_corpus_frozen.py` can compare bytes for every file. |
+| D-40 | **`LoadedDocument` gains `row_page_numbers: tuple[int, ...] = ()`.** SPEC.md §3.1's field list omitted it, but §3.3 ("per-row page numbers, carried into chunk metadata by §3.4") and §3.4 (chunk `page_numbers` = sorted distinct pages of the rows in the chunk) both assume it exists somewhere; there is nowhere else for it to live. PDF-only; empty for md/csv/policy docs. | Found implementing `ingest/pdf_loader.py` in Phase 2 — a genuine spec gap, not a design change. Live-verified: 12 rows on page 1, 8 on page 2, matching the PDF's actual page break. |
+| D-41 | **`Usage.cached` classmethod renamed to `Usage.make_cached`.** SPEC.md §5.7 names both the `cached: bool` field and a `cached()` classmethod the same thing on a `@dataclass(frozen=True, slots=True)` class — the slot descriptor for the field clobbers the classmethod at class-creation time (`TypeError: 'member_descriptor' object is not callable`, live-reproduced). No other code reads the classmethod by its SPEC name, so the rename is a pure implementation fix, not a behaviour change. | Found running `rate-rag ask` for real in Phase 3 — the field/method name collision is provably broken in Python regardless of implementation choices. |
 | D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
@@ -1235,8 +1237,9 @@ answering functionality is Phase 3's job (`chain/candidate_chain.py`).
       `pinecone_reranker.py` per §9.1a; second stage 12 → 6; `RERANKER`
       env wiring; `test_reranker.py` (fake + noop + slow FlashRank
       determinism)
-- [ ] `chain/context.py`: document-order rendering + pinned policy block;
-      `test_context.py`
+- [x] `chain/context.py`: document-order rendering + pinned policy block
+      (built in Phase 3, not here — `CandidateChain.run` needs it directly,
+      see Phase 3's log; `test_context.py` still not written, flagged open)
 - [ ] `rate-rag recall` command; `retrieval_recall@6_dense`, `_hybrid`,
       `_reranked` computed LLM-free over the golden set on Chroma and
       recorded in the roadmap progress log
@@ -1250,17 +1253,47 @@ test passes locally.
 
 ### Phase 3 — Candidate chain + baseline eval (1 session)
 
-- [ ] `schema/` models; `chain/prompt.py`, `chain/candidate_chain.py`,
+- [x] `schema/` models; `chain/prompt.py`, `chain/candidate_chain.py`,
       `chain/cache.py`, `chain/ratelimit.py`, `chain/usage.py` +
-      `config/prices.yaml` per §10 (D-36)
-- [ ] `rate-rag ask --no-gates` returns the raw candidate + sources
-- [ ] `eval/` runner + metrics + report (gates off path only)
-- [ ] `rate-rag eval --store chroma --mode baseline --set all` → first
+      `config/prices.yaml` per §10 (D-36) (done 2026-09-23; `config/prices.yaml`
+      was actually written during the Phase 1 config batch, ahead of when
+      it's technically needed — harmless since it's pure static config)
+- [x] `rate-rag ask --no-gates` returns the raw candidate + sources
+      (live-verified 2026-09-23: a real question against the real corpus
+      answered `2224 USD`, matching G-001's independently-verified expected
+      value exactly, with real token counts and a real cache miss/hit
+      round-trip)
+- [x] `eval/` runner + metrics + report (gates off path only) (done
+      2026-09-23; `run_eval` raises `NotImplementedError` for every
+      combination Phase 3 doesn't support yet — gated mode, hybrid
+      retrieval, any reranker, Pinecone, enrichment — same "fail loudly"
+      pattern as the Pinecone stub)
+- [x] `rate-rag eval --store chroma --mode baseline --set all` → first
       committed result file; this is the **"before"** number — keep it
+      (done 2026-09-23, see Appendix A for the real numbers and the
+      quota blocker hit and resolved along the way)
 
 **Acceptance:** a baseline run for all 45 questions is in
 `eval/results/`; `fabricated_values_surfaced` and `wrong_values_surfaced`
-recorded for the baseline.
+recorded for the baseline. **Met** — `20260923T070638Z-chroma-dense-none-baseline`
+(45/45, no errors): `fabricated_values_surfaced=0`, `wrong_values_surfaced=4`,
+`golden_accuracy=0.958` (23/24), `refusal_correctness=1.0`, `injection_leak=2`,
+`golden_abstention=0.0`. The naive baseline never invented a number outside
+the corpus, but it has two real, repeatable failure modes the guardrail
+layer exists to fix: (1) it confidently confirmed 2 of 3 superseded-tariff
+adversarial prompts with the exact stale value asked about (A-002, A-003) —
+expected, since the system prompt explicitly defers expiry checking to "a
+separate validator" (rule 4) that doesn't exist until Gate 2's
+`not_expired`; (2) on G-015 it correctly quoted the rate but answered
+`includes_surcharge: False` when Meridian's BAF is always included,
+apparently conflating "BAF included" with the same policy note's separate
+"THC excluded" fact — exactly what Gate 2's `surcharge_consistent` rule
+is for. All 3 direct prompt-injection attempts (A-006–A-008) and all 9
+out-of-scope requests (currency conversion, aggregation, carrier-mixing,
+phantom lanes, per-kg units) were correctly refused by the model itself,
+with no gate needed. `adversarial_rejection_rate=0.0` is expected, not a
+failure — that metric counts only deterministic `REJECT`/`NEEDS_REVIEW`
+outcomes, which baseline mode cannot produce by design.
 
 ### Phase 4 — Gate 1 (1 session)
 
@@ -1370,7 +1403,7 @@ weeks; target finish **third week of October 2026** (D-32, D-33, D-34).
 
 | Risk | Decision already made |
 |---|---|
-| Gemini free tier throttles the eval (A11) | cache (D-15), 7 s floor, sequential; Tier 1 billing before Phase 8 (< $1 total) |
+| Gemini free tier throttles the eval (A11) | **Confirmed 2026-09-23, arrived 5 phases early**: the free tier's real cap is a *daily* quota of 20 requests/day for `gemini-3.6-flash` (`GenerateRequestsPerDayPerProjectPerModel-FreeTier`), not a per-minute rate the 7s floor could smooth — a first `--no-cache` baseline run died at question 18 with `RESOURCE_EXHAUSTED`. Resolved by enabling Tier 1 billing immediately rather than waiting for Phase 8 (user's call); the full 45-question run cost **$0.19** (204,969 input + 8,480 output tokens at `gemini-3.6-flash` list pricing from `config/prices.yaml`) — well under the plan's own "< $1 total" estimate. Cache (D-15) still applies going forward so a re-run never re-bills an unchanged question. |
 | `gemini-3.6-flash` is withdrawn or rate-limited mid-project (the 2.5 family already was — D-25) | model is config; swap to `gemini-3.5-flash-lite` (verified working) and re-run eval as a new logged run — the gates are model-agnostic by design, which is the point |
 | Structured output returns valid JSON with invented chunk ids | Gate 1 `unknown_source` — counted, not crashed |
 | pdfplumber extraction drifts (pdfminer.six is pinned by pdfplumber to an exact date-version, so an upgrade can change table detection) | `pdfplumber<0.12` pin; the chunk invariant test and the generator's round-trip check fail loudly; `PdfTableError` is a hard stop, never a silent gap (D-29) |
@@ -1459,6 +1492,7 @@ section and this plan.
 | 2026-09-23 | Windows | 0 | Finished Phase 0 remainder: `pyproject.toml` (§10.1 verbatim), `pytest`/`ruff` installed into `.venv`, `requirements.lock` frozen, `requirements.txt` deleted, `.gitignore` extended per §14.3 (`chroma_db/` kept alongside `.chroma/` until Phase 2), `LICENSE` (MIT) added, `.env.example` rewritten to list every §9.7 variable, fresh full-history secret scan clean | Phase 0 now fully ticked; `-e .` install deferred to Phase 2 (no `src/logistics_rate_rag` package yet — `packages.find` would find nothing) | Phase 1: corpus generator + question sets |
 | 2026-09-23 | Windows | 1 | `scripts/generate_corpus.py` implementing CORPUS.md §3-§7: value generation (150 unique values, all post-conditions hold), Meridian Q2 markdown, Halcyon CSV, verbatim policy note, byte-stable reportlab PDF with pdfplumber round-trip, manifest.json, `config/rate_ranges.json`; drafted + independently verified all 45 golden/adversarial questions against re-parsed source docs; `test_corpus_frozen.py` (byte-identical regen + post-conditions) green; ruff clean | 150/150 unique values, 0 RESERVED collisions; PDF round-trip passed after fixing 2 bugs (wrapped title, missing `#` prefix); 24/24 ANSWER expectations and all must_not_contain/absence checks verified independently | Phase 2: package layout, ingestion, Chroma |
 | 2026-09-23 | Windows | 2 | Full `src/logistics_rate_rag/` package: `errors.py`, `config.py` (Settings + all config-file Pydantic models + cross-file validation), `ingest/` (models, loaders, pdf_loader sharing `parse_tariff_markdown` with the md loader, chunking), `store/` (embeddings, chroma_backend, pinecone stub, dense-only retriever), `chain/planner.py`, `cli/main.py` (`corpus generate/questions`, `index`); deleted the flat scaffold, replaced `demo/app.py` with a maintenance-mode page; 13 unit tests + ruff clean | Live-verified against the real corpus and a real Gemini key: 26 chunks indexed first run (768-dim confirmed), idempotent on rerun, `--reset` fixed a stale-collection-handle bug; carrier filter genuinely narrows retrieval (Halcyon question → only Halcyon chunks) | Phase 2b: hybrid retrieval + re-ranking |
+| 2026-09-23 | Windows | 3 | `schema/` (RateCandidate, Outcome, Verdict, RateAnswer), `chain/prompt.py` (verbatim), `chain/context.py` (pulled forward from 2b), `chain/candidate_chain.py`, `cache.py`, `ratelimit.py`, `usage.py`; `guardrails/pipeline.py`'s baseline-bypass path only (gated raises `NotImplementedError` until Phases 4-6); `eval/` questions/runner/metrics/report; `cli ask`/`eval` commands; 17 new unit tests (schema, metrics, planner, cache, ratelimit — closing 2 gaps flagged after Phase 2) | First `--no-cache` full run hit the real Gemini free-tier **daily** quota (20 req/day) at question 18 — not the 7s floor's job to fix; user enabled Tier 1 billing, re-run (with caching on) went 45/45 clean for **$0.19**. Real baseline numbers: `golden_accuracy=0.958`, `fabricated_values_surfaced=0`, `wrong_values_surfaced=4`, `injection_leak=2`, `refusal_correctness=1.0`. Two real, repeatable defects found (not synthetic): superseded-tariff confirmation (the system prompt deliberately defers this to a validator that doesn't exist yet) and one BAF/THC field conflation — both are exactly what Gates 2/3 exist to fix. Also found and fixed D-40 (`row_page_numbers` field gap) and D-41 (`Usage.cached` name collision, renamed `make_cached`) | Phase 2b or Phase 4 — either restores hybrid retrieval or starts the guardrail layer that fixes today's 2 real defects |
 
 ## Appendix B — Sources checked on 2026-09-17
 
