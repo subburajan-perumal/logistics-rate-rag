@@ -23,12 +23,16 @@ def settings():
 
 
 def _chunk(chunk_id: str, source_doc: str) -> Chunk:
+    # Text must actually contain _answerable_candidate()'s rate_value
+    # (2224), valid_to (2026-12-31) and source_span ("row") so Gate 3's
+    # grounding check doesn't reject these fixtures.
+    text = "row with rate 2224 valid to 2026-12-31"
     return Chunk(
         chunk_id=chunk_id,
         source_doc=source_doc,
         doc_type="tariff_pdf",
-        text="text",
-        index_text="text",
+        text=text,
+        index_text=text,
         # currency must match _answerable_candidate()'s USD so Gate 2's
         # currency_matches_source rule doesn't reject these fixtures.
         metadata={"currency": "USD"},
@@ -143,6 +147,30 @@ def test_gated_clean_candidate_answers(settings):
     assert answer.outcome == Outcome.ANSWER
     assert answer.rate_value == 2224
     assert answer.similarity_norm == 0.9
+
+
+def test_gated_low_confidence_is_needs_review_and_leaks_no_value(settings):
+    # Phase 6 checklist: "no value ever leaves with REFUSED or
+    # NEEDS_REVIEW". A grounded-but-low-confidence candidate must come
+    # back NEEDS_REVIEW with every value field null, per to_answer's
+    # outcome==ANSWER-only fill rule.
+    gated_settings = replace(settings, gates_enabled=True)
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    candidate = _answerable_candidate(confidence=0.01)
+    result = _FakeCandidateResult(
+        candidate, None, [_FakeRetrievedChunk(chunk, 1)], [], date(2026, 9, 1)
+    )
+    ctx = build_question_context(result)
+    verdict = run_gates(candidate, None, ctx, gated_settings)
+    assert verdict.outcome == Outcome.NEEDS_REVIEW
+    assert verdict.candidate is None
+    assert any(s.role == "rate" for s in verdict.sources)
+
+    answer = to_answer(verdict, result, gated_settings)
+    assert answer.outcome == Outcome.NEEDS_REVIEW
+    assert answer.rate_value is None
+    assert answer.carrier is None
+    assert answer.currency is None
 
 
 def test_to_answer_only_fills_values_on_answer(settings):

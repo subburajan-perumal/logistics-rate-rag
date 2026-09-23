@@ -1,11 +1,9 @@
 """Gate pipeline (docs/SPEC.md §6.6).
 
 Phase 3 built the `gates_enabled=False` baseline-bypass branch (D-13).
-Phase 4 added the real `gates_enabled=True` path with Gate 1. Phase 5
-inserts Gate 2 here — a candidate clean through Gates 1-2 still goes
-straight to ANSWER for now, since Gate 3 (Phase 6) doesn't exist yet.
-`eval`'s `--mode gated` still raises NotImplementedError (Phase 6 wires
-that up once all three gates are real).
+Phases 4-6 added the real `gates_enabled=True` path with all three
+gates. This is the full pipeline now — no more short-circuiting to
+ANSWER after a partial gate set.
 """
 
 from __future__ import annotations
@@ -16,6 +14,8 @@ from logistics_rate_rag.config import Ports, Settings
 from logistics_rate_rag.guardrails.context import QuestionContext
 from logistics_rate_rag.guardrails.gate1_schema import gate1
 from logistics_rate_rag.guardrails.gate2_rules import gate2
+from logistics_rate_rag.guardrails.gate3_confidence import gate3_confidence
+from logistics_rate_rag.guardrails.gate3_grounding import gate3_grounding
 from logistics_rate_rag.schema.answer import RateAnswer, SourceRef, Verdict
 from logistics_rate_rag.schema.candidate import RateCandidate
 from logistics_rate_rag.schema.outcome import Outcome
@@ -138,18 +138,37 @@ def run_gates(
                 sources=(_rate_ref(normalized), *nearest(ctx)),
             )
 
-        # Phase 5 only: no Gate 3 yet, so a Gate-1/2-clean answerable
-        # candidate goes straight to ANSWER. Phase 6 inserts gate3
-        # between here and the return below.
+        g3a = gate3_grounding(normalized, ctx)
+        if not g3a.passed:
+            return Verdict(
+                outcome=Outcome.REJECT,
+                reason=g3a.reason,
+                gate_results=(g1, g2, g3a),
+                confidence_score=None,
+                candidate=None,
+                sources=(_rate_ref(normalized),),
+            )
+
+        g3b, score = gate3_confidence(normalized, ctx, settings)
         sources = (_rate_ref(normalized),)
         policy_ref = _policy_ref(normalized, ctx)
         if policy_ref is not None:
             sources = (*sources, policy_ref)
+        if not g3b.passed:
+            return Verdict(
+                outcome=Outcome.NEEDS_REVIEW,
+                reason=g3b.reason,
+                gate_results=(g1, g2, g3a, g3b),
+                confidence_score=score,
+                candidate=None,
+                sources=(*sources, *nearest(ctx)),
+            )
+
         return Verdict(
             outcome=Outcome.ANSWER,
             reason=None,
-            gate_results=(g1, g2),
-            confidence_score=normalized.confidence,
+            gate_results=(g1, g2, g3a, g3b),
+            confidence_score=score,
             candidate=normalized,
             sources=sources,
         )

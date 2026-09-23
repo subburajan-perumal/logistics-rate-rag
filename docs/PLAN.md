@@ -165,6 +165,7 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-39 | **Developer-proof documentation set.** `docs/CORPUS.md`, `docs/SPEC.md`, `docs/architecture.md`, `docs/README.md` written before Phase 1 so that no implementation question is left to the coding session: exact chunk text formats, all 45 questions, the verbatim prompt, every config file's contents, every module's signatures, the result-file schema, CLI output layout, exception hierarchy, exit codes, test fixtures. Rule of change: these files are edited only together with a Decision Log row naming the section. | User request 2026-09-17: "no software developer can ask a question". Also resolved while writing them: `unknown_port` added as a Gate 1 reason (ports outside `ports.yaml`); the manifest gains a `rates` array and per-document metadata; `rate-rag recall` becomes its own command; the PDF is made byte-stable with `reportlab.rl_config.invariant = 1` so `test_corpus_frozen.py` can compare bytes for every file. |
 | D-40 | **`LoadedDocument` gains `row_page_numbers: tuple[int, ...] = ()`.** SPEC.md §3.1's field list omitted it, but §3.3 ("per-row page numbers, carried into chunk metadata by §3.4") and §3.4 (chunk `page_numbers` = sorted distinct pages of the rows in the chunk) both assume it exists somewhere; there is nowhere else for it to live. PDF-only; empty for md/csv/policy docs. | Found implementing `ingest/pdf_loader.py` in Phase 2 — a genuine spec gap, not a design change. Live-verified: 12 rows on page 1, 8 on page 2, matching the PDF's actual page break. |
 | D-41 | **`Usage.cached` classmethod renamed to `Usage.make_cached`.** SPEC.md §5.7 names both the `cached: bool` field and a `cached()` classmethod the same thing on a `@dataclass(frozen=True, slots=True)` class — the slot descriptor for the field clobbers the classmethod at class-creation time (`TypeError: 'member_descriptor' object is not callable`, live-reproduced). No other code reads the classmethod by its SPEC name, so the rename is a pure implementation fix, not a behaviour change. | Found running `rate-rag ask` for real in Phase 3 — the field/method name collision is provably broken in Python regardless of implementation choices. |
+| D-42 | **Gate 3a's number-grounding boundary refined**: reject a match only when preceded/followed by a single digit or `.`, or by the 2-character shape `digit,` / `,digit` (an actual thousands-separator) — **not** by a bare comma alone. SPEC.md §6.4's literal `(?<![\d,.])VARIANT(?![\d,.])` regex excludes *any* adjacent comma, which empirically breaks grounding for every comma-delimited (CSV/Halcyon) value, since a CSV field delimiter comma is indistinguishable from a thousands-separator comma under that simpler rule. Verified against the real corpus: `1332` inside `",1332,EUR,"` failed under the literal spec regex, passed under the refined one — while all of SPEC.md's own worked examples (`1240` not found in `11,240`/`12400`/`1,2400`/`1240.5`; `240` not found in `1,240`) still hold exactly as before. | Found writing `test_gate3_grounding.py` in Phase 6, before trusting the naive regex against real data — every Halcyon golden/adversarial question would otherwise have failed grounding, which would have silently gutted the project's core "0% hallucinated" claim for half the corpus. |
 | D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
@@ -1353,17 +1354,42 @@ confirmed fixed live against the real corpus and a real Gemini key.
 
 ### Phase 6 — Gate 3 grounding + confidence, threshold tuning (2 sessions)
 
-- [ ] `gate3_grounding.py` per §11.4 with the full variant/boundary test
-      table; `gate3_confidence.py` per §12
-- [ ] `rate-rag eval --tune-threshold` implemented; run it for both
+- [x] `gate3_grounding.py` per §6.4 with the full variant/boundary test
+      table; `gate3_confidence.py` per §6.5/§12 (done 2026-09-23 — see
+      D-42: the literal spec regex was empirically wrong for CSV-sourced
+      values and had to be refined before trusting it)
+- [x] `rate-rag eval --tune-threshold` implemented; run it for both
       reranker modes; thresholds + `tuned_on` written to `guardrails.yaml`;
-      tuning files committed
-- [ ] Refusal path tested: no value ever leaves with `REFUSED` or
-      `NEEDS_REVIEW`
-- [ ] Gated eval on Chroma, all sets, committed
+      tuning files committed (done 2026-09-23 for `without_reranker`
+      only — live-run against the real golden set: 23 correct / 0
+      incorrect surfaced, threshold set to `0.810893` (5th-percentile
+      path, since no incorrect answers existed to bound it from above);
+      `with_reranker` tuning raises `NotImplementedError` until Phase 2b/7
+      build a real reranker — there's nothing to tune yet)
+- [x] Refusal path tested: no value ever leaves with `REFUSED` or
+      `NEEDS_REVIEW` (unit-tested directly — a low-confidence grounded
+      candidate correctly comes back `NEEDS_REVIEW` with every value
+      field null, enforced structurally by `to_answer`'s
+      outcome-gated fill)
+- [x] Gated eval on Chroma, all sets, committed (done 2026-09-23 — see
+      below, the real headline numbers)
 
 **Acceptance:** grounding implemented and tested; threshold recorded with
 its run id; gated Chroma run shows `fabricated_values_surfaced == 0`.
+**Met, live, on all 45 questions** —
+`20260923T074853Z-chroma-dense-none-gated`: `fabricated_values_surfaced=0`,
+`injection_leak=0` (down from 2 in the Phase 3 baseline), `wrong_values_
+surfaced=1` (down from 4), `golden_accuracy=0.958`, `refusal_correctness=
+1.0`, no `ERROR` rows. The one remaining "wrong" row (A-001) isn't a
+hallucination or a leak — the model answered a superseded-tariff
+adversarial prompt with the genuinely current H2 rate (2838) instead of
+the specifically-baited stale number (3254) or refusing outright; the
+strict CORPUS.md §6.4 rule still counts any `ANSWER` on a `NOT_ANSWER`
+question as wrong, which is a defensible, conservative scoring choice,
+not a defect to explain away. The gate breakdown shows exactly why each
+of the other rejections happened: `G-015 → rule:surcharge_consistent`,
+`A-002 → rule:not_expired`, `A-003 → rule:carrier_known` — real,
+traceable reasons, not black-box refusals.
 
 ### Phase 7 — Pinecone (1 session)
 
@@ -1531,6 +1557,7 @@ section and this plan.
 | 2026-09-23 | Windows | 3 | `schema/` (RateCandidate, Outcome, Verdict, RateAnswer), `chain/prompt.py` (verbatim), `chain/context.py` (pulled forward from 2b), `chain/candidate_chain.py`, `cache.py`, `ratelimit.py`, `usage.py`; `guardrails/pipeline.py`'s baseline-bypass path only (gated raises `NotImplementedError` until Phases 4-6); `eval/` questions/runner/metrics/report; `cli ask`/`eval` commands; 17 new unit tests (schema, metrics, planner, cache, ratelimit — closing 2 gaps flagged after Phase 2) | First `--no-cache` full run hit the real Gemini free-tier **daily** quota (20 req/day) at question 18 — not the 7s floor's job to fix; user enabled Tier 1 billing, re-run (with caching on) went 45/45 clean for **$0.19**. Real baseline numbers: `golden_accuracy=0.958`, `fabricated_values_surfaced=0`, `wrong_values_surfaced=4`, `injection_leak=2`, `refusal_correctness=1.0`. Two real, repeatable defects found (not synthetic): superseded-tariff confirmation (the system prompt deliberately defers this to a validator that doesn't exist yet) and one BAF/THC field conflation — both are exactly what Gates 2/3 exist to fix. Also found and fixed D-40 (`row_page_numbers` field gap) and D-41 (`Usage.cached` name collision, renamed `make_cached`) | Phase 2b or Phase 4 — either restores hybrid retrieval or starts the guardrail layer that fixes today's 2 real defects |
 | 2026-09-23 | Windows | 4 | `guardrails/context.py` (QuestionContext), `gate1_schema.py` (all 6 checks per §6.2), extended `pipeline.py`'s `run_gates` with the real `gates_enabled=True` path (Gate 1 only — a clean pass goes straight to `ANSWER` until Phases 5-6 add Gates 2-3); wired `cli ask` to use it when `--no-gates` is absent; 19 new tests (`test_gate1_schema.py`, `test_pipeline.py`, `test_guardrails_purity.py`) | Found and fixed 2 real import-purity violations the new purity test caught immediately: `schema/answer.py` and `guardrails/pipeline.py` both imported `chain.*` at runtime for type hints, fixed with `TYPE_CHECKING` guards. Live-verified against the real corpus: a normal question passed Gate 1 to `ANSWER` (cache hit, $0 cost); an out-of-corpus question correctly came back `REFUSED` with 3 nearest sources (real call). 66/66 tests green | Phase 5: Gate 2 business rules |
 | 2026-09-23 | Windows | 5 | `guardrails/gate2_rules.py` — all six rules per §6.3, run in `guardrails.yaml`'s configured order via a `RULES` registry; wired into `pipeline.py`'s gated path between Gate 1 and the (still Phase-6-pending) Gate 3; 18 new tests in `test_gate2_rules.py` | **Live-verified against the real corpus, both real Phase 3 baseline defects fixed**: A-002's exact superseded-tariff question now returns `REJECT(rule:not_expired)` instead of leaking the stale value; the G-015 BAF/THC-conflation question now returns `REJECT(rule:surcharge_consistent)` instead of a silently wrong `includes_surcharge`. 84/84 tests green | Phase 6: Gate 3 grounding + confidence, threshold tuning — the headline "0% hallucinated" number |
+| 2026-09-23 | Windows | 6 | `guardrails/gate3_grounding.py`, `gate3_confidence.py`, `eval/runner.py`'s `tune_threshold` (writes `config/guardrails.yaml` + a tuning result file — the only code path allowed to touch `config/`); full pipeline wiring (Gate 1 → 2 → 3a → 3b, `NEEDS_REVIEW` on low confidence); `eval --mode gated` now real (removed its `NotImplementedError`); 25 new tests across `test_gate3_grounding.py`, `test_gate3_confidence.py`, plus a `NEEDS_REVIEW` regression in `test_pipeline.py` | **D-42, found before trusting the spec's literal regex against real data**: the naive `[\d,.]` comma exclusion breaks grounding for every CSV-delimited (Halcyon) value; refined to only exclude a true thousands-separator shape. Live results, the headline number: tuned `without_reranker` threshold to `0.810893` (23 correct/0 incorrect on the golden set); full 45-question gated run — `fabricated_values_surfaced=0`, `injection_leak=0` (down from 2), `wrong_values_surfaced=1` (down from 4), 0 `ERROR` rows, $0 cost (100% cache hit, reusing earlier live answers). 109/109 tests green | Phase 7: Pinecone, or Phase 9/10 to publish what's already a complete, evidenced story |
 
 ## Appendix B — Sources checked on 2026-09-17
 

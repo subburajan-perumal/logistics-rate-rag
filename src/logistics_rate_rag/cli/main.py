@@ -176,7 +176,22 @@ def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
 
 def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
     from logistics_rate_rag.eval.report import write_latest, write_run
-    from logistics_rate_rag.eval.runner import RunConfig, run_eval
+    from logistics_rate_rag.eval.runner import RunConfig, run_eval, tune_threshold
+
+    if args.tune_threshold:
+        store = args.store or settings.vector_store
+        mode_key = (
+            "with_reranker"
+            if (args.reranker or settings.reranker) != "none"
+            else "without_reranker"
+        )
+        result = tune_threshold(settings, store, mode_key)
+        print(
+            f"Tuned {mode_key} threshold={result.threshold} "
+            f"({len(result.correct_scores)} correct, {len(result.incorrect_scores)} incorrect) "
+            f"-> {result.run_id}"
+        )
+        return 0
 
     sets = ("golden", "adversarial") if args.set in (None, "all") else (args.set,)
     run_cfg = RunConfig(

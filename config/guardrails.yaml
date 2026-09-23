@@ -1,19 +1,36 @@
-rules:                      # run in this order; first failure wins
-  - name: carrier_known
-  - name: rate_in_range
-    params: {tolerance_pct: 0}
-  - name: currency_matches_source
-  - name: dates_ordered
-  - name: not_expired
-  - name: surcharge_consistent
-surcharge_keywords: [baf, bunker, surcharge, all-in, all in, including, included, thc, terminal handling]
+rules:
+- name: carrier_known
+- name: rate_in_range
+  params:
+    tolerance_pct: 0
+- name: currency_matches_source
+- name: dates_ordered
+- name: not_expired
+- name: surcharge_consistent
+surcharge_keywords:
+- baf
+- bunker
+- surcharge
+- all-in
+- all in
+- including
+- included
+- thc
+- terminal handling
 confidence:
   weights:
-    with_reranker:    {w_model: 0.35, w_sim: 0.25, w_rerank: 0.30, w_rank: 0.10}
-    without_reranker: {w_model: 0.40, w_sim: 0.40, w_rank: 0.20}
-  threshold:                # written by `rate-rag eval --tune-threshold` (SPEC §7.4); 0.0 until tuned
+    with_reranker:
+      w_model: 0.35
+      w_sim: 0.25
+      w_rerank: 0.3
+      w_rank: 0.1
+    without_reranker:
+      w_model: 0.4
+      w_sim: 0.4
+      w_rank: 0.2
+  threshold:
     with_reranker: 0.0
-    without_reranker: 0.0
+    without_reranker: 0.810893
   tuned_on:
-    with_reranker: ""
-    without_reranker: ""
+    with_reranker: ''
+    without_reranker: 20260923T074757Z-chroma-without_reranker-tuning
