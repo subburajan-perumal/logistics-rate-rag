@@ -119,8 +119,6 @@ def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
         raise NotImplementedError("re-ranking ships in Phase 2b/7")
     if args.store not in (None, "chroma"):
         raise NotImplementedError("Pinecone ships in Phase 7")
-    if not args.no_gates:
-        raise NotImplementedError("gated ask ships in Phases 4-6; pass --no-gates for now")
 
     from logistics_rate_rag.guardrails.pipeline import run_gates, to_answer
 
@@ -130,7 +128,7 @@ def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
     # honest until Phase 2b/7 make hybrid/rerank real.
     effective_settings = dataclasses.replace(
         settings,
-        gates_enabled=False,
+        gates_enabled=not args.no_gates,
         vector_store="chroma",
         retrieval_mode="dense",
         reranker="none",
@@ -138,7 +136,13 @@ def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
     chain = _build_retriever_and_chain(effective_settings, args.no_cache)
     as_of = date.fromisoformat(args.as_of) if args.as_of else settings.as_of_default
     result = chain.run(args.question, as_of)
-    verdict = run_gates(result.candidate, result.parsing_error, None, effective_settings)
+
+    ctx = None
+    if effective_settings.gates_enabled:
+        from logistics_rate_rag.guardrails.context import build_question_context
+
+        ctx = build_question_context(result)
+    verdict = run_gates(result.candidate, result.parsing_error, ctx, effective_settings)
     answer = to_answer(verdict, result, effective_settings)
 
     if args.json:
@@ -158,7 +162,7 @@ def cmd_ask(args: argparse.Namespace, settings: Settings) -> int:
                 f"{'yes' if answer.includes_surcharge else 'no'}"
             )
         else:
-            print(f"Reason  : {answer.reason}")
+            print(f"Reason  : {answer.reason or '(model judged this unanswerable)'}")
         for s in answer.sources:
             print(f"Source  : {s.source_doc}  chunk {s.chunk_id}  ({s.role})")
         print(

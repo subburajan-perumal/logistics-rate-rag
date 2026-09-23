@@ -1297,13 +1297,35 @@ outcomes, which baseline mode cannot produce by design.
 
 ### Phase 4 — Gate 1 (1 session)
 
-- [ ] `guardrails/gate1_schema.py`, `guardrails/pipeline.py` per §11.2;
+- [x] `guardrails/gate1_schema.py`, `guardrails/pipeline.py` per §6.2/§6.6;
       `test_gate1_schema.py`, `test_pipeline.py`, `test_guardrails_purity.py`
-- [ ] `rate-rag ask` (gates on) shows `REJECT(parse_error|unknown_source)`
-      / `REFUSED` where applicable
+      (done 2026-09-23; also added `guardrails/context.py`'s
+      `QuestionContext` + `build_question_context`, needed by gate1 but
+      not separately called out as its own checklist line)
+- [x] `rate-rag ask` (gates on) shows `REJECT(parse_error|unknown_source)`
+      / `REFUSED` where applicable (live-verified 2026-09-23: a normal
+      question went through real Gate 1 to `ANSWER` — cache hit from
+      Phase 3's baseline run, same question/retrieval — and an
+      out-of-corpus question correctly came back `REFUSED` with 3
+      `nearest` sources shown, real Gemini call, real tokens)
+
+**Note on scope**: only Gate 1 exists so far. A Gate-1-clean answerable
+candidate currently goes straight to `ANSWER` — there is nothing for it
+to fail yet, since Gates 2 and 3 (Phases 5-6) aren't built. `eval`'s
+`--mode gated` still isn't wired up (that's Phase 6, once all three gates
+exist and there's a real "after" number to report).
+
+**Purity fix found running this for real**: `schema/answer.py` and
+`guardrails/pipeline.py` both imported `chain.*` at runtime (for
+`Usage`/`CandidateResult` type hints) before this phase's purity test
+existed to catch it — both fixed with `TYPE_CHECKING`-guarded imports,
+which `from __future__ import annotations` makes safe (the import-purity
+test now enforces this repo-wide, not just for the new gate1 file).
 
 **Acceptance:** every answer is a validated object or a named rejection;
 provenance check against retrieved chunk ids works; purity test passes.
+**Met** — 66/66 unit tests green (19 new this phase), ruff clean, both
+live checks above confirmed the real behaviour matches the tests.
 
 ### Phase 5 — Gate 2 (1 session)
 
@@ -1493,6 +1515,7 @@ section and this plan.
 | 2026-09-23 | Windows | 1 | `scripts/generate_corpus.py` implementing CORPUS.md §3-§7: value generation (150 unique values, all post-conditions hold), Meridian Q2 markdown, Halcyon CSV, verbatim policy note, byte-stable reportlab PDF with pdfplumber round-trip, manifest.json, `config/rate_ranges.json`; drafted + independently verified all 45 golden/adversarial questions against re-parsed source docs; `test_corpus_frozen.py` (byte-identical regen + post-conditions) green; ruff clean | 150/150 unique values, 0 RESERVED collisions; PDF round-trip passed after fixing 2 bugs (wrapped title, missing `#` prefix); 24/24 ANSWER expectations and all must_not_contain/absence checks verified independently | Phase 2: package layout, ingestion, Chroma |
 | 2026-09-23 | Windows | 2 | Full `src/logistics_rate_rag/` package: `errors.py`, `config.py` (Settings + all config-file Pydantic models + cross-file validation), `ingest/` (models, loaders, pdf_loader sharing `parse_tariff_markdown` with the md loader, chunking), `store/` (embeddings, chroma_backend, pinecone stub, dense-only retriever), `chain/planner.py`, `cli/main.py` (`corpus generate/questions`, `index`); deleted the flat scaffold, replaced `demo/app.py` with a maintenance-mode page; 13 unit tests + ruff clean | Live-verified against the real corpus and a real Gemini key: 26 chunks indexed first run (768-dim confirmed), idempotent on rerun, `--reset` fixed a stale-collection-handle bug; carrier filter genuinely narrows retrieval (Halcyon question → only Halcyon chunks) | Phase 2b: hybrid retrieval + re-ranking |
 | 2026-09-23 | Windows | 3 | `schema/` (RateCandidate, Outcome, Verdict, RateAnswer), `chain/prompt.py` (verbatim), `chain/context.py` (pulled forward from 2b), `chain/candidate_chain.py`, `cache.py`, `ratelimit.py`, `usage.py`; `guardrails/pipeline.py`'s baseline-bypass path only (gated raises `NotImplementedError` until Phases 4-6); `eval/` questions/runner/metrics/report; `cli ask`/`eval` commands; 17 new unit tests (schema, metrics, planner, cache, ratelimit — closing 2 gaps flagged after Phase 2) | First `--no-cache` full run hit the real Gemini free-tier **daily** quota (20 req/day) at question 18 — not the 7s floor's job to fix; user enabled Tier 1 billing, re-run (with caching on) went 45/45 clean for **$0.19**. Real baseline numbers: `golden_accuracy=0.958`, `fabricated_values_surfaced=0`, `wrong_values_surfaced=4`, `injection_leak=2`, `refusal_correctness=1.0`. Two real, repeatable defects found (not synthetic): superseded-tariff confirmation (the system prompt deliberately defers this to a validator that doesn't exist yet) and one BAF/THC field conflation — both are exactly what Gates 2/3 exist to fix. Also found and fixed D-40 (`row_page_numbers` field gap) and D-41 (`Usage.cached` name collision, renamed `make_cached`) | Phase 2b or Phase 4 — either restores hybrid retrieval or starts the guardrail layer that fixes today's 2 real defects |
+| 2026-09-23 | Windows | 4 | `guardrails/context.py` (QuestionContext), `gate1_schema.py` (all 6 checks per §6.2), extended `pipeline.py`'s `run_gates` with the real `gates_enabled=True` path (Gate 1 only — a clean pass goes straight to `ANSWER` until Phases 5-6 add Gates 2-3); wired `cli ask` to use it when `--no-gates` is absent; 19 new tests (`test_gate1_schema.py`, `test_pipeline.py`, `test_guardrails_purity.py`) | Found and fixed 2 real import-purity violations the new purity test caught immediately: `schema/answer.py` and `guardrails/pipeline.py` both imported `chain.*` at runtime for type hints, fixed with `TYPE_CHECKING` guards. Live-verified against the real corpus: a normal question passed Gate 1 to `ANSWER` (cache hit, $0 cost); an out-of-corpus question correctly came back `REFUSED` with 3 nearest sources (real call). 66/66 tests green | Phase 5: Gate 2 business rules |
 
 ## Appendix B — Sources checked on 2026-09-17
 

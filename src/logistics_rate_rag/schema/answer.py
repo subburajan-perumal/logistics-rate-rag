@@ -4,11 +4,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
-from logistics_rate_rag.chain.usage import Usage
 from logistics_rate_rag.schema.candidate import RateCandidate
 from logistics_rate_rag.schema.outcome import Outcome
+
+if TYPE_CHECKING:
+    # Deferred: schema/ may not import chain/ at runtime (import-purity
+    # rule, SPEC.md §1) — this is a type hint only.
+    from logistics_rate_rag.chain.usage import Usage
 
 
 @dataclass(frozen=True, slots=True)
