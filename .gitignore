@@ -1,5 +1,14 @@
 .env
+.env.*
+!.env.example
+*.key
 .venv/
 __pycache__/
 *.pyc
+.chroma/
 chroma_db/
+.cache/
+.pytest_cache/
+.ruff_cache/
+dist/
+*.egg-info/

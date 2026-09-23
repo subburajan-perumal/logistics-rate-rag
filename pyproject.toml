@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logistics-rate-rag"
+version = "0.1.0"
+description = "RAG Q&A over synthetic freight tariffs with a deterministic guardrail layer"
+requires-python = ">=3.12,<3.14"
+license = {text = "MIT"}
+dependencies = [
+  "langchain-core>=1.6,<2",
+  "langchain-text-splitters>=1.1,<2",
+  "langchain-google-genai>=4.4,<5",
+  "langchain-chroma>=1.1,<2",
+  "chromadb>=1.5,<2",
+  "pinecone>=10,<11",
+  "flashrank>=0.2.10,<0.3",
+  "rank-bm25>=0.2.2,<0.3",
+  "pdfplumber>=0.11,<0.12",
+  "pydantic>=2.11,<3",
+  "python-dotenv>=1.1,<2",
+  "pyyaml>=6,<7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9,<10", "ruff>=0.16,<1", "reportlab>=5,<6"]
+
+[project.scripts]
+rate-rag = "logistics_rate_rag.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["smoke: live API calls, skipped without keys", "slow: downloads a model or takes >10s"]
+addopts = "-q"
