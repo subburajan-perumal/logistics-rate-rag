@@ -1216,7 +1216,16 @@ byte-identical for every file, PDF included.
       written — covered so far only by this live check, flagged open)
 - [x] CI workflow green on GitHub (workflow file written 2026-09-23 per
       §10.2 verbatim; not yet confirmed green on a real GitHub Actions run
-      since this commit hasn't been pushed yet — flagged, not verified)
+      since this commit hasn't been pushed yet — flagged, not verified.
+      **Correction (2026-09-23, later)**: this flag was justified — CI
+      failed on every push from Phase 2 through Phase 6 on `ruff format
+      --check .`, which scans the whole repo including `docs/*.md` and
+      tries to reformat their illustrative Python code fences as real
+      code. Never caught locally because every local ruff invocation
+      this session was scoped to `src tests` (or `src tests scripts`),
+      never bare `.`. Fixed by scoping the workflow the same way,
+      matching `pyproject.toml`'s own `[tool.ruff] src` setting; CI is
+      green as of run `35837040901`.)
 
 **Acceptance:** chunk tests pass (headers with rows, one chunk per value,
 `valid_to` present — including for the PDF); ~26 chunks indexed; `index`
@@ -1558,6 +1567,7 @@ section and this plan.
 | 2026-09-23 | Windows | 4 | `guardrails/context.py` (QuestionContext), `gate1_schema.py` (all 6 checks per §6.2), extended `pipeline.py`'s `run_gates` with the real `gates_enabled=True` path (Gate 1 only — a clean pass goes straight to `ANSWER` until Phases 5-6 add Gates 2-3); wired `cli ask` to use it when `--no-gates` is absent; 19 new tests (`test_gate1_schema.py`, `test_pipeline.py`, `test_guardrails_purity.py`) | Found and fixed 2 real import-purity violations the new purity test caught immediately: `schema/answer.py` and `guardrails/pipeline.py` both imported `chain.*` at runtime for type hints, fixed with `TYPE_CHECKING` guards. Live-verified against the real corpus: a normal question passed Gate 1 to `ANSWER` (cache hit, $0 cost); an out-of-corpus question correctly came back `REFUSED` with 3 nearest sources (real call). 66/66 tests green | Phase 5: Gate 2 business rules |
 | 2026-09-23 | Windows | 5 | `guardrails/gate2_rules.py` — all six rules per §6.3, run in `guardrails.yaml`'s configured order via a `RULES` registry; wired into `pipeline.py`'s gated path between Gate 1 and the (still Phase-6-pending) Gate 3; 18 new tests in `test_gate2_rules.py` | **Live-verified against the real corpus, both real Phase 3 baseline defects fixed**: A-002's exact superseded-tariff question now returns `REJECT(rule:not_expired)` instead of leaking the stale value; the G-015 BAF/THC-conflation question now returns `REJECT(rule:surcharge_consistent)` instead of a silently wrong `includes_surcharge`. 84/84 tests green | Phase 6: Gate 3 grounding + confidence, threshold tuning — the headline "0% hallucinated" number |
 | 2026-09-23 | Windows | 6 | `guardrails/gate3_grounding.py`, `gate3_confidence.py`, `eval/runner.py`'s `tune_threshold` (writes `config/guardrails.yaml` + a tuning result file — the only code path allowed to touch `config/`); full pipeline wiring (Gate 1 → 2 → 3a → 3b, `NEEDS_REVIEW` on low confidence); `eval --mode gated` now real (removed its `NotImplementedError`); 25 new tests across `test_gate3_grounding.py`, `test_gate3_confidence.py`, plus a `NEEDS_REVIEW` regression in `test_pipeline.py` | **D-42, found before trusting the spec's literal regex against real data**: the naive `[\d,.]` comma exclusion breaks grounding for every CSV-delimited (Halcyon) value; refined to only exclude a true thousands-separator shape. Live results, the headline number: tuned `without_reranker` threshold to `0.810893` (23 correct/0 incorrect on the golden set); full 45-question gated run — `fabricated_values_surfaced=0`, `injection_leak=0` (down from 2), `wrong_values_surfaced=1` (down from 4), 0 `ERROR` rows, $0 cost (100% cache hit, reusing earlier live answers). 109/109 tests green | Phase 7: Pinecone, or Phase 9/10 to publish what's already a complete, evidenced story |
+| 2026-09-23 | Windows | - | User reported all 5 GitHub Actions runs (Phases 2-6) had failed; fixed `.github/workflows/ci.yml` — `ruff format --check .` was scanning `docs/*.md` and reformatting their illustrative Python code fences, failing every run even though the real source tree was clean throughout | Never caught locally since every local ruff run this session was scoped to `src tests`/`src tests scripts`, never bare `.`. Rescoped the workflow to match; confirmed green on run `35837040901` | (housekeeping, not a phase) |
 
 ## Appendix B — Sources checked on 2026-09-17
 
