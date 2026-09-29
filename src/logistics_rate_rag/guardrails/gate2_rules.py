@@ -51,8 +51,19 @@ def rate_in_range(
 def currency_matches_source(
     candidate: RateCandidate, ctx: QuestionContext, settings: Settings, params: dict
 ) -> GateResult:
+    """The currency of the exact line cited (D-50): one carrier quotes some
+    trades in EUR or GBP and others in USD, so the document-level currency is
+    MIXED and only the line's own Currency cell / CSV field can decide."""
+    from logistics_rate_rag.guardrails.gate3_grounding import line_for
+
     chunk = ctx.chunks_by_id.get(candidate.source_chunk_id)
     source_currency = chunk.metadata.get("currency") if chunk else None
+    if chunk is not None:
+        line = line_for(
+            chunk.text, candidate.origin, candidate.destination, candidate.container_type
+        )
+        if isinstance(line, dict) and line.get("currency"):
+            source_currency = line["currency"]
     if candidate.currency == source_currency:
         return _pass()
     return _fail(

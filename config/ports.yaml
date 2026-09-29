@@ -18,5 +18,15 @@ ports:
   AEJEA: {city: Jebel Ali, aliases: [Jebel Ali Dubai, Dubai Jebel Ali]}
   SGSIN: {city: Singapore, aliases: [Port of Singapore]}
   LKCMB: {city: Colombo, aliases: [Port of Colombo]}
-  CNSHA: {city: Shanghai, aliases: [Port of Shanghai, Yangshan]}
+  CNSGH: {city: Shanghai, aliases: [Port of Shanghai, Yangshan]}
   USSAV: {city: Savannah, aliases: [Port of Savannah, Garden City]}
+  # display names where the official UN/LOCODE name is awkward or annotated (D-49)
+  QAHMD: {city: Hamad, aliases: [Hamad Port, Port of Hamad]}
+  INHZA: {city: Hazira, aliases: [Hazira Port, Surat Hazira]}
+  PKBQM: {city: Port Qasim, aliases: [Muhammad Bin Qasim, Bin Qasim]}
+  BHKBS: {city: Khalifa Bin Salman, aliases: [Khalifa Bin Salman Port, KBSP]}
+  JPNGO: {city: Nagoya, aliases: [Port of Nagoya]}
+  IDJKT: {city: Jakarta, aliases: [Tanjung Priok, Port of Jakarta]}
+  SEGOT: {city: Gothenburg, aliases: [Goteborg, Port of Gothenburg]}
+  INCCU: {city: Kolkata, aliases: [Calcutta]}
+  MYPKG: {city: Port Klang, aliases: [Pelabuhan Klang, Klang]}

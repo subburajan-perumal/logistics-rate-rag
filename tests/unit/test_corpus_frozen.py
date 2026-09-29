@@ -54,7 +54,7 @@ def test_post_conditions_hold():
 def test_generator_equipment_matches_registry():
     from logistics_rate_rag.config import load_equipment_codes
 
-    assert load_equipment_codes() == generate_corpus.EQUIPMENT
+    assert list(load_equipment_codes()) == generate_corpus.EQUIPMENT
 
 
 def test_v1_values_are_a_prefix_of_v2():

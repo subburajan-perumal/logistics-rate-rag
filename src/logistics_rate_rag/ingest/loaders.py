@@ -9,20 +9,22 @@ import re
 from datetime import date
 from pathlib import Path
 
-from logistics_rate_rag.config import load_equipment_codes
+from logistics_rate_rag.config import load_carrier_names, load_equipment_codes
 from logistics_rate_rag.errors import CorpusFormatError
 from logistics_rate_rag.ingest.models import LoadedDocument
 
-DISPLAY_NAMES = {"MERIDIAN": "Meridian Ocean Lines", "HALCYON": "Halcyon Container Line"}
 # A tariff cell holding NOT_OFFERED (an em dash) means the carrier does not
 # offer that equipment on that lane (D-46): there is no rate to quote.
 NOT_OFFERED = chr(0x2014)
 RATE_CELL = r"(\d{1,3}(,\d{3})*|" + NOT_OFFERED + ")"
-PORT_CELL = r"[A-Z]{5} [A-Za-z ]+"
+# UN/LOCODE (location part may contain digits 2-9) then the port's display name
+PORT_CELL = r"[A-Z]{2}[A-Z2-9]{3} [^|]*[^| ]"
+CURRENCY_CELL = r"[A-Z]{3}"
+MIXED = "MIXED"  # document-level currency when each line states its own (D-50)
 
 
 def table_header(codes: list[str]) -> str:
-    return "| Origin | Destination | " + " | ".join(codes) + " | Transit (days) |"
+    return "| Origin | Destination | Currency | " + " | ".join(codes) + " | Transit (days) |"
 
 
 def separator_row(n_columns: int) -> str:
@@ -30,12 +32,16 @@ def separator_row(n_columns: int) -> str:
 
 
 def parse_table_header(line: str, error_path: object) -> list[str]:
-    """Equipment codes of a `| Origin | Destination | ... | Transit (days) |`
-    header; every code must be in config/equipment.yaml."""
+    """Equipment codes of a `| Origin | Destination | Currency | ... |
+    Transit (days) |` header (D-50); every code must be in equipment.yaml."""
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
-    if len(cells) < 4 or cells[:2] != ["Origin", "Destination"] or cells[-1] != "Transit (days)":
+    if (
+        len(cells) < 5
+        or cells[:3] != ["Origin", "Destination", "Currency"]
+        or cells[-1] != "Transit (days)"
+    ):
         raise CorpusFormatError(error_path, f"unexpected table header: {line!r}")
-    codes = cells[2:-1]
+    codes = cells[3:-1]
     unknown = [c for c in codes if c not in load_equipment_codes()]
     if unknown:
         raise CorpusFormatError(error_path, f"unknown equipment in header: {unknown}")
@@ -43,7 +49,7 @@ def parse_table_header(line: str, error_path: object) -> list[str]:
 
 
 def row_regex(n_codes: int) -> re.Pattern[str]:
-    cells = [PORT_CELL, PORT_CELL, *([RATE_CELL] * n_codes), r"\d{1,2}"]
+    cells = [PORT_CELL, PORT_CELL, CURRENCY_CELL, *([RATE_CELL] * n_codes), r"\d{1,2}"]
     return re.compile(r"^\| " + r" \| ".join(cells) + r" \|$")
 
 
@@ -86,6 +92,8 @@ def parse_tariff_markdown(
             fields["status_raw"] = m["status"]
         elif m := re.match(r"^- Currency: (?P<cur>[A-Z]{3}) per container$", hl):
             fields["currency"] = m["cur"]
+        elif hl == "- Currency: stated per lane in the Currency column":
+            fields["currency"] = MIXED
         elif m := re.match(r"^- Valid from: (?P<d>\d{4}-\d{2}-\d{2})$", hl):
             fields["valid_from"] = m["d"]
         elif m := re.match(r"^- Valid to: (?P<d>\d{4}-\d{2}-\d{2})$", hl):
@@ -110,7 +118,7 @@ def parse_tariff_markdown(
     codes = parse_table_header(lines[idx], error_path)
     header_line = lines[idx]
     idx += 1
-    if idx >= len(lines) or lines[idx] != separator_row(len(codes) + 3):
+    if idx >= len(lines) or lines[idx] != separator_row(len(codes) + 4):
         raise CorpusFormatError(error_path, "expected table separator row")
     idx += 1
 
@@ -174,6 +182,7 @@ _CSV_HEADER = (
     "base_rate",
     "currency",
     "baf",
+    "baf_currency",
     "valid_from",
     "valid_to",
     "notes",
@@ -195,34 +204,31 @@ def load_csv_tariff(path: Path) -> LoadedDocument:
         raise CorpusFormatError(path, "no data rows")
 
     first = rows[0]
-    carrier, tariff_ref, currency = first["carrier"], first["tariff_ref"], first["currency"]
+    carrier, tariff_ref = first["carrier"], first["tariff_ref"]
     valid_from, valid_to = first["valid_from"], first["valid_to"]
+    currencies = {row["currency"] for row in rows}
+    currency = currencies.pop() if len(currencies) == 1 else MIXED
 
+    known_equipment = set(load_equipment_codes())
     for row in rows:
-        if (
-            row["carrier"],
-            row["tariff_ref"],
-            row["currency"],
-            row["valid_from"],
-            row["valid_to"],
-        ) != (
-            carrier,
-            tariff_ref,
-            currency,
-            valid_from,
-            valid_to,
-        ):
+        doc_fields = (row["carrier"], row["tariff_ref"], row["valid_from"], row["valid_to"])
+        if doc_fields != (carrier, tariff_ref, valid_from, valid_to):
             raise CorpusFormatError(path, f"inconsistent document-level fields in row: {row}")
         if not row["base_rate"].isdigit() or not row["baf"].isdigit():
             raise CorpusFormatError(path, f"base_rate/baf must be integers: {row}")
-        if row["container_type"] not in load_equipment_codes():
+        if not re.fullmatch(CURRENCY_CELL, row["currency"]) or not re.fullmatch(
+            CURRENCY_CELL, row["baf_currency"]
+        ):
+            raise CorpusFormatError(path, f"currency/baf_currency must be ISO codes: {row}")
+        if row["container_type"] not in known_equipment:
             raise CorpusFormatError(path, f"unknown container_type: {row['container_type']}")
 
     header_lines = (
-        f"- Carrier: {DISPLAY_NAMES.get(carrier, carrier)} ({carrier})",
+        f"- Carrier: {load_carrier_names().get(carrier, carrier)} ({carrier})",
         f"- Tariff reference: {tariff_ref}",
         "- Status: CURRENT",
-        f"- Currency: {currency} per container (BAF quoted separately in the baf column)",
+        "- Currency: stated per line in the currency field; BAF is quoted separately in the "
+        "baf column, in the baf_currency currency",
         f"- Valid from: {valid_from}",
         f"- Valid to: {valid_to}",
     )

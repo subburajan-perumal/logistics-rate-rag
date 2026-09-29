@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import os
 from dataclasses import dataclass
 from datetime import date
@@ -21,8 +22,10 @@ class Carrier(BaseModel):
     model_config = ConfigDict(extra="forbid")
     display_name: str
     aliases: list[str]
-    currency: str
+    # currency is stated per tariff line (D-50); these are the ones it quotes in
+    currencies: list[str]
     baf_included: bool
+    baf_currency: str | None = None
     thc_included: bool
     tariff_refs: list[str]
 
@@ -33,12 +36,79 @@ class _CarriersFile(BaseModel):
 
 
 class Ports(BaseModel):
-    """`locode` maps LOCODE -> city; `city_lower` maps every lower-cased city
-    name and alias to its LOCODE (PLAN.md D-46)."""
+    """`locode` maps every UN/LOCODE seaport to its display name;
+    `city_lower` maps each lower-cased name, name variant and curated alias
+    that points at exactly one port to its LOCODE; `ambiguous_lower` keeps
+    names shared by several ports ("victoria") with all their LOCODEs, so a
+    name is never silently resolved to the wrong country (PLAN.md D-49)."""
 
     model_config = ConfigDict(extra="forbid")
     locode: dict[str, str]
     city_lower: dict[str, str]
+    ambiguous_lower: dict[str, list[str]] = {}
+
+
+def port_name_variants(name: str) -> list[str]:
+    """Official UN/LOCODE names carry variants in parentheses:
+    "Chennai (ex Madras)" -> Chennai, Madras; "Jawaharlal Nehru (Nhava
+    Sheva)" -> Jawaharlal Nehru, Nhava Sheva."""
+    import re
+
+    out = [name]
+    bare = re.sub(r"\s*\([^)]*\)", "", name).strip()
+    if bare:
+        out.append(bare)
+    for inner in re.findall(r"\(([^)]*)\)", name):
+        inner = re.sub(r"^(ex|formerly)\s+", "", inner.strip(), flags=re.IGNORECASE)
+        if inner:
+            out.append(inner)
+    return list(dict.fromkeys(out))
+
+
+def load_ports(config_dir: Path) -> Ports:
+    """The official seaport list (config/ports_unlocode.csv, D-49) plus the
+    curated overlay in ports.yaml (display names and trade aliases such as
+    JNPT). Every overlay LOCODE must exist in the official list."""
+    import csv
+
+    display: dict[str, str] = {}
+    names: dict[str, set[str]] = {}
+    with (config_dir / "ports_unlocode.csv").open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            code = row["locode"]
+            official = [row["name"], row["name_ascii"], *filter(None, row["alt_names"].split("|"))]
+            variants = [v for n in official for v in port_name_variants(n)]
+            ascii_variants = port_name_variants(row["name_ascii"])
+            display[code] = ascii_variants[1] if len(ascii_variants) > 1 else ascii_variants[0]
+            for v in variants:
+                names.setdefault(v.lower(), set()).add(code)
+
+    overlay = {
+        code: _PortEntry.model_validate(v)
+        for code, v in _load_yaml(config_dir / "ports.yaml")["ports"].items()
+    }
+    city_lower: dict[str, str] = {}
+    curated: dict[str, str] = {}
+    for code, entry in overlay.items():
+        if code not in display:
+            raise ConfigError(f"ports.yaml: {code} is not a UN/LOCODE seaport")
+        display[code] = entry.city
+        for name in (entry.city, *entry.aliases):
+            other = curated.setdefault(name.lower(), code)
+            if other != code:
+                raise ConfigError(f"ports.yaml: {name!r} names both {other} and {code}")
+    ambiguous: dict[str, list[str]] = {}
+    for name, codes in names.items():
+        if len(codes) == 1:
+            city_lower[name] = next(iter(codes))
+        else:
+            ambiguous[name] = sorted(codes)
+    for code in display:
+        city_lower.setdefault(code.lower(), code)
+    city_lower.update(curated)  # a curated alias settles an ambiguous name
+    for name in curated:
+        ambiguous.pop(name, None)
+    return Ports(locode=display, city_lower=city_lower, ambiguous_lower=ambiguous)
 
 
 class _PortEntry(BaseModel):
@@ -81,12 +151,21 @@ def _norm_name(name: str) -> str:
     return " ".join(s.split())
 
 
+@functools.cache
+def load_carrier_names(project_root: Path | None = None) -> dict[str, str]:
+    """Carrier code -> display name, for code that has no Settings (loaders)."""
+    root = project_root or find_project_root(Path(__file__).resolve())
+    raw = _load_yaml(root / "config" / "carriers.yaml")
+    return {code: c.display_name for code, c in _CarriersFile.model_validate(raw).carriers.items()}
+
+
+@functools.cache
 def load_equipment_codes(project_root: Path | None = None) -> list[str]:
     """Canonical equipment codes in registry order, for code that has no
     Settings (the loaders and the corpus generator)."""
     root = project_root or find_project_root(Path(__file__).resolve())
     raw = _load_yaml(root / "config" / "equipment.yaml")
-    return list(_EquipmentFile.model_validate(raw).equipment)
+    return tuple(_EquipmentFile.model_validate(raw).equipment)
 
 
 def resolve_container_type(name: str | None, equipment: dict[str, Equipment]) -> str | None:
@@ -283,19 +362,7 @@ def load_settings(env_file: Path | None = None, **overrides: object) -> Settings
     carriers_raw = _load_yaml(config_dir / "carriers.yaml")
     carriers = _CarriersFile.model_validate(carriers_raw).carriers
 
-    ports_raw = {
-        code: _PortEntry.model_validate(v)
-        for code, v in _load_yaml(config_dir / "ports.yaml")["ports"].items()
-    }
-    names_to_locode: dict[str, str] = {}
-    for code, entry in ports_raw.items():
-        for name in (entry.city, *entry.aliases):
-            other = names_to_locode.setdefault(name.lower(), code)
-            if other != code:
-                raise ConfigError(f"ports.yaml: {name!r} names both {other} and {code}")
-    ports = Ports(
-        locode={code: e.city for code, e in ports_raw.items()}, city_lower=names_to_locode
-    )
+    ports = load_ports(config_dir)
 
     equipment = _EquipmentFile.model_validate(_load_yaml(config_dir / "equipment.yaml")).equipment
     seen: dict[str, str] = {}

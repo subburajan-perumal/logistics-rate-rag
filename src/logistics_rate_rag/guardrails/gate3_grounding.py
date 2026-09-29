@@ -74,11 +74,12 @@ def _cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
-def cell_for(text: str, origin: str, destination: str, container_type: str) -> object:
-    """The table cell for (origin, destination, container_type) in a chunk
-    (PLAN.md D-47): a pipe-table row whose Origin/Destination cells start with
-    the LOCODEs, or a CSV line with those fields. Returns the cell text, None
-    when the chunk has a table but no such row or column, or NO_TABLE."""
+def line_for(text: str, origin: str, destination: str, container_type: str) -> object:
+    """The tariff line for (origin, destination, container_type) in a chunk
+    (PLAN.md D-47, D-50): {"rate": cell text, "currency": the line's currency}
+    from a pipe-table row whose Origin/Destination cells start with the
+    LOCODEs, or from a CSV line with those fields. None when the chunk has a
+    table but no such row or column; NO_TABLE when it holds no rate table."""
     lines = text.split("\n")
     header = next((ln for ln in lines if ln.startswith("| Origin | Destination |")), None)
     if header is not None:
@@ -86,6 +87,7 @@ def cell_for(text: str, origin: str, destination: str, container_type: str) -> o
         if container_type not in columns:
             return None
         col = columns.index(container_type)
+        cur_col = columns.index("Currency") if "Currency" in columns else None
         for ln in lines:
             if not ln.startswith("| ") or ln == header:
                 continue
@@ -95,7 +97,7 @@ def cell_for(text: str, origin: str, destination: str, container_type: str) -> o
                 and cells[0].split(" ")[0] == origin
                 and cells[1].split(" ")[0] == destination
             ):
-                return cells[col]
+                return {"rate": cells[col], "currency": cells[cur_col] if cur_col else None}
         return None
 
     csv_header = next((ln for ln in lines if ln.startswith("carrier,tariff_ref,")), None)
@@ -106,9 +108,15 @@ def cell_for(text: str, origin: str, destination: str, container_type: str) -> o
         for row in csv.DictReader(ln for ln in lines[start:] if ln):
             key = (row["origin_locode"], row["destination_locode"], row["container_type"])
             if key == (origin, destination, container_type):
-                return row["base_rate"]
+                return {"rate": row["base_rate"], "currency": row["currency"]}
         return None
     return NO_TABLE
+
+
+def cell_for(text: str, origin: str, destination: str, container_type: str) -> object:
+    """Just the rate cell of `line_for` (None / NO_TABLE passed through)."""
+    line = line_for(text, origin, destination, container_type)
+    return line["rate"] if isinstance(line, dict) else line
 
 
 def _cell_matches(cell: object, rate_value: int) -> bool:

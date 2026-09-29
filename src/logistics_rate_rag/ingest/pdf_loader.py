@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -9,6 +11,7 @@ import pdfplumber
 
 from logistics_rate_rag.errors import CorpusFormatError, PdfTableError
 from logistics_rate_rag.ingest.loaders import (
+    CURRENCY_CELL,
     PORT_CELL,
     RATE_CELL,
     parse_table_header,
@@ -68,12 +71,13 @@ def extract_pdf_tariff(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...
                             raise PdfTableError(path, page.page_number, row_index, cells)
                         codes = header_codes
                         continue
-                    if codes is None or len(cells) != len(codes) + 3:
+                    if codes is None or len(cells) != len(codes) + 4:
                         raise PdfTableError(path, page.page_number, row_index, cells)
-                    origin, dest, *rates, transit = cells
+                    origin, dest, currency, *rates, transit = cells
                     ok = (
                         re.fullmatch(PORT_CELL, origin)
                         and re.fullmatch(PORT_CELL, dest)
+                        and re.fullmatch(CURRENCY_CELL, currency)
                         and all(re.fullmatch(RATE_CELL, r) for r in rates)
                         and re.fullmatch(r"\d{1,2}", transit)
                     )
@@ -108,7 +112,7 @@ def extract_pdf_tariff(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...
                     "## Rates by lane",
                     "",
                     table_header(codes),
-                    separator_row(len(codes) + 3),
+                    separator_row(len(codes) + 4),
                     *rows,
                     "",
                     "## Remarks",
@@ -122,8 +126,35 @@ def extract_pdf_tariff(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...
         return canonical_markdown, page_texts, tuple(row_pages)
 
 
+def _cache_dir() -> Path:
+    from logistics_rate_rag.config import find_project_root
+
+    return find_project_root(Path(__file__).resolve()) / ".cache" / "pdf_extract"
+
+
+def extract_pdf_tariff_cached(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...]]:
+    """`extract_pdf_tariff` memoised on disk by the PDF's sha256 (corpus v3's
+    multi-page tariffs take ~10 s each to parse). A changed file has a new
+    hash, so a stale entry can never be returned; a corrupt entry is a miss."""
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    entry = _cache_dir() / f"{digest}.json"
+    if entry.exists():
+        try:
+            d = json.loads(entry.read_text(encoding="utf-8"))
+            return d["markdown"], tuple(d["page_texts"]), tuple(d["row_pages"])
+        except (json.JSONDecodeError, KeyError):
+            pass
+    markdown, page_texts, row_pages = extract_pdf_tariff(path)
+    entry.parent.mkdir(parents=True, exist_ok=True)
+    entry.write_text(
+        json.dumps({"markdown": markdown, "page_texts": page_texts, "row_pages": row_pages}),
+        encoding="utf-8",
+    )
+    return markdown, page_texts, row_pages
+
+
 def load_pdf_tariff(path: Path) -> LoadedDocument:
-    canonical_markdown, page_texts, row_page_numbers = extract_pdf_tariff(path)
+    canonical_markdown, page_texts, row_page_numbers = extract_pdf_tariff_cached(path)
     doc = parse_tariff_markdown(
         canonical_markdown, path.name, "tariff_pdf", path, row_page_numbers=row_page_numbers
     )

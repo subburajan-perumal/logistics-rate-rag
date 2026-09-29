@@ -19,7 +19,7 @@ class RateCandidate(BaseModel):
     # and rejects anything unknown, so a new equipment type is config, not code.
     container_type: str | None = None
     rate_value: int | None = None
-    currency: Literal["USD", "EUR"] | None = None
+    currency: Literal["USD", "EUR", "GBP"] | None = None
     valid_from: date | None = None
     valid_to: date | None = None
     includes_surcharge: bool | None = None

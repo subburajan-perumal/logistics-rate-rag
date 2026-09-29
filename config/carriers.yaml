@@ -1,15 +1,80 @@
+# Carrier registry, corpus v3 (PLAN.md D-50). Every carrier is fictional; no
+# real carrier name or SCAC-like code is used as a name or alias.
+# Currency is stated on each tariff line, not per carrier: `currencies` lists
+# the ones a carrier quotes in. `baf_included: false` carriers quote BAF on
+# each line in `baf_currency`, which can differ from the base-rate currency.
 carriers:
   MERIDIAN:
     display_name: Meridian Ocean Lines
     aliases: [meridian, meridian ocean, meridian ocean lines, mer]
-    currency: USD
+    currencies: [USD]
     baf_included: true
     thc_included: false
     tariff_refs: [MER-2026-H2-FCL, MER-2026-Q2-FCL]
   HALCYON:
     display_name: Halcyon Container Line
     aliases: [halcyon, halcyon container, halcyon container line, hal]
-    currency: EUR
+    currencies: [USD, EUR]
     baf_included: false
+    baf_currency: USD
     thc_included: false
     tariff_refs: [HAL-2026-H2-FCL]
+  BOREAL:
+    display_name: Boreal Shipping
+    aliases: [boreal, boreal shipping]
+    currencies: [USD, EUR]
+    baf_included: true
+    thc_included: false
+    tariff_refs: [BOR-2026-H2-FCL]
+  CORVID:
+    display_name: Corvid Line
+    aliases: [corvid, corvid line]
+    currencies: [USD]
+    baf_included: false
+    baf_currency: USD
+    thc_included: false
+    tariff_refs: [COR-2026-H2-FCL]
+  TESSERA:
+    display_name: Tessera Maritime
+    aliases: [tessera, tessera maritime]
+    currencies: [USD, EUR]
+    baf_included: true
+    thc_included: false
+    tariff_refs: [TES-2026-H2-FCL]
+  SOLSTICE:
+    display_name: Solstice Container Lines
+    aliases: [solstice, solstice container lines, solstice lines]
+    currencies: [USD]
+    baf_included: true
+    thc_included: false
+    tariff_refs: [SOL-2026-H2-FCL, SOL-2026-Q2-FCL]
+  KESTREL:
+    display_name: Kestrel Ocean
+    aliases: [kestrel, kestrel ocean]
+    currencies: [USD, EUR]
+    baf_included: false
+    baf_currency: USD
+    thc_included: false
+    tariff_refs: [KES-2026-H2-FCL]
+  ALDERMOOR:
+    display_name: Aldermoor Line
+    aliases: [aldermoor, aldermoor line]
+    currencies: [USD, EUR, GBP]
+    baf_included: true
+    thc_included: false
+    tariff_refs: [ALD-2026-H2-FCL]
+  VANTOR:
+    display_name: Vantor Shipping
+    aliases: [vantor, vantor shipping]
+    currencies: [USD]
+    baf_included: true
+    thc_included: false
+    tariff_refs: [VAN-2026-H2-FCL]
+  QUILLON:
+    display_name: Quillon Marine
+    aliases: [quillon, quillon marine]
+    currencies: [USD]
+    baf_included: false
+    baf_currency: USD
+    thc_included: false
+    tariff_refs: [QUI-2026-H2-FCL]

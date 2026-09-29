@@ -1,0 +1,10 @@
+{
+  "release": "UN/LOCODE 2024-2",
+  "source": "https://github.com/datasets/un-locode/blob/b1309b37edea63334a819a78c22b8967f61c37ad/data/code-list.csv",
+  "upstream": "https://unece.org/trade/cefact/UNLOCODE-Download",
+  "licence": "ODC-PDDL-1.0 (public domain)",
+  "sha256": "014d5139df76894a89f7eeb529723417e790129a5c7ea3b3dac38c34a03455c1",
+  "locations_in_source": 116213,
+  "seaports_kept": 17520,
+  "filter": "Function position 1 == '1' (port) and Change != 'X'"
+}
