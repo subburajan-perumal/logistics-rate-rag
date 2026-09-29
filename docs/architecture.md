@@ -24,7 +24,8 @@ QueryPlanner (chain/planner.py) ── deterministic ──► QueryPlan{filter 
 RateRetriever (store/retriever.py)
    ├── GeminiEmbedder.embed_query ──► 768-d, L2-normalised
    ├── dense:   StoreBackend.query(vector, k=12, filter)      Chroma (local) │ Pinecone (managed)
-   ├── lexical: LexicalIndex.query(question, k=12)            BM25 over the same 26 chunks, in-process
+   ├── lexical: LexicalIndex.query(question + codes, k=12)    BM25 over the same 33 chunks, in-process;
+   │                                                          QueryExpander adds 20TK / INNSA … for "20' Tank" / "JNPT" (D-48)
    ├── fuse_rrf(dense, lexical, k=60) ──► top-12
    └── Reranker.rerank(question, top-12, top_n=6)             FlashRank (local ONNX) │ Pinecone bge-reranker-v2-m3 │ none
    │
@@ -39,11 +40,13 @@ CandidateChain (chain/candidate_chain.py)
    │
    ▼  CandidateResult{candidate | parsing_error, retrieved, pinned, usage}
 run_gates (guardrails/pipeline.py)          ← pure Python from here on
-   ├── Gate 1  gate1_schema      parse? refusal clean? required fields? ports + carrier resolved via config (D-45)? cited chunk ids retrieved? doc matches?
-   │            fail ──► REJECT(parse_error | unknown_port | unknown_source)      refusal ──► REFUSED
+   ├── Gate 1  gate1_schema      parse? refusal clean? required fields? ports, carrier and equipment resolved via the
+   │                              config registries (D-45, D-46)? cited chunk ids retrieved? doc matches?
+   │            fail ──► REJECT(parse_error | unknown_port | unknown_container_type | unknown_source)   refusal ──► REFUSED
    ├── Gate 2  gate2_rules       carrier_known · rate_in_range · currency_matches_source · dates_ordered · not_expired · surcharge_consistent
    │            fail ──► REJECT(rule:<name>)
-   ├── Gate 3a gate3_grounding   rate_value, valid_to and source_span literally present in the cited chunk text
+   ├── Gate 3a gate3_grounding   rate_value, valid_to and source_span literally present in the cited chunk text,
+   │                              and rate_value is THE cell for (lane, equipment), not a neighbouring column (D-47)
    │            fail ──► REJECT(ungrounded:<field>)
    └── Gate 3b gate3_confidence  0.35·model + 0.25·similarity + 0.30·rerank + 0.10·(1/rank) ≥ τ (tuned: 0.664)
                                  no reranker: 0.40·model + 0.40·similarity + 0.20·(1/rank) ≥ τ (tuned: 0.811)
@@ -62,7 +65,7 @@ report measures.
 ```
 data/corpus/*  ──► loaders (md / csv / pdf via pdfplumber) ──► LoadedDocument (canonical text)
                ──► chunking (header block replicated into every table chunk; 4 lanes/chunk md+pdf, 6 rows/chunk csv, 1 section/chunk policy)
-               ──► 26 Chunk{chunk_id, text, metadata, content_sha256}
+               ──► 33 Chunk{chunk_id, text, metadata, content_sha256}   (corpus v2: 13 equipment columns, dashes = not offered)
                ──► [optional --enrich: LLM description prepended to index_text only]
                ──► GeminiEmbedder.embed_documents (batches of 100, normalised)
                ──► StoreBackend.upsert (diff by chunk_id + content hash → idempotent)
@@ -85,6 +88,7 @@ and never persisted.
 | Which carrier to filter on | `QueryPlanner` (alias regex) | no |
 | What the as-of date is | CLI/eval + `QueryPlanner` override | no |
 | Which chunks the model sees | retriever + reranker + pinning | no (cross-encoder is a fixed model, not a generator) |
+| What equipment / port a name means | `config/equipment.yaml`, `ports.yaml` resolvers (Gate 1, BM25 expander) | no |
 | What the candidate answer is | `CandidateChain` | **yes — the only place** |
 | Whether the candidate parses and cites real chunks | Gate 1 | no |
 | Whether the candidate obeys business rules | Gate 2 | no |

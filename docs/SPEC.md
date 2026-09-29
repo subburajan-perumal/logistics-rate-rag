@@ -220,10 +220,12 @@ All loaders take a `Path`, return one `LoadedDocument`, and raise
    (?P<d>\d{4}-\d{2}-\d{2})$`, `^- Valid to: (?P<d>\d{4}-\d{2}-\d{2})$`.
    `status` is `"SUPERSEDED"` if it starts with that word, else `"CURRENT"`.
 2. `## Rates by lane` must be followed by a blank line, the table header
-   `| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |`, the
-   separator `|---|---|---|---|---|---|`, then N row lines until a blank
-   line. Each row must match
-   `^\| [A-Z]{5} [A-Za-z ]+ \| [A-Z]{5} [A-Za-z ]+ \| \d{1,3}(,\d{3})* \| \d{1,3}(,\d{3})* \| \d{1,3}(,\d{3})* \| \d{1,2} \|$`.
+   `| Origin | Destination | <codes…> | Transit (days) |` whose codes are all
+   in `config/equipment.yaml` (D-46; v2 has 13), the separator
+   `|` + `---|` × (codes + 3), then N row lines until a blank line. Each row
+   is `| LOCODE City | LOCODE City |` then one cell per code, each
+   `\d{1,3}(,\d{3})*` or an em dash (equipment not offered), then
+   `\d{1,2} |` transit days.
 3. `## Remarks` followed by bullet lines to end of file.
 4. `text` = the file content exactly (it is already canonical).
 
@@ -892,8 +894,12 @@ Order of checks; the first failure wins:
    `source_chunk_id`, `source_span` must all be non-`None` → else
    `parse_error` (details `{"missing": [...]}`).
 4. Port normalisation: `origin`/`destination` — if in `ports.locode`
-   keep; elif `lower()` in `ports.city_lower` map to the LOCODE; else
-   `unknown_port`.
+   keep; elif `lower()` in `ports.city_lower` (cities **and aliases**, D-46)
+   map to the LOCODE; else `unknown_port`.
+4a. Equipment resolution (D-46): `config.resolve_container_type(container_type,
+   settings.equipment)` maps a code, display name, ISO code or alias to the
+   canonical code; `None` → `unknown_container_type`. Carrier aliases are
+   resolved the same way (D-45).
 5. `source_chunk_id ∈ ctx.retrieved_ids` and `policy_source_chunk_id`
    (if set) `∈ ctx.retrieved_ids` → else `unknown_source`.
 6. `source_doc == ctx.chunks_by_id[source_chunk_id].source_doc` → else
@@ -935,7 +941,13 @@ def gate3_grounding(candidate, ctx) -> GateResult
 Checks, in order, against `text = ctx.chunks_by_id[source_chunk_id].text`:
 `contains_number(text, rate_value)` → else `ungrounded:rate_value`;
 `contains_date(text, valid_to)` → else `ungrounded:valid_to`;
-`span_in_text(source_span, text)` → else `ungrounded:source_span`.
+`span_in_text(source_span, text)` → else `ungrounded:source_span`;
+then (D-47) `cell_for(text, origin, destination, container_type)` — the
+pipe-table cell under the equipment-code column in the row whose first two
+cells start with the LOCODEs, or the CSV `base_rate` for those fields —
+must equal `rate_value` once thousands separators are removed; a dash, a
+missing row/column or another number → `ungrounded:cell`. A chunk without
+a rate table returns `NO_TABLE` and skips this check.
 
 Worked examples (all in `test_gate3_grounding.py`): `1240` is found in
 `"| 1,240 |"` and in `"1240,EUR"`; `1240` is **not** found in `"11,240"`,

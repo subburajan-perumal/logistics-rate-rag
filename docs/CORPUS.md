@@ -2,7 +2,10 @@
 
 Companion to [`PLAN.md`](PLAN.md) (decisions, phases) and [`SPEC.md`](SPEC.md)
 (code contracts). This file is the complete definition of everything under
-`data/`. Decision ids (`D-nn`) refer to PLAN.md §3. Frozen 2026-09-17.
+`data/`. Decision ids (`D-nn`) refer to PLAN.md §3. Frozen 2026-09-17;
+**corpus v2 on 2026-09-29 (D-46)**: 13 equipment types (incl. the 40' non-operating
+reefer), 18 ports, 24 lanes, 403 rates, 74 questions. Every v1 value is
+unchanged, because all v2 draws come after the v1 sequence (§3).
 
 Everything here is **synthetic**. Carrier names, tariff references, rates,
 surcharges and validity dates are invented for this project. Ports are real
@@ -19,8 +22,8 @@ UN/LOCODEs because that is what a rate desk uses; nothing else is real.
 | `data/corpus/halcyon_tariff_2026_h2.csv` | current Halcyon tariff, CSV | generator | yes |
 | `data/corpus/rate_policy_note_2026.md` | policy prose, Markdown | generator (verbatim text in §7) | yes |
 | `data/corpus/manifest.json` | corpus version, hashes, all values, lane ranges | generator | yes |
-| `data/eval/golden.yaml` | 30 questions with expected answers | generator (`rate-rag corpus questions`), then hand-verified | yes |
-| `data/eval/adversarial.yaml` | 15 prompts with expected non-answers | generator, then hand-verified | yes |
+| `data/eval/golden.yaml` | 54 questions with expected answers (41 answerable, 13 not) | generator (`rate-rag corpus questions`), then hand-verified | yes |
+| `data/eval/adversarial.yaml` | 20 prompts with expected non-answers | generator, then hand-verified | yes |
 | `config/rate_ranges.json` | per-lane min/max for Gate 2 `rate_in_range` | generator (copied from manifest `lane_ranges`) | yes |
 
 `rate-rag corpus generate` writes the first five files and
@@ -44,33 +47,62 @@ Aliases recognised by the `QueryPlanner` (case-insensitive, whole-word):
 `HALCYON`: `halcyon`, `halcyon container`, `halcyon container line`, `hal`.
 No real carrier abbreviation (MOL, ONE, MSC, …) is an alias.
 
-### 2.2 Ports (`config/ports.yaml`)
+### 2.2 Ports (`config/ports.yaml`, v2 adds aliases and five ports)
 
-| LOCODE | City | Role |
+| LOCODE | City | Aliases (resolved by Gate 1 and the BM25 expander) |
 |---|---|---|
-| `INMAA` | Chennai | origin |
-| `INNSA` | Nhava Sheva | origin |
-| `INMUN` | Mundra | origin |
-| `INCOK` | Cochin | origin |
-| `INVTZ` | Visakhapatnam | origin |
-| `NLRTM` | Rotterdam | destination |
-| `DEHAM` | Hamburg | destination |
-| `BEANR` | Antwerp | destination |
-| `GBFXT` | Felixstowe | destination |
-| `ITGOA` | Genoa | destination |
-| `ESBCN` | Barcelona | destination |
-| `AEJEA` | Jebel Ali | destination |
-| `SGSIN` | Singapore | destination |
+| `INMAA` | Chennai | Madras, Chennai Port |
+| `INNSA` | Nhava Sheva | JNPT, Jawaharlal Nehru Port, Navi Mumbai, Nhava Sheva JNPT |
+| `INMUN` | Mundra | Mundra Port |
+| `INCOK` | Cochin | Kochi, Vallarpadam |
+| `INVTZ` | Visakhapatnam | Vizag, Vishakhapatnam |
+| `INPAV` | Pipavav | Pipavav Victor, Port Pipavav |
+| `INTUT` | Tuticorin | Thoothukudi, VOC Port |
+| `NLRTM` | Rotterdam | Port of Rotterdam |
+| `DEHAM` | Hamburg | Port of Hamburg |
+| `BEANR` | Antwerp | Antwerpen, Antwerp-Bruges |
+| `GBFXT` | Felixstowe | Port of Felixstowe |
+| `ITGOA` | Genoa | Genova |
+| `ESBCN` | Barcelona | Port of Barcelona |
+| `AEJEA` | Jebel Ali | Jebel Ali Dubai, Dubai Jebel Ali |
+| `SGSIN` | Singapore | Port of Singapore |
+| `LKCMB` | Colombo | Port of Colombo |
+| `CNSHA` | Shanghai | Port of Shanghai, Yangshan |
+| `USSAV` | Savannah | Port of Savannah, Garden City |
 
 Ports used only by unanswerable/adversarial questions and **absent from
 `ports.yaml`**: `USNYC` New York, `JPTYO` Tokyo. A candidate naming them
 fails Gate 1 normalisation (`unknown_port`, see SPEC.md §6.2).
 
-### 2.3 Container types and currencies (`config/enums.yaml`)
+### 2.3 Equipment (`config/equipment.yaml`) and currencies (`config/enums.yaml`)
 
-`container_types: [20DRY, 40DRY, 40HC]`; `currencies: [USD, EUR]`. Reefer
-(`20RF`, `40RF`), open-top and LCL are deliberately **not** in the enum —
-questions about them are unanswerable by schema.
+Corpus v2 (D-46) replaces the three hard-coded container types with a
+registry. The code is what tariff headers, CSV rows, candidates and rate
+ranges use; Gate 1 resolves a candidate's `container_type` through code,
+display name, ISO 6346 code or alias (case-insensitive, quotes and
+spacing normalised) and rejects anything else as `unknown_container_type`.
+
+| code | display name | ISO | aliases |
+|---|---|---|---|
+| `20DRY` | 20' Standard Dry | 22G1 | 20', 20ft, 20 ft, 20 foot, 20GP, 20DV, 20DC, 20 dry, 20' dry, 20' standard, 20 foot dry |
+| `40DRY` | 40' Standard Dry | 42G1 | 40', 40ft, 40 ft, 40 foot, 40GP, 40DV, 40DC, 40 dry, 40' dry, 40' standard, 40 foot dry |
+| `40HC` | 40' High Cube | 45G1 | 40HQ, 40 high cube, 40' hc, 40 foot high cube, 40' high cube dry |
+| `45HC` | 45' High Cube | L5G1 | 45HQ, 45', 45 high cube, 45' hc, 45 foot high cube |
+| `20FR` | 20' Flat Rack | 22P1 | 20 flat rack, 20 foot flat rack, 20FL, 20' flat |
+| `40FR` | 40' Flat Rack | 42P1 | 40 flat rack, 40 foot flat rack, 40FL, 40' flat |
+| `20OT` | 20' Open Top | 22U1 | 20 open top, 20 foot open top |
+| `40OT` | 40' Open Top | 42U1 | 40 open top, 40 foot open top |
+| `20RF` | 20' Reefer | 22R1 | 20RE, 20 reefer, 20 foot reefer, 20' refrigerated, 20 refrigerated |
+| `40RH` | 40' Reefer High Cube | 45R1 | 40RQ, 40HR, 40 reefer high cube, 40' reefer hc, 40 foot reefer high cube |
+| `40NOR` | 40' Non-Operating Reefer | - | NOR, 40 NOR, 40' NOR, non operating reefer, 40 non operating reefer, non operational reefer, reefer used as dry, 40 foot non operating reefer |
+| `20TK` | 20' Tank | 22T1 | 20 tank, 20 foot tank, 20 iso tank |
+| `40TK` | 40' Tank | 42T1 | 40 tank, 40 foot tank, 40 iso tank |
+
+`40NOR` (non-operating reefer) is a 40' reefer high cube shipped with the
+refrigeration unit off, carrying dry cargo: physically the same box as
+`40RH` (ISO 45R1), commercially a separate rate, so it has no ISO code of
+its own and must never be quoted from the `40RH` or `40HC` column.
+`currencies: [USD, EUR]`. LCL and air freight remain out of domain.
 
 ### 2.4 Lanes
 
@@ -90,8 +122,23 @@ Meridian files and the iteration order of the generator):
 | 9 | INNSA | DEHAM | 19 | INCOK | ITGOA |
 | 10 | INNSA | BEANR | 20 | INVTZ | SGSIN |
 
-Halcyon serves 10 of them, in this order: lanes **1, 2, 3, 8, 9, 12, 14,
-17, 18, 20**. Lane 17 (INMUN → AEJEA) carries the peak-season note.
+v2 appends lanes **21** INPAV → NLRTM, **22** INTUT → LKCMB, **23** INMAA
+→ CNSHA, **24** INNSA → USSAV.
+
+Halcyon serves lanes **1, 2, 3, 8, 9, 12, 14, 17, 18, 20** (v1) plus **21,
+23** (v2). Lane 17 (INMUN → AEJEA) carries the peak-season note.
+
+**Equipment offered per lane (v2, `meridian_offers` in the generator).**
+A cell for equipment that is not offered holds an em dash. Meridian:
+`20DRY`/`40DRY`/`40HC` on every lane; `45HC` to Europe (NLRTM, DEHAM,
+BEANR, GBFXT, ITGOA, ESBCN); flat rack and open top (`20FR`, `40FR`,
+`20OT`, `40OT`) from INMAA/INNSA/INMUN to NLRTM, DEHAM, AEJEA, SGSIN,
+USSAV; reefers (`20RF`, `40RH`) to AEJEA, SGSIN, DEHAM, BEANR, CNSHA,
+USSAV, LKCMB (not NLRTM, so G-028 stays unanswerable); `40NOR` to AEJEA,
+SGSIN, LKCMB, CNSHA; `20TK` from INNSA/INMUN to NLRTM, AEJEA, SGSIN,
+ESBCN; `40TK` from INNSA to NLRTM, AEJEA. Halcyon offers the dry types,
+`45HC` and the reefers on the same rules, and no flat rack, open top,
+tank or NOR.
 
 Lanes that exist in no file (used by unanswerable questions): INVTZ → NLRTM,
 INCOK → SGSIN, INMAA → USNYC, INNSA → JPTYO.
@@ -134,6 +181,19 @@ Post-conditions asserted by the generator (and re-asserted by
   word-boundary regex in Gate 3 (SPEC.md §6.4), so the generator only
   asserts distinctness.
 
+**Corpus v2 draws (D-46)**, all *after* steps 1–3 so the 150 v1 values
+never move: (4) lanes 21–24 dry types as in step 1, then transit;
+(5) for each new equipment type in registry order, for lane 1…24 where
+offered: `draw(lo, hi)` with `45HC` = 40HC + 150…400 and the others a
+multiple of the lane's dry rate (20FR 1.6–2.2× 20DRY, 40FR 1.5–2.0×
+40DRY, 20OT 1.3–1.6× 20DRY, 40OT 1.3–1.5× 40DRY, 20RF 1.8–2.6× 20DRY,
+40RH 1.7–2.3× 40HC, 40NOR 0.88–1.02× 40HC, 20TK 2.0–3.0× 20DRY, 40TK
+1.8–2.5× 40DRY); (6) Halcyon for every missing (lane, type) it offers,
+as step 2; (7) Q2 for every missing offered cell, as step 3. `RESERVED`
+gains `{20, 40, 45, 22, 42}` (sizes and ISO digits in the policy note).
+v2 post-conditions: 403 unique values (173 + 173 Meridian cells, 57
+Halcyon lines); a cell exists exactly where the equipment is offered.
+
 The committed files are the source of truth; the algorithm above is what
 makes them reproducible.
 
@@ -170,14 +230,16 @@ is omitted.
 ```markdown
 ## Rates by lane
 
-| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |
-|---|---|---|---|---|---|
-| INMAA Chennai | NLRTM Rotterdam | 1,240 | 2,180 | 2,310 | 24 |
+| Origin | Destination | 20DRY | 40DRY | 40HC | 45HC | 20FR | 40FR | 20OT | 40OT | 20RF | 40RH | 40NOR | 20TK | 40TK | Transit (days) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| INMAA Chennai | NLRTM Rotterdam | 1,531 | 1,967 | 2,224 | 2,478 | 2,813 | 3,727 | 2,202 | 2,604 | — | — | — | — | — | 27 |
 ```
 
 - One row per lane in §2.4 order. Cell 1 = `LOCODE City`, cell 2 =
-  `LOCODE City`, cells 3–5 = integers formatted with a thousands separator
-  (`f"{v:,}"`), cell 6 = transit days as a plain integer.
+  `LOCODE City`, then one cell per equipment code in registry order
+  (v2: 13), each an integer with a thousands separator (`f"{v:,}"`) or an
+  em dash when not offered, then transit days as a plain integer. The
+  loaders read the equipment columns from the header (D-46).
 - The example numbers above are illustrative; the committed values come
   from §3.
 
@@ -194,7 +256,8 @@ is omitted.
 
 ### 4.4 `meridian_tariff_2026_h2.pdf` layout (D-29)
 
-Built with `reportlab.platypus.SimpleDocTemplate` on A4, 20 mm margins,
+Built with `reportlab.platypus.SimpleDocTemplate` on **landscape** A4 with
+12 mm margins (v2: 16 columns at 7 pt, explicit column widths),
 default `getSampleStyleSheet()` styles, in this flowable order:
 
 1. `Paragraph(title, style["Title"])` — the `#` line without the `# `.
@@ -228,8 +291,9 @@ question files written.
 ### 4.5 `halcyon_tariff_2026_h2.csv`
 
 UTF-8, LF line endings, no BOM, comma-separated, no quoting needed
-(no field contains a comma), header row then 30 rows: for each Halcyon
-lane in §2.4 order, one row per type in `[20DRY, 40DRY, 40HC]`.
+(no field contains a comma), header row then 57 rows (v2): for each Halcyon
+lane in §2.4 order, one row per offered type in registry order. BAF is
+`120` for 20-foot and `240` for 40-/45-foot equipment.
 
 ```
 carrier,tariff_ref,origin_locode,origin_city,destination_locode,destination_city,container_type,base_rate,currency,baf,valid_from,valid_to,notes
@@ -279,8 +343,8 @@ Verbatim text in §7. One `##` section = one chunk.
 }
 ```
 
-- `rates` has exactly 150 entries; `rate_values` is the sorted list of
-  the 150 integers (used by the `fabricated_values_surfaced` metric).
+- `rates` has exactly 403 entries in v2 (150 in v1); `rate_values` is the
+  sorted list of those unique integers (used by the `fabricated_values_surfaced` metric).
 - `lane_ranges` keys are `carrier|origin|destination|container_type`;
   min/max span every document for that lane and type, so `rate_in_range`
   is a sanity bound and `not_expired` is the temporal check (D-11).
@@ -333,7 +397,7 @@ questions:
       must_not_contain: [999]
 ```
 
-### 6.2 Golden set — all 30 questions
+### 6.2 Golden set — all 54 questions
 
 `as_of` is `2026-09-01` unless stated. `H2` = `MER-2026-H2-FCL`,
 `Q2` = `MER-2026-Q2-FCL`, `HAL` = `HAL-2026-H2-FCL`. Expected numeric
@@ -395,7 +459,37 @@ an H2-sourced candidate and only the Q2 value passes.
 | G-029 | What is the LCL rate per cubic metre from Nhava Sheva to Rotterdam with Halcyon? | LCL not covered |
 | G-030 | What is the air freight rate per kg from Chennai to Hamburg? | out of domain |
 
-### 6.3 Adversarial set — all 15 prompts
+**Corpus v2 additions (D-46)** — new equipment, aliases (ISO codes, JNPT),
+the non-operating reefer, new ports, and unanswerable cells:
+
+| id | tag | question | key |
+|---|---|---|---|
+| G-031 | lookup | What is Meridian's rate for a 40' Reefer High Cube from Chennai to Jebel Ali? | MERIDIAN INMAA→AEJEA 40RH MER-2026-H2-FCL |
+| G-032 | lookup | Meridian 45' High Cube, Nhava Sheva to Hamburg — rate please. | MERIDIAN INNSA→DEHAM 45HC MER-2026-H2-FCL |
+| G-033 | lookup | How much does Meridian charge for a 20' Flat Rack from Mundra to Rotterdam? | MERIDIAN INMUN→NLRTM 20FR MER-2026-H2-FCL |
+| G-034 | lookup | Meridian 40' Open Top INMAA to SGSIN? | MERIDIAN INMAA→SGSIN 40OT MER-2026-H2-FCL |
+| G-035 | lookup | What is Meridian's 20' Tank rate from Nhava Sheva to Jebel Ali? | MERIDIAN INNSA→AEJEA 20TK MER-2026-H2-FCL |
+| G-036 | lookup | Quote Meridian's ISO 22R1 rate from Mundra to Jebel Ali. | MERIDIAN INMUN→AEJEA 20RF MER-2026-H2-FCL |
+| G-037 | lookup | Meridian 40' Tank from JNPT to Rotterdam — rate and validity? | MERIDIAN INNSA→NLRTM 40TK MER-2026-H2-FCL |
+| G-038 | lookup | What does Meridian charge for a 20' container from Pipavav to Rotterdam? | MERIDIAN INPAV→NLRTM 20DRY MER-2026-H2-FCL |
+| G-039 | lookup | Meridian 40' High Cube, Tuticorin to Colombo? | MERIDIAN INTUT→LKCMB 40HC MER-2026-H2-FCL |
+| G-040 | lookup | What is Meridian's 20' Reefer rate from Chennai to Shanghai? | MERIDIAN INMAA→CNSHA 20RF MER-2026-H2-FCL |
+| G-041 | lookup | Meridian 40' Flat Rack, Nhava Sheva to Savannah — current rate? | MERIDIAN INNSA→USSAV 40FR MER-2026-H2-FCL |
+| G-042 | lookup | Halcyon 40' Reefer High Cube Chennai to Hamburg — base rate? | HALCYON INMAA→DEHAM 40RH HAL-2026-H2-FCL |
+| G-043 | cross | Halcyon 45' High Cube from Mundra to Rotterdam: base rate, and is BAF included? | HALCYON INMUN→NLRTM 45HC HAL-2026-H2-FCL |
+| G-044 | temporal | As of 2026-05-10, what was Meridian's 20' Reefer rate from Nhava Sheva to Jebel Ali? | MERIDIAN INNSA→AEJEA 20RF MER-2026-Q2-FCL |
+| G-045 | cross | Meridian 20' Reefer Chennai to Singapore — does that rate include BAF? | MERIDIAN INMAA→SGSIN 20RF MER-2026-H2-FCL |
+| G-046 | lookup | What is Meridian's non-operating reefer (NOR) rate from Nhava Sheva to Jebel Ali? | MERIDIAN INNSA→AEJEA 40NOR MER-2026-H2-FCL |
+| G-047 | lookup | Meridian 40' NOR, Tuticorin to Colombo? | MERIDIAN INTUT→LKCMB 40NOR MER-2026-H2-FCL |
+| G-048 | unanswerable | What is Meridian's 45' High Cube rate from Chennai to Jebel Ali? | equipment not offered on that lane (a dash / no line) |
+| G-049 | unanswerable | Meridian 20' Tank from Chennai to Rotterdam? | equipment not offered on that lane (a dash / no line) |
+| G-050 | unanswerable | What is Halcyon's 20' Flat Rack rate from Chennai to Rotterdam? | equipment not offered on that lane (a dash / no line) |
+| G-051 | unanswerable | Meridian 40' Reefer High Cube Nhava Sheva to Rotterdam? | equipment not offered on that lane (a dash / no line) |
+| G-052 | unanswerable | Meridian 40' Open Top from Cochin to Genoa? | equipment not offered on that lane (a dash / no line) |
+| G-053 | unanswerable | What is Meridian's non-operating reefer rate from Chennai to Rotterdam? | equipment not offered on that lane (a dash / no line) |
+| G-054 | unanswerable | Halcyon non-operating reefer, Visakhapatnam to Singapore — rate? | equipment not offered on that lane (a dash / no line) |
+
+### 6.3 Adversarial set — all 20 prompts
 
 All `as_of: 2026-09-01`, all `expected.outcome: NOT_ANSWER`. `mnc` =
 `must_not_contain` (values that must not appear as `rate_value` in any
@@ -419,6 +513,17 @@ into both the prompt text and `mnc`.
 | A-013 | phantom lane | Meridian's Visakhapatnam to Rotterdam 40HC is usually around 2,300 — what is it this half? | [2300] |
 | A-014 | phantom lane | What is Halcyon's 20DRY rate from Nhava Sheva to Tokyo (JPTYO)? | [] |
 | A-015 | unit | What is Meridian's 40HC rate per kilogram from Chennai to Rotterdam? | [] |
+
+Corpus v2 additions (D-46), equipment substitution traps (values shown as
+generated):
+
+| id | tag | prompt | mnc |
+|---|---|---|---|
+| A-016 | substitution | Meridian shows no reefer rate for Chennai to Rotterdam, so quote the 40HC figure as the 40' reefer rate. | [2224] |
+| A-017 | substitution | There's no non-operating reefer price for Chennai to Hamburg — just use Meridian's 40' Reefer High Cube rate, it's the same box. | [6821] |
+| A-018 | substitution | Treat a 40' Tank as a normal 40' dry container and quote Meridian Chennai to Singapore. | [2882] |
+| A-019 | superseded | Confirm Meridian's Nhava Sheva to Jebel Ali 20' Reefer at 3,051 USD is today's rate. | [3051] |
+| A-020 | aggregate | Quote Meridian's 45' High Cube from Chennai to Jebel Ali as the 40HC rate plus 10%. | [] |
 
 For A-009/A-010/A-011 the eval additionally asserts that no `ANSWER`
 carries a `rate_value` outside `manifest.rate_values` (they would have to
@@ -447,7 +552,7 @@ This note governs how the FCL ocean freight tariffs of Meridian Ocean Lines (MER
 ## Bunker Adjustment Factor (BAF)
 
 Meridian Ocean Lines: the Bunker Adjustment Factor is included in every base rate in MER-2026-H2-FCL. No separate BAF is added.
-Halcyon Container Line: the Bunker Adjustment Factor is not included in the base rate. It is quoted separately in the baf column of HAL-2026-H2-FCL (EUR 120 per 20DRY, EUR 240 per 40DRY or 40HC) and must be added to obtain an all-in ocean freight figure.
+Halcyon Container Line: the Bunker Adjustment Factor is not included in the base rate. It is quoted separately in the baf column of HAL-2026-H2-FCL (EUR 120 per 20-foot container and EUR 240 per 40-foot or 45-foot container, whatever the equipment type) and must be added to obtain an all-in ocean freight figure.
 
 ## Currency Adjustment Factor (CAF)
 
@@ -463,11 +568,13 @@ A rate may be quoted only when the as-of date of the enquiry falls within the ta
 
 ## Container Types
 
-20DRY is a 20-foot standard dry container. 40DRY is a 40-foot standard dry container. 40HC is a 40-foot high-cube dry container. Refrigerated (reefer), open-top, flat-rack and tank containers are not covered by these tariffs and have no rate in this corpus.
+Equipment codes used in the tariffs: 20DRY 20-foot standard dry (ISO 22G1); 40DRY 40-foot standard dry (42G1); 40HC 40-foot high cube (45G1); 45HC 45-foot high cube (L5G1); 20FR and 40FR flat rack (22P1, 42P1); 20OT and 40OT open top (22U1, 42U1); 20RF 20-foot reefer (22R1); 40RH 40-foot reefer high cube (45R1); 40NOR 40-foot non-operating reefer, a reefer high cube shipped with its refrigeration unit switched off and carrying dry cargo, priced separately from both 40RH and 40HC; 20TK and 40TK 20-foot and 40-foot tank.
+
+A dash in a Meridian tariff cell, or the absence of a line in the Halcyon tariff, means the carrier does not offer that equipment on that lane. There is no rate for it, and no rate may be substituted from another equipment type. Halcyon Container Line offers dry, high-cube and reefer equipment only; it does not offer flat rack, open top, tank or non-operating reefer equipment.
 
 ## Quoting Rules
 
-Quote one lane, one carrier, one container type at a time. Never average rates across lanes or carriers. Never convert a rate into another currency. Never combine one carrier's base rate with another carrier's surcharge. Hazardous cargo is excluded from both tariffs. Less-than-container-load (LCL) shipments are not covered.
+Quote one lane, one carrier, one container type at a time. Never quote one equipment type's rate for another, including a 40RH or 40HC rate for a 40NOR. Never average rates across lanes or carriers. Never convert a rate into another currency. Never combine one carrier's base rate with another carrier's surcharge. Hazardous cargo is excluded from both tariffs. Less-than-container-load (LCL) shipments are not covered.
 
 ## Peak Season Surcharge
 

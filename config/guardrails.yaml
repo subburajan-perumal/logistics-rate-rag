@@ -29,8 +29,8 @@ confidence:
       w_sim: 0.4
       w_rank: 0.2
   threshold:
-    with_reranker: 0.664151
-    without_reranker: 0.810893
+    with_reranker: 0.591439
+    without_reranker: 0.796844
   tuned_on:
-    with_reranker: 20260929T050334Z-chroma-with_reranker-tuning
-    without_reranker: 20260923T074757Z-chroma-without_reranker-tuning
+    with_reranker: 20260929T083924Z-chroma-with_reranker-tuning
+    without_reranker: 20260929T084539Z-chroma-without_reranker-tuning
