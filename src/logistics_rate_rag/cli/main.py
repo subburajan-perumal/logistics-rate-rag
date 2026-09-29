@@ -31,11 +31,19 @@ def _configure_logging(level: str) -> None:
 
 
 def cmd_index(args: argparse.Namespace, settings: Settings) -> int:
-    if args.enrich:
-        raise NotImplementedError("--enrich ships in Phase 8 (chain/enrich.py)")
-
     docs = load_corpus(settings.project_root / "data" / "corpus")
     chunks = chunk_corpus(docs, settings.retrieval, settings.manifest.corpus_version)
+    if args.enrich:
+        from logistics_rate_rag.chain.enrich import enrich_chunks
+        from logistics_rate_rag.chain.ratelimit import RateLimiter
+        from logistics_rate_rag.chain.usage import sum_usage
+
+        chunks, usages = enrich_chunks(chunks, settings, RateLimiter(settings.llm_min_interval_s))
+        totals = sum_usage(usages, settings.prices)
+        print(
+            f"enriched {len(chunks)} chunks: {totals.live_calls} live, "
+            f"{totals.cache_hits} cached, ${totals.cost_usd:.4f}"
+        )
 
     store_names = (
         ["chroma", "pinecone"] if args.store == "both" else [args.store or settings.vector_store]
@@ -45,7 +53,7 @@ def cmd_index(args: argparse.Namespace, settings: Settings) -> int:
         settings.embedding_model, settings.embedding_dim, settings.google_api_key
     )
     for store_name in store_names:
-        backend = build_backend(settings, store_name, embedder)
+        backend = build_backend(settings, store_name, embedder, enriched=args.enrich)
 
         if args.reset:
             backend.reset()
@@ -198,9 +206,9 @@ def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
 def cmd_recall(args: argparse.Namespace, settings: Settings) -> int:
     from logistics_rate_rag.eval.runner import run_recall
 
-    if args.enriched:
-        raise NotImplementedError("enrichment ships in Phase 8")
-    result = run_recall(settings, args.store or settings.vector_store, args.reranker)
+    result = run_recall(
+        settings, args.store or settings.vector_store, args.reranker, enriched=args.enriched
+    )
     for name, value in result.recall.items():
         print(f"{name:<32} {value:.4f}")
     print(

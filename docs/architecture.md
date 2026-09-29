@@ -39,13 +39,14 @@ CandidateChain (chain/candidate_chain.py)
    │
    ▼  CandidateResult{candidate | parsing_error, retrieved, pinned, usage}
 run_gates (guardrails/pipeline.py)          ← pure Python from here on
-   ├── Gate 1  gate1_schema      parse? refusal clean? required fields? ports known? cited chunk ids retrieved? doc matches?
+   ├── Gate 1  gate1_schema      parse? refusal clean? required fields? ports + carrier resolved via config (D-45)? cited chunk ids retrieved? doc matches?
    │            fail ──► REJECT(parse_error | unknown_port | unknown_source)      refusal ──► REFUSED
    ├── Gate 2  gate2_rules       carrier_known · rate_in_range · currency_matches_source · dates_ordered · not_expired · surcharge_consistent
    │            fail ──► REJECT(rule:<name>)
    ├── Gate 3a gate3_grounding   rate_value, valid_to and source_span literally present in the cited chunk text
    │            fail ──► REJECT(ungrounded:<field>)
-   └── Gate 3b gate3_confidence  0.35·model + 0.25·similarity + 0.30·rerank + 0.10·(1/rank) ≥ τ (tuned)
+   └── Gate 3b gate3_confidence  0.35·model + 0.25·similarity + 0.30·rerank + 0.10·(1/rank) ≥ τ (tuned: 0.664)
+                                 no reranker: 0.40·model + 0.40·similarity + 0.20·(1/rank) ≥ τ (tuned: 0.811)
                 fail ──► NEEDS_REVIEW (sources only, no values)
    │
    ▼
@@ -67,6 +68,12 @@ data/corpus/*  ──► loaders (md / csv / pdf via pdfplumber) ──► Loade
                ──► StoreBackend.upsert (diff by chunk_id + content hash → idempotent)
                ──► Pinecone only: wait until describe_index_stats shows the count
 ```
+
+`StoreBackend.existing()` diffs by content hash; on Pinecone it pages
+`list()` + `fetch()` rather than querying with a zero vector, which the
+cosine metric rejects (D-44). `--enrich` writes a separate collection
+(`rates_v1_enriched` / `corpus-v1-enriched`), so the raw index is never
+touched by the ablation.
 
 `LexicalIndex` is rebuilt from `StoreBackend.all_chunks()` at load time
 and never persisted.
@@ -117,7 +124,7 @@ by construction.
 | Corpus, chunks, chunk ids, hashes | yes | seeded generator; frozen files; content hashes |
 | Embeddings | API-dependent | same input → same vector in practice; index is diffed by content hash, not by vector |
 | Dense search | yes for a fixed index | cosine over stored vectors |
-| BM25, RRF | yes | pure functions, explicit tie-breaks |
+| BM25, RRF | yes | pure functions, explicit tie-breaks; tokenizer splits on non-word characters (D-43) |
 | FlashRank | yes | ONNX inference, verified bit-identical |
 | Pinecone rerank | API-dependent | used only in the Pinecone runs |
 | LLM candidate | **no** (Gemini fixes sampling; thinking minimal, seed set) | response cache makes every re-run reproducible |

@@ -2,7 +2,7 @@
 
 `mode="gated"` runs all three real gates (Phases 4-6). Hybrid retrieval
 and re-ranking are real (Phase 2b), both stores work (Phase 7);
-enrichment is still Phase 8. `run_recall` is the LLM-free retrieval check (D-31, D-33).
+enrichment is the D-34 ablation. `run_recall` is the LLM-free retrieval check (D-31, D-33).
 """
 
 from __future__ import annotations
@@ -133,8 +133,6 @@ def _run_one_question(
 
 def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
     store = run_cfg.store
-    if run_cfg.enriched:
-        raise NotImplementedError("enrichment ships in Phase 8")
 
     # Reflect what this run actually does (dense/none/chroma, gates off for
     # baseline mode), not settings' env-sourced aspirational defaults —
@@ -152,7 +150,7 @@ def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
     embedder = GeminiEmbedder(
         settings.embedding_model, settings.embedding_dim, settings.google_api_key
     )
-    backend = build_backend(settings, store, embedder)
+    backend = build_backend(settings, store, embedder, enriched=run_cfg.enriched)
     all_chunks = backend.all_chunks() or chunks
     retriever = build_retriever(effective_settings, backend, embedder, all_chunks)
     cache = None if run_cfg.no_cache else ResponseCache(settings.llm_cache_dir)
@@ -381,7 +379,9 @@ def _target_chunk_ids(chunks, q: Question) -> tuple[str, ...]:
     )
 
 
-def run_recall(settings: Settings, store: str, reranker: str | None = None) -> RecallResult:
+def run_recall(
+    settings: Settings, store: str, reranker: str | None = None, *, enriched: bool = False
+) -> RecallResult:
     """LLM-free recall@k_final over golden ANSWER questions for all three
     retrieval stages at once: dense, dense+BM25 fused (RRF), and the fused
     top-k_retrieve re-ranked. One query embedding per question."""
@@ -398,7 +398,7 @@ def run_recall(settings: Settings, store: str, reranker: str | None = None) -> R
     embedder = GeminiEmbedder(
         settings.embedding_model, settings.embedding_dim, settings.google_api_key
     )
-    backend = build_backend(settings, store, embedder)
+    backend = build_backend(settings, store, embedder, enriched=enriched)
     all_chunks = backend.all_chunks() or chunks
     lexical = LexicalIndex(all_chunks)
     rr = build_reranker(
@@ -450,9 +450,10 @@ def run_recall(settings: Settings, store: str, reranker: str | None = None) -> R
         f"retrieval_recall@{k_final}_reranked": round(sum(r.reranked_hit for r in rows) / n, 4),
     }
     ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    run_id = f"{ts}-{store}-recall"
+    run_id = f"{ts}-{store}-recall{'-enriched' if enriched else ''}"
     config = {
         "store": store,
+        "enriched": enriched,
         "reranker": reranker_name,
         "k_retrieve": k_retrieve,
         "k_final": k_final,

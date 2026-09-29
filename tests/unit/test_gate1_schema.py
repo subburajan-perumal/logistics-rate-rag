@@ -123,6 +123,25 @@ def test_city_name_normalised_to_locode():
     assert cand.origin == "INMAA"
 
 
+@pytest.mark.parametrize("name", ["MERIDIAN OCEAN LINES", "Meridian", "mer"])
+def test_configured_carrier_alias_normalised_to_key(name):
+    # D-45: the 2026-09-29 gated eval rejected a correct G-023 answer on
+    # carrier_known because the model wrote the display name.
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(carrier=name), None, _ctx([chunk]), settings)
+    assert result.passed is True
+    assert cand.carrier == "MERIDIAN"
+
+
+def test_unconfigured_carrier_left_for_gate2():
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(carrier="MAERSK"), None, _ctx([chunk]), settings)
+    assert result.passed is True
+    assert cand.carrier == "MAERSK"
+
+
 def test_unknown_port_rejected():
     settings = load_settings()
     chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")

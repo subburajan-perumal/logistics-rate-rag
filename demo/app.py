@@ -4,6 +4,7 @@ and grounding/confidence exactly as `rate-rag ask` does; the point of
 this page is to show that guardrail trace, not just an answer.
 """
 
+import dataclasses
 import sys
 from datetime import date
 from pathlib import Path
@@ -63,7 +64,10 @@ st.set_page_config(page_title="logistics-rate-rag — ask the rate desk", layout
 
 @st.cache_resource(show_spinner="Loading corpus and settings…")
 def get_settings():
-    return load_settings()
+    # The demo image carries no rank-bm25/flashrank (see demo/requirements.txt),
+    # so it runs dense retrieval with no reranker; say so in every answer's
+    # store/retrieval/reranker fields rather than the env defaults.
+    return dataclasses.replace(load_settings(), retrieval_mode="dense", reranker="none")
 
 
 @st.cache_resource(show_spinner="Indexing the corpus (one-time per container)…")

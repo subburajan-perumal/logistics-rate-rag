@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from logistics_rate_rag.config import Ports, Settings
+from logistics_rate_rag.config import Carrier, Ports, Settings
 from logistics_rate_rag.guardrails.context import QuestionContext
 from logistics_rate_rag.schema.answer import GateResult
 from logistics_rate_rag.schema.candidate import RateCandidate
@@ -43,6 +43,18 @@ def _normalize_port(code: str | None, ports: Ports) -> tuple[str | None, str | N
     if code.lower() in ports.city_lower:
         return ports.city_lower[code.lower()], None
     return code, "unknown_port"
+
+
+def _normalize_carrier(name: str | None, carriers: dict[str, Carrier]) -> str | None:
+    """Exact configured alias or display name -> canonical key (PLAN.md D-45).
+    Anything else is returned unchanged for Gate 2's `carrier_known` to judge."""
+    if name is None or name in carriers:
+        return name
+    lowered = name.lower()
+    for key, carrier in carriers.items():
+        if lowered == carrier.display_name.lower() or lowered in carrier.aliases:
+            return key
+    return name
 
 
 def gate1(
@@ -94,8 +106,15 @@ def gate1(
             ),
             None,
         )
-    if origin != candidate.origin or destination != candidate.destination:
-        candidate = candidate.model_copy(update={"origin": origin, "destination": destination})
+    carrier = _normalize_carrier(candidate.carrier, settings.carriers)
+    if (origin, destination, carrier) != (
+        candidate.origin,
+        candidate.destination,
+        candidate.carrier,
+    ):
+        candidate = candidate.model_copy(
+            update={"origin": origin, "destination": destination, "carrier": carrier}
+        )
 
     if candidate.source_chunk_id not in ctx.retrieved_ids:
         return (

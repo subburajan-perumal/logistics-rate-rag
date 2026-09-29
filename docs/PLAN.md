@@ -168,6 +168,7 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-42 | **Gate 3a's number-grounding boundary refined**: reject a match only when preceded/followed by a single digit or `.`, or by the 2-character shape `digit,` / `,digit` (an actual thousands-separator) — **not** by a bare comma alone. SPEC.md §6.4's literal `(?<![\d,.])VARIANT(?![\d,.])` regex excludes *any* adjacent comma, which empirically breaks grounding for every comma-delimited (CSV/Halcyon) value, since a CSV field delimiter comma is indistinguishable from a thousands-separator comma under that simpler rule. Verified against the real corpus: `1332` inside `",1332,EUR,"` failed under the literal spec regex, passed under the refined one — while all of SPEC.md's own worked examples (`1240` not found in `11,240`/`12400`/`1,2400`/`1240.5`; `240` not found in `1,240`) still hold exactly as before. | Found writing `test_gate3_grounding.py` in Phase 6, before trusting the naive regex against real data — every Halcyon golden/adversarial question would otherwise have failed grounding, which would have silently gutted the project's core "0% hallucinated" claim for half the corpus. |
 | D-43 | **BM25 tokenizer splits on every non-word, non-hyphen character** (`[^\w-]+`) instead of SPEC.md §4.5's `[\s|,]+`. The original split left punctuation glued to words: the real G-008 question "Meridian's 20DRY rate on the Mundra<en dash>Barcelona lane?" produced one token for both ports plus `lane?`, so BM25 matched neither port and ranked chunks on filler words ("on"), which the superseded Q2 tariff's `SUPERSEDED ... on 2026-07-01` line happens to contain. Hyphenated codes (`hal-2026-h2-fcl`, `mer-2026-h2-fcl`) still stay whole; numbers still split at the thousands comma. SPEC.md §4.5 updated in the same change. | Found by the first live `rate-rag recall` (2026-09-29): hybrid recall@6 was **0.9583** against dense **1.0000**, the one miss being G-008 with the current-tariff chunk pushed out of the fused top-6 by five Q2 chunks. After the fix all three stages are **1.0000** on the 24 golden ANSWER questions. `test_tokenize_splits_punctuation_and_en_dash` pins the real question. |
 | D-44 | **`PineconeBackend.existing()`/`all_chunks()` page through `index.list()` + `fetch()`** instead of SPEC.md §4.4's zero-vector `query(top_k=10_000)`. Pinecone rejects an all-zero dense vector under the cosine metric, so the spec's trick would fail on the first `index` run; list+fetch also removes the 10k cap. Everything else in §4.4 is as written (serverless aws/us-east-1, cosine, dimension check, batches of 100, 2 s consistency poll, `prune`). | Found while implementing Phase 7 on 2026-09-29, before any live call. The backend takes an injectable client so `test_pinecone_backend.py` exercises paging, batching, the eventual-consistency wait and its timeout without a key. |
+| D-45 | **Gate 1 resolves the candidate's carrier through `carriers.yaml`** (exact alias or display name, case-insensitive) to the canonical key, the same way it already resolves city names to LOCODEs. Anything that isn't an exact configured name is left unchanged, so Gate 2's `carrier_known` still rejects unknown carriers. | The first hybrid + FlashRank gated eval (2026-09-29) rejected a correct golden answer (G-023, 878 USD) on `rule:carrier_known` because the model wrote `MERIDIAN OCEAN LINES`, an alias already listed in `carriers.yaml`. A false rejection is still a cost (it lowers golden accuracy), and the alias table was already config, so this is resolution, not loosening. Pinned by `test_configured_carrier_alias_normalised_to_key`. |
 | D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
@@ -1453,24 +1454,32 @@ cleans up.
       run; record cost in Appendix A
 - [ ] `rate-rag eval --store both --mode both --set all --no-cache` —
       one clean, uncached run of everything; `LATEST.md` regenerated
-- [ ] `rate-rag eval --store chroma --mode gated --set golden --reranker
+- [x] `rate-rag eval --store chroma --mode gated --set golden --reranker
       ablation` — the re-ranking lift row (D-31); same with `--retrieval
-      ablation` — the hybrid lift row (D-33)
-- [ ] `chain/enrich.py` + `rate-rag index --enrich` into a separate Chroma
+      ablation` — the hybrid lift row (D-33) (done 2026-09-29: both lifts
+      **0.000**, gated golden accuracy is 0.958 in every configuration)
+- [x] `chain/enrich.py` + `rate-rag index --enrich` into a separate Chroma
       collection `rates_v1_enriched`; `rate-rag recall --enriched` → the
-      `enrichment_lift` number, recorded whatever it is (D-34)
+      `enrichment_lift` number, recorded whatever it is (D-34) (done
+      2026-09-29: 26 descriptions, $0.022, no rate value leaked; lift
+      **0.000**, raw recall was already 1.000)
 - [ ] Record `cost_usd` of the full run in Appendix A and the README
-- [ ] Gate-breakdown table and before/after table rendered in
-      `LATEST.md`
+      (Chroma half done: $0.28 recorded across the 2026-09-29 runs; the
+      final number waits for the uncached both-store run)
+- [x] Gate-breakdown table and before/after table rendered in
+      `LATEST.md` (before/after per configuration, retrieval ladder, lifts,
+      spend; the gate breakdown is in each run's `.md` and the README)
 
 **Acceptance:** one command produces the full §13.3 table for both
 stores and both modes; results committed.
 
 ### Phase 9 — Docs + 10-minute run (1 session)
 
-- [ ] README per §20.1 with real numbers copied from `LATEST.md`
-- [ ] `docs/architecture.md` matches the code (module table, gates,
-      D-11 note on unfiltered dates)
+- [x] README per §20.1 with real numbers copied from `LATEST.md` (done
+      2026-09-29 for Chroma; the Pinecone parity row is marked not yet run)
+- [x] `docs/architecture.md` matches the code (module table, gates,
+      D-11 note on unfiltered dates) (reviewed 2026-09-29; D-43/44/45 and
+      both tuned thresholds added)
 - [ ] Fresh clone on the **other** machine (Mac): `python -m venv`,
       `pip install -r requirements.lock -e .`, `.env`, `rate-rag index`,
       `rate-rag eval --store chroma --mode gated --set golden` — timed,
@@ -1602,6 +1611,7 @@ section and this plan.
 | 2026-09-23 | Windows | - | User reported all 5 GitHub Actions runs (Phases 2-6) had failed; fixed `.github/workflows/ci.yml` — `ruff format --check .` was scanning `docs/*.md` and reformatting their illustrative Python code fences, failing every run even though the real source tree was clean throughout | Never caught locally since every local ruff run this session was scoped to `src tests`/`src tests scripts`, never bare `.`. Rescoped the workflow to match; confirmed green on run `35837040901` | (housekeeping, not a phase) |
 | 2026-09-23 | Windows | - | User flagged the live Streamlit demo was still showing the Phase 2 maintenance-mode placeholder despite Phases 3-6 landing the real chain and all three gates. Rebuilt `demo/app.py` against the actual gated pipeline (`CandidateChain` + `run_gates`, same as `rate-rag ask`) with a live **Guardrail trace** panel and 5 one-click example questions spanning `ANSWER`/`REJECT`/`REFUSED`; rewrote `demo/requirements.txt` (was still the old scaffold's dependency set with no way to even import `logistics_rate_rag`) | Live-verified locally via headless `streamlit run` + browser automation, not just "it imports": the superseded-tariff trap correctly returned `REJECT` → `rule:not_expired` with real `as_of`/`valid_from`/`valid_to` in the trace; the normal lookup returned `ANSWER` with `rate_value=2224`, matching the Phase 1-verified golden value | (housekeeping, not a phase) |
 | 2026-09-29 | Windows | 2b (+7 code) | `store/lexical.py` (BM25 + RRF), `rerank/` (noop, FlashRank, Pinecone), `build_retriever` factory wired into `ask`/`eval`/tuning, `rate-rag recall`, `with_reranker` threshold tuned; `PineconeBackend` + `build_backend`; `eval` expands `both`/`ablation` into one run per combination; `write_latest` rewritten to the SPEC §7.5 report; `cost_usd` in usage totals; 31 new tests (140 total) | **D-43** (tokenizer) found by the first live recall: hybrid 0.958 < dense 1.000 on G-008; fixed, all three stages 1.000. `with_reranker` threshold **0.664151** (22 correct / 0 incorrect, hybrid + FlashRank). All four `RETRIEVAL_MODE` × `RERANKER` combinations return the verified G-008 value live. **Metric bug fixed**: `adversarial_rejection_rate` counted only REJECT/NEEDS_REVIEW, not REFUSED, so the 2026-09-23 gated run reported 0.133 for what was 14/15 = 0.933 (§13.3 says `outcome ≠ ANSWER`). **D-44** (Pinecone list+fetch). | Phase 7 live run needs `PINECONE_API_KEY`; Phase 8 Chroma half can run now |
+| 2026-09-29 | Windows | 8 (Chroma) + 9 | Phase 8 on Chroma: `eval --mode both --set all` on hybrid + FlashRank, rerank and hybrid ablations, enrichment index + enriched recall; **D-45** (carrier alias resolved in Gate 1) found in the first gated run and all gated runs re-served from cache; `write_latest` keys runs by question set and sums spend across all files; demo labels its real dense/no-reranker settings; README and `architecture.md` rewritten | Hybrid + FlashRank, 45 questions: wrong values **4 → 0**, superseded/injected leaks **2 → 0**, adversarial rejection **0.80 → 1.00**, golden accuracy 0.958 both ways (1 abstention, G-015 `surcharge_consistent`), fabricated 0 both ways. rerank_lift, hybrid_lift, enrichment_lift all **0.000** (ceiling). Spend recorded: $0.28 + $0.022 enrichment. 147 tests | Phase 7 live (needs `PINECONE_API_KEY`), then the uncached both-store Phase 8 run, Mac fresh clone, Phase 10 |
 
 ## Appendix B — Sources checked on 2026-09-17
 
