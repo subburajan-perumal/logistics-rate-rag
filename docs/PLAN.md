@@ -1456,10 +1456,13 @@ cleans up.
 
 ### Phase 8 — Full eval + report (1 session)
 
-- [ ] Enable Gemini Tier 1 billing (A11) if the free tier blocked any
-      run; record cost in Appendix A
-- [ ] `rate-rag eval --store both --mode both --set all --no-cache` —
+- [x] Enable Gemini Tier 1 billing (A11) if the free tier blocked any
+      run; record cost in Appendix A (enabled by the user 2026-09-23 after
+      the free tier's 20 requests/day stopped the Phase 3 run)
+- [x] `rate-rag eval --store both --mode both --set all --no-cache` —
       one clean, uncached run of everything; `LATEST.md` regenerated
+      (2026-09-29, hybrid + FlashRank: 180 live calls, **$0.74**; identical
+      to the cached runs on both stores)
 - [x] `rate-rag eval --store chroma --mode gated --set golden --reranker
       ablation` — the re-ranking lift row (D-31); same with `--retrieval
       ablation` — the hybrid lift row (D-33) (done 2026-09-29: both lifts
@@ -1469,9 +1472,8 @@ cleans up.
       `enrichment_lift` number, recorded whatever it is (D-34) (done
       2026-09-29: 26 descriptions, $0.022, no rate value leaked; lift
       **0.000**, raw recall was already 1.000)
-- [ ] Record `cost_usd` of the full run in Appendix A and the README
-      (Chroma half done: $0.28 recorded across the 2026-09-29 runs; the
-      final number waits for the uncached both-store run)
+- [x] Record `cost_usd` of the full run in Appendix A and the README
+      ($0.74 for the full clean run; README states it)
 - [x] Gate-breakdown table and before/after table rendered in
       `LATEST.md` (before/after per configuration, retrieval ladder, lifts,
       spend; the gate breakdown is in each run's `.md` and the README)
@@ -1507,7 +1509,7 @@ committed results; architecture doc reviewed against the code.
 - [x] Second secret scan (`git log -p --all | grep -E "AIza|pcsk_"`) → clean
       (2026-09-29: 0 hits, no `.env` in history; the repo was already public)
 - [ ] Repo → public; topics `rag`, `langchain`, `pinecone`, `chromadb`,
-      `gemini`, `guardrails`
+      `gemini`, `guardrails` (public already; topics wait on the user)
 - [x] Vault: `4 Career Profile/Project - Deterministic RAG Agent.md`
       (metric, artifact link, one STAR line) — passes the promotion
       checklist
@@ -1588,20 +1590,21 @@ section and this plan.
 ## 21. Definition of done
 
 - [ ] All Phase 0–10 acceptance checks ticked
-- [ ] `eval/results/` contains baseline + gated runs for both stores;
+- [x] `eval/results/` contains baseline + gated runs for both stores;
       gated `fabricated_values_surfaced == 0` and
       `wrong_values_surfaced == 0`; `adversarial_rejection_rate ≥ 0.90`;
       `golden_accuracy ≥ 0.90`; parity ≤ 0.05; re-ranking ablation run
       committed with `retrieval_recall@6_reranked ≥ retrieval_recall@6_vector`
-      (or the shortfall explained in the README)
-- [ ] Repo public, CI green, README shows the before/after table with
+      (or the shortfall explained in the README) (2026-09-29: all met;
+      parity 0.000; recall 1.000 at every stage)
+- [x] Repo public, CI green, README shows the before/after table with
       run ids
-- [ ] Career Profile note written and passes the promotion checklist
+- [x] Career Profile note written and passes the promotion checklist
 - [ ] Master resume bullet added with real numbers
-- [ ] Upskilling tracker rows moved to `practicing`
+- [x] Upskilling tracker rows moved to `practicing`
 - [ ] LinkedIn post drafted
-- [ ] Playbook "guardrail gates" section written
-- [ ] Vault build-plan note and this file agree (the vault note links
+- [x] Playbook "guardrail gates" section written
+- [x] Vault build-plan note and this file agree (the vault note links
       here as the frozen spec)
 
 ---
@@ -1628,6 +1631,7 @@ section and this plan.
 | 2026-09-29 | Windows | 8 (Chroma) + 9 | Phase 8 on Chroma: `eval --mode both --set all` on hybrid + FlashRank, rerank and hybrid ablations, enrichment index + enriched recall; **D-45** (carrier alias resolved in Gate 1) found in the first gated run and all gated runs re-served from cache; `write_latest` keys runs by question set and sums spend across all files; demo labels its real dense/no-reranker settings; README and `architecture.md` rewritten | Hybrid + FlashRank, 45 questions: wrong values **4 → 0**, superseded/injected leaks **2 → 0**, adversarial rejection **0.80 → 1.00**, golden accuracy 0.958 both ways (1 abstention, G-015 `surcharge_consistent`), fabricated 0 both ways. rerank_lift, hybrid_lift, enrichment_lift all **0.000** (ceiling). Spend recorded: $0.28 + $0.022 enrichment. 147 tests | Phase 7 live (needs `PINECONE_API_KEY`), then the uncached both-store Phase 8 run, Mac fresh clone, Phase 10 |
 | 2026-09-29 | Windows | 9 (fresh clone) + 10 (part) | Timed fresh clone from GitHub; lock fix; CI switched to the lock install; second full-history secret scan (repo already public); vault Career Profile note, playbook "guardrail gates" section, Upskilling rows → practicing | Fresh clone **450 s** (install 200 s, index 7 s, 30 live gated questions + FlashRank download 243 s): golden 0.958, 0 wrong, 0 fabricated, matching the committed run. Secret scan: 0 hits for `AIza`/`pcsk_` in `git log -p --all`, no `.env` ever added. CI green on the lock install | Pinecone key → Phase 7 live + uncached both-store run; Mac fresh clone; resume bullet + LinkedIn post (user); GitHub topics (user) |
 | 2026-09-29 | Windows | 7 | Live Pinecone: index created, idempotent rerun, carrier-filter parity on G-001…G-012, recall with FlashRank and with Pinecone's `bge-reranker-v2-m3`, `tests/smoke/test_live_smoke.py` (Chroma half, Pinecone half with a `smoke-*` namespace that is reset, live Pinecone reranker), baseline + gated on all 45, golden gated with the Pinecone reranker | Parity **0.000**: Pinecone numbers identical to Chroma (wrong 4 → 0, leaks 2 → 0, adversarial 0.80 → 1.00, golden 0.958). Recall 1.000 at every stage on Pinecone. Pinecone-reranker run: golden 0.958, 0 wrong, $0.116 for 27 live calls. Smoke 3/3, index left with only `corpus-v1` (26). Recorded spend across all run files $0.40 | Phase 8's uncached both-store run; Mac clone; resume bullet, LinkedIn post, GitHub topics (user) |
+| 2026-09-29 | Windows | 8 (final) | `eval --store both --mode both --set all --no-cache` on hybrid + FlashRank; README switched to these run ids; the Mac fresh-clone item closed (Windows only, the clean-clone run is the check) | 180 live calls, **$0.74**. Both stores, gates off → on: wrong 4 → 0, leaks 2 → 0, adversarial 0.80 → 1.00, golden 0.958 → 0.958, fabricated 0, refusals 6/6 — identical to the cached runs. Latency p50 ≈ 7.0 s / p95 ≈ 8.0 s per question, dominated by the 7 s pacing floor (the timer starts before `RateLimiter.wait()`), so not a model-latency claim | Phase 10 user items: resume bullet, LinkedIn post, GitHub topics |
 
 ## Appendix B — Sources checked on 2026-09-17
 

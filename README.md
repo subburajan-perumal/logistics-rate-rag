@@ -8,9 +8,11 @@ that candidate against the schema, the business rules and the cited
 source text before anything reaches the caller.
 
 Same model, same prompt, same 45 questions, same retrieved chunks. The
-only difference between the two columns is whether the gates run:
+only difference between the two columns is whether the gates run. These
+numbers come from one clean, uncached run (180 fresh model calls, $0.74),
+and they are identical on Chroma and on Pinecone:
 
-| Metric (Chroma, hybrid retrieval, FlashRank reranker) | Gates off | Gates on | Target |
+| Metric (hybrid retrieval, FlashRank reranker; Chroma = Pinecone) | Gates off | Gates on | Target |
 |---|---|---|---|
 | Wrong rate values that reached the caller | **4** | **0** | 0 |
 | Fabricated values (not in the corpus at all) | 0 | 0 | 0 |
@@ -19,8 +21,10 @@ only difference between the two columns is whether the gates run:
 | Golden accuracy (24 answerable questions) | 0.958 | 0.958 | ≥ 0.90 |
 | Unanswerable questions correctly refused | 6 / 6 | 6 / 6 | 6 / 6 |
 
-Runs: [`20260929T052343Z-chroma-hybrid-flashrank-baseline`](eval/results/20260929T052343Z-chroma-hybrid-flashrank-baseline.md)
-vs [`20260929T052503Z-chroma-hybrid-flashrank-gated`](eval/results/20260929T052503Z-chroma-hybrid-flashrank-gated.md).
+Runs: Chroma [`…070813Z…-baseline`](eval/results/20260929T070813Z-chroma-hybrid-flashrank-baseline.md)
+vs [`…071328Z…-gated`](eval/results/20260929T071328Z-chroma-hybrid-flashrank-gated.md);
+Pinecone [`…071857Z…-baseline`](eval/results/20260929T071857Z-pinecone-hybrid-flashrank-baseline.md)
+vs [`…072421Z…-gated`](eval/results/20260929T072421Z-pinecone-hybrid-flashrank-gated.md).
 Full report: [`eval/results/LATEST.md`](eval/results/LATEST.md).
 
 **Try it:** [live demo](https://logistics-rate-rag-demo.streamlit.app).
@@ -88,9 +92,15 @@ Pinecone (serverless, same embeddings, same questions) every number above
 is identical: **store parity 0.000**, and the two stores return the same
 top-6 chunks for all 12 carrier-filtered lookups checked. Pinecone's
 managed reranker (`bge-reranker-v2-m3`) also gives golden accuracy 0.958
-with 0 wrong values.
+with 0 wrong values. The cached runs from earlier the same day and the
+clean uncached run agree exactly, so the numbers don't depend on which
+answers happened to be cached.
 
-Recorded LLM spend for every eval run in `eval/results/`: **$0.40**.
+Cost of one full clean evaluation (both stores, gates off and on, 45
+questions each): **$0.74**. Recorded spend across every run file in
+`eval/results/`: see the last line of `LATEST.md`. Per-question time is
+about 7 s (p50) and 8 s (p95), but that is mostly the deliberate 7-second
+pacing between Gemini calls, not model or retrieval latency.
 
 ## Run it
 

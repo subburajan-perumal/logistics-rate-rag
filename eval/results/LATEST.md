@@ -17,7 +17,7 @@ Regenerated from the newest run per configuration.
 | injection_leak | 2 | 0 | 0 |
 | latency_p50_ms | - | - | reported |
 
-**chroma · hybrid · reranker flashrank** (`20260929T052343Z-chroma-hybrid-flashrank-baseline` vs `20260929T052503Z-chroma-hybrid-flashrank-gated`)
+**chroma · hybrid · reranker flashrank** (`20260929T070813Z-chroma-hybrid-flashrank-baseline` vs `20260929T071328Z-chroma-hybrid-flashrank-gated`)
 
 | Metric | Baseline (gates off) | Gated | Target |
 |---|---|---|---|
@@ -28,9 +28,9 @@ Regenerated from the newest run per configuration.
 | wrong_values_surfaced | 4 | 0 | 0 |
 | adversarial_rejection_rate | 0.800 | 1.000 | ≥ 0.90 |
 | injection_leak | 2 | 0 | 0 |
-| latency_p50_ms | - | - | reported |
+| latency_p50_ms | 7102 | 6914 | reported |
 
-**pinecone · hybrid · reranker flashrank** (`20260929T055934Z-pinecone-hybrid-flashrank-baseline` vs `20260929T060134Z-pinecone-hybrid-flashrank-gated`)
+**pinecone · hybrid · reranker flashrank** (`20260929T071857Z-pinecone-hybrid-flashrank-baseline` vs `20260929T072421Z-pinecone-hybrid-flashrank-gated`)
 
 | Metric | Baseline (gates off) | Gated | Target |
 |---|---|---|---|
@@ -41,7 +41,7 @@ Regenerated from the newest run per configuration.
 | wrong_values_surfaced | 4 | 0 | 0 |
 | adversarial_rejection_rate | 0.800 | 1.000 | ≥ 0.90 |
 | injection_leak | 2 | 0 | 0 |
-| latency_p50_ms | - | - | reported |
+| latency_p50_ms | 7048 | 7063 | reported |
 
 ## Every configuration (newest run each)
 
@@ -50,12 +50,12 @@ Regenerated from the newest run per configuration.
 | chroma | dense | flashrank | gated | golden | 0.958 | 0 | 0 | - | `20260929T052712Z-chroma-dense-flashrank-gated` |
 | chroma | dense | none | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T052929Z-chroma-dense-none-baseline` |
 | chroma | dense | none | gated | adversarial, golden | 0.958 | 1 | 0 | 0.933 | `20260929T053001Z-chroma-dense-none-gated` |
-| chroma | hybrid | flashrank | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T052343Z-chroma-hybrid-flashrank-baseline` |
-| chroma | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T052503Z-chroma-hybrid-flashrank-gated` |
+| chroma | hybrid | flashrank | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T070813Z-chroma-hybrid-flashrank-baseline` |
+| chroma | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T071328Z-chroma-hybrid-flashrank-gated` |
 | chroma | hybrid | flashrank | gated | golden | 0.958 | 0 | 0 | - | `20260929T052805Z-chroma-hybrid-flashrank-gated` |
 | chroma | hybrid | none | gated | golden | 0.958 | 0 | 0 | - | `20260929T052523Z-chroma-hybrid-none-gated` |
-| pinecone | hybrid | flashrank | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T055934Z-pinecone-hybrid-flashrank-baseline` |
-| pinecone | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T060134Z-pinecone-hybrid-flashrank-gated` |
+| pinecone | hybrid | flashrank | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T071857Z-pinecone-hybrid-flashrank-baseline` |
+| pinecone | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T072421Z-pinecone-hybrid-flashrank-gated` |
 | pinecone | hybrid | pinecone | gated | golden | 0.958 | 0 | 0 | - | `20260929T060624Z-pinecone-hybrid-pinecone-gated` |
 
 ## Retrieval ladder (LLM-free recall over golden ANSWER questions)
@@ -75,4 +75,4 @@ Regenerated from the newest run per configuration.
 | hybrid_lift | 0.000 | chroma flashrank: hybrid - dense |
 | enrichment_lift | 0.000 | chroma hybrid recall: enriched - raw |
 
-Recorded LLM spend across all 20 eval run files: **$0.3951** (answer generation only; cost tracking started 2026-09-29).
+Recorded LLM spend across all 24 eval run files: **$1.1319** (answer generation only; cost tracking started 2026-09-29).
