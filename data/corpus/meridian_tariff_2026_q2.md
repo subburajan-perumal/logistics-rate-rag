@@ -28,7 +28,7 @@
 | BDCGP Chattogram | MTMAR Marsaxlokk | USD | 1,878 | 3,191 | 3,192 | 3,603 | — | — | — | — | 3,617 | — | — | — | — | 26 |
 | BDCGP Chattogram | MYPKG Port Klang | USD | 367 | 756 | 906 | — | — | — | — | — | — | — | — | — | — | 13 |
 | BDCGP Chattogram | MYTPP Tanjung Pelepas | USD | 869 | 1,146 | 1,749 | — | — | — | — | — | — | — | — | — | — | 7 |
-| BDCGP Chattogram | NGAPP Apapa | USD | 1,753 | 3,092 | 3,093 | — | — | — | — | — | — | — | — | — | — | 16 |
+| BDCGP Chattogram | NGAPP Apapa | USD | 1,753 | 3,092 | 3,094 | — | — | — | — | — | — | — | — | — | — | 16 |
 | BDCGP Chattogram | SGSIN Singapore | USD | 684 | 1,258 | 1,434 | — | — | — | — | — | — | — | — | — | — | 6 |
 | BDCGP Chattogram | TRAMR Ambarli | USD | 1,135 | 1,832 | 2,215 | 2,202 | — | — | — | — | 2,771 | 4,359 | — | — | — | 19 |
 | BDCGP Chattogram | TWKHH Kaohsiung | USD | 497 | 741 | 838 | — | — | — | — | — | 1,204 | 2,108 | — | — | — | 19 |
@@ -39,7 +39,7 @@
 | BDCGP Chattogram | ZADUR Durban | USD | 1,372 | 1,873 | 2,004 | — | — | — | — | — | — | — | — | — | — | 27 |
 | INCCU Kolkata | BEZEE Zeebrugge | USD | 2,040 | 3,139 | 3,797 | 3,389 | — | — | — | — | — | 6,517 | — | — | — | 29 |
 | INCCU Kolkata | CNXAM Xiamen | USD | 481 | 928 | 1,261 | — | — | — | — | — | — | 2,349 | 945 | — | — | 16 |
-| INCCU Kolkata | DEBRV Bremerhaven | USD | 1,508 | 2,928 | 2,929 | 3,294 | — | — | — | — | 3,843 | — | — | — | — | 31 |
+| INCCU Kolkata | DEBRV Bremerhaven | USD | 1,508 | 2,928 | 2,930 | 3,294 | — | — | — | — | 3,843 | — | — | — | — | 31 |
 | INCCU Kolkata | DKAAR Aarhus | USD | 1,303 | 1,892 | 2,441 | 2,730 | — | — | — | — | 2,590 | — | — | — | — | 32 |
 | INCCU Kolkata | ESVLC Valencia | USD | 769 | 1,555 | 1,587 | 2,428 | — | — | — | — | 2,115 | — | — | — | — | 19 |
 | INCCU Kolkata | GHTEM Tema | USD | 1,306 | 2,308 | 2,684 | — | — | — | — | — | — | — | — | — | — | 24 |

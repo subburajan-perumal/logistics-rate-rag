@@ -16,6 +16,7 @@ import hashlib
 import io
 import json
 import random
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -326,8 +327,12 @@ def generate_values(seed: int = SEED) -> dict:
                     f = rng.choice([-1, 1]) * rng.uniform(0.04, 0.15)
                     nv = round(v * (1 + f))
                     rates[k] = nv if nv != v else nv + 1
-                rates["40DRY"] = max(rates["40DRY"], rates["20DRY"] + 1)
-                rates["40HC"] = max(rates["40HC"], rates["40DRY"] + 1)
+                # the ordering clamps can land on the H2 value; a superseded
+                # value must never equal the current one (no extra draws)
+                for k, floor in (("40DRY", "20DRY"), ("40HC", "40DRY")):
+                    rates[k] = max(rates[k], rates[floor] + 1)
+                    if rates[k] == row["rates"][k]:
+                        rates[k] += 1
                 q2[(o, d)] = {**row, "rates": rates}
         out[c.code] = {"lanes": lanes, "h2": h2, "q2": q2}
     for c in CARRIERS:  # post-conditions (CORPUS.md §3)
@@ -601,6 +606,7 @@ def generate(out_dir: Path, force: bool = False, generated_on: str = "2026-09-29
     (corpus_dir / "manifest.json").write_bytes(
         (json.dumps(manifest, sort_keys=True, ensure_ascii=False, indent=1) + "\n").encode("utf-8")
     )
+    (out_dir.parent / "config").mkdir(parents=True, exist_ok=True)
     (out_dir.parent / "config" / "rate_ranges.json").write_bytes(
         (json.dumps(manifest["lane_ranges"], sort_keys=True, indent=1) + "\n").encode("utf-8")
     )
@@ -634,6 +640,11 @@ def say_carrier(code: str, rng: random.Random) -> str:
     return rng.choice([c.display, c.display.split()[0]])
 
 
+def tidy(question: str) -> str:
+    """English after substitution: "Lines's" -> "Lines'", "a ISO" -> "an ISO"."""
+    return re.sub(r"\ba ISO\b", "an ISO", re.sub(r"s's\b", "s'", question))
+
+
 def draft_questions(manifest: dict, seed: int = SEED + 1) -> tuple[dict, dict]:
     rng = random.Random(seed)
     rates = manifest["rates"]
@@ -645,7 +656,7 @@ def draft_questions(manifest: dict, seed: int = SEED + 1) -> tuple[dict, dict]:
     golden: list[dict] = []
 
     def add(tag: str, question: str, r: dict | None, as_of: str = "2026-09-01") -> None:
-        q: dict = {"id": f"G-{len(golden) + 1:03d}", "tag": tag, "question": question,
+        q: dict = {"id": f"G-{len(golden) + 1:03d}", "tag": tag, "question": tidy(question),
                    "as_of": as_of}  # fmt: skip
         if r is None:
             q["expected"] = {"outcome": "NOT_ANSWER"}
@@ -740,7 +751,7 @@ def draft_questions(manifest: dict, seed: int = SEED + 1) -> tuple[dict, dict]:
     prompts: list[dict] = []
 
     def adv(tag: str, question: str, mnc: list[int]) -> None:
-        prompts.append({"id": f"A-{len(prompts) + 1:03d}", "tag": tag, "question": question,
+        prompts.append({"id": f"A-{len(prompts) + 1:03d}", "tag": tag, "question": tidy(question),
                         "as_of": "2026-09-01",
                         "expected": {"outcome": "NOT_ANSWER", "must_not_contain": mnc}})  # fmt: skip
 
@@ -752,7 +763,7 @@ def draft_questions(manifest: dict, seed: int = SEED + 1) -> tuple[dict, dict]:
             f"{q2['currency']} is the live rate today.", [q2["rate_value"]])  # fmt: skip
     offered = {(r["doc"], r["origin"], r["destination"], r["container_type"]) for r in in_force}
     for want, have in [("40NOR", "40RH"), ("20RF", "40HC"), ("20TK", "20DRY"), ("45HC", "40HC"),
-                       ("40FR", "40OT"), ("40RH", "40HC")]:  # fmt: skip
+                       ("40FR", "40DRY"), ("40RH", "40HC")]:  # fmt: skip
         pool = [r for r in in_force if r["container_type"] == have
                 and (r["doc"], r["origin"], r["destination"], want) not in offered]  # fmt: skip
         r = rng.choice(pool)

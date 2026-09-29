@@ -25,6 +25,7 @@ from logistics_rate_rag.config import Settings
 from logistics_rate_rag.eval.metrics import PerQuestion, compute_metrics
 from logistics_rate_rag.eval.questions import Question, load_question_set
 from logistics_rate_rag.guardrails.context import build_question_context
+from logistics_rate_rag.guardrails.gate1_schema import resolve_lane_key
 from logistics_rate_rag.guardrails.pipeline import run_gates, to_answer
 from logistics_rate_rag.ingest.chunking import chunk_corpus
 from logistics_rate_rag.ingest.loaders import load_corpus
@@ -103,6 +104,9 @@ def _run_one_question(
                 "thought_tokens": result.usage.thought_tokens,
             },
             error=None,
+            lane_key=resolve_lane_key(
+                answer.carrier, answer.origin, answer.destination, answer.container_type, settings
+            ),
             **_expected_kwargs(q),
         ), result.usage
     except Exception as e:

@@ -9,9 +9,27 @@ from logistics_rate_rag.eval.metrics import (
     is_fabricated,
     is_injection_leak,
     is_wrong_surfaced,
+    lane_values,
 )
 
-MANIFEST = {"rate_values": [2224, 1166, 3263]}
+LANE = "MERIDIAN|INMAA|NLRTM|40HC"
+
+
+def _rate(carrier, o, d, ctype, v, doc="meridian_tariff_2026_h2.pdf"):
+    return {"carrier": carrier, "origin": o, "destination": d, "container_type": ctype,
+            "rate_value": v, "doc": doc}  # fmt: skip
+
+
+MANIFEST = {
+    "rate_values": [2224, 1166, 3263, 2310],
+    "rates": [
+        _rate("MERIDIAN", "INMAA", "NLRTM", "40HC", 2224),
+        _rate("MERIDIAN", "INMAA", "NLRTM", "40HC", 2310, doc="meridian_tariff_2026_q2.md"),
+        _rate("MERIDIAN", "INMAA", "DEHAM", "20DRY", 1166),
+        _rate("HALCYON", "INNSA", "BEANR", "40DRY", 3263),
+    ],
+}
+KNOWN = lane_values(MANIFEST)
 
 
 def _row(**overrides) -> PerQuestion:
@@ -37,6 +55,7 @@ def _row(**overrides) -> PerQuestion:
         cache_hit=False,
         usage={"input_tokens": 100, "output_tokens": 10, "thought_tokens": 0},
         error=None,
+        lane_key=LANE,
         expected_rate_value=2224,
         expected_currency="USD",
         expected_valid_to="2026-12-31",
@@ -85,8 +104,26 @@ def test_not_answer_expected_but_surfaced_is_wrong():
 
 def test_fabricated_value_not_in_manifest():
     row = _row(rate_value=42424242)
-    assert is_fabricated(row, set(MANIFEST["rate_values"])) is True
-    assert is_fabricated(_row(), set(MANIFEST["rate_values"])) is False
+    assert is_fabricated(row, KNOWN) is True
+    assert is_fabricated(_row(), KNOWN) is False
+
+
+def test_real_value_from_another_lane_is_fabricated():
+    # PLAN.md D-50: 3263 exists in the corpus, but not for this carrier, lane
+    # and equipment, so quoting it here is a made-up number.
+    assert is_fabricated(_row(rate_value=3263), KNOWN) is True
+    assert is_fabricated(_row(rate_value=1166), KNOWN) is True
+
+
+def test_superseded_value_on_same_lane_is_wrong_not_fabricated():
+    row = _row(rate_value=2310)
+    assert is_fabricated(row, KNOWN) is False
+    assert is_wrong_surfaced(row) is True
+
+
+def test_unresolved_lane_counts_any_value_as_fabricated():
+    assert is_fabricated(_row(lane_key=None), KNOWN) is True
+    assert is_fabricated(_row(lane_key=None, outcome="REJECT"), KNOWN) is False
 
 
 def test_injection_leak_detected():

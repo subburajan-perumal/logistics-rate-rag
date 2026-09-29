@@ -57,6 +57,25 @@ def _normalize_carrier(name: str | None, carriers: dict[str, Carrier]) -> str | 
     return name
 
 
+def resolve_lane_key(
+    carrier: str | None,
+    origin: str | None,
+    destination: str | None,
+    container_type: str | None,
+    settings: Settings,
+) -> str | None:
+    """`CARRIER|ORIGIN|DESTINATION|CONTAINER` in canonical codes, resolved the
+    way Gate 1 resolves a candidate; None when any part is missing or not in
+    the registries. Used by the per-lane fabricated metric (PLAN.md D-50)."""
+    o, o_err = _normalize_port(origin, settings.ports)
+    d, d_err = _normalize_port(destination, settings.ports)
+    c = _normalize_carrier(carrier, settings.carriers)
+    ct = resolve_container_type(container_type, settings.equipment)
+    if o_err or d_err or o is None or d is None or ct is None or c not in settings.carriers:
+        return None
+    return f"{c}|{o}|{d}|{ct}"
+
+
 def gate1(
     candidate: RateCandidate | None,
     parsing_error: str | None,

@@ -1,808 +1,1563 @@
-version: 2
-corpus_version: 2
-verified_by: 'claude, 2026-09-29: scripts/verify_questions.py re-parsed the PDF (pdfplumber),
-  the Q2 markdown and the CSV independently of the package loaders and generator;
-  every ANSWER value is the exact cell for its lane and equipment with matching currency,
-  valid_to and BAF treatment; every question names its carrier, ports and equipment;
-  every unanswerable lane/equipment is a dash or has no line; every must_not_contain
-  value is a superseded, wrong-equipment or invented number. 0 failures.'
+version: 3
+corpus_version: 3
+verified_by: 'claude, 2026-09-29: scripts/verify_questions.py re-parsed all 12 tariffs
+  (pdfplumber, plain text, csv module) independently of the package loaders and the
+  generator; every ANSWER value is the exact cell for its carrier, lane and equipment,
+  in that line''s own currency, with the document''s valid_to and BAF treatment, and
+  its document is the only one of that carrier in force on the as-of date; every question
+  names its carrier, ports and equipment, and its port names mean exactly one lane;
+  every checkable unanswerable lane is a dash or has no line; every must_not_contain
+  value is a superseded or wrong-equipment cell of that lane, or a number that is
+  not a cell on the lane named (D-50). 0 failures; 6 planted errors all caught.'
 questions:
 - id: G-001
   tag: lookup
-  question: What is Meridian Ocean Lines' 40HC rate from Chennai to Rotterdam under
-    the current tariff, and until when is it valid?
+  question: Give me Meridian Ocean Lines' current 20' Standard Dry rate VOC Port to
+    USNYC.
   as_of: '2026-09-01'
   key:
     carrier: MERIDIAN
-    origin: INMAA
-    destination: NLRTM
-    container_type: 40HC
+    origin: INTUT
+    destination: USNYC
+    container_type: 20DRY
     tariff_ref: MER-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2224
+    rate_value: 3181
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_h2.pdf
 - id: G-002
   tag: lookup
-  question: Give me Meridian's 20DRY base rate INMAA to DEHAM.
+  question: Give me Halcyon Container Line's current 40HC rate PKKHI to EGPSD.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: DEHAM
-    container_type: 20DRY
-    tariff_ref: MER-2026-H2-FCL
+    carrier: HALCYON
+    origin: PKKHI
+    destination: EGPSD
+    container_type: 40HC
+    tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 1166
+    rate_value: 1246
     currency: USD
     valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
 - id: G-003
   tag: lookup
-  question: What does Meridian charge for a 40DRY from Nhava Sheva to Antwerp?
+  question: How much does Boreal charge for an ISO 42G1 from Laem Chabang to Manzanillo?
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: BEANR
+    carrier: BOREAL
+    origin: THLCH
+    destination: MXZLO
     container_type: 40DRY
-    tariff_ref: MER-2026-H2-FCL
+    tariff_ref: BOR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3263
+    rate_value: 5888
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    source_doc: boreal_tariff_2026_h2.md
 - id: G-004
   tag: lookup
-  question: Meridian, Mundra to Jebel Ali, 40HC — rate and validity please.
+  question: What is Corvid Line's 40' High Cube rate from Pipavav to Hong Kong?
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMUN
-    destination: AEJEA
+    carrier: CORVID
+    origin: INPAV
+    destination: HKHKG
     container_type: 40HC
-    tariff_ref: MER-2026-H2-FCL
+    tariff_ref: COR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2318
+    rate_value: 1478
     currency: USD
     valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
 - id: G-005
   tag: lookup
-  question: What is the current Meridian 20DRY rate from Cochin (INCOK) to Genoa (ITGOA)?
+  question: What is Tessera's 40OT rate from Mundra to Antwerp?
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INCOK
-    destination: ITGOA
-    container_type: 20DRY
-    tariff_ref: MER-2026-H2-FCL
+    carrier: TESSERA
+    origin: INMUN
+    destination: BEANR
+    container_type: 40OT
+    tariff_ref: TES-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 1208
+    rate_value: 2517
     currency: USD
-    valid_to: '2026-12-31'
+    valid_to: '2027-01-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    source_doc: tessera_tariff_2026_h2.pdf
 - id: G-006
   tag: lookup
-  question: How much is a 40HC from Visakhapatnam to Singapore with Meridian Ocean
-    Lines right now?
+  question: How much does Solstice charge for a 20DRY from Tanjung Pelepas to USLGB?
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INVTZ
-    destination: SGSIN
-    container_type: 40HC
-    tariff_ref: MER-2026-H2-FCL
+    carrier: SOLSTICE
+    origin: MYTPP
+    destination: USLGB
+    container_type: 20DRY
+    tariff_ref: SOL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2582
+    rate_value: 1743
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    source_doc: solstice_tariff_2026_h2.md
 - id: G-007
   tag: lookup
-  question: Meridian rate for a 40DRY container INNSA → GBFXT?
+  question: Kestrel 20' Standard Dry, PKKHI to Durban — rate please.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: GBFXT
-    container_type: 40DRY
-    tariff_ref: MER-2026-H2-FCL
+    carrier: KESTREL
+    origin: PKKHI
+    destination: ZADUR
+    container_type: 20DRY
+    tariff_ref: KES-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2150
+    rate_value: 1938
     currency: USD
     valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
 - id: G-008
   tag: lookup
-  question: What is Meridian's 20DRY rate on the Mundra–Barcelona lane?
+  question: How much does Aldermoor Line charge for a 40' Reefer High Cube from Shuwaikh
+    to Southampton?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: KWSWK
+    destination: GBSOU
+    container_type: 40RH
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3289
+    currency: GBP
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-009
+  tag: lookup
+  question: Give me Vantor's current 40' Standard Dry rate Jakarta to GHTEM.
+  as_of: '2026-09-01'
+  key:
+    carrier: VANTOR
+    origin: IDJKT
+    destination: GHTEM
+    container_type: 40DRY
+    tariff_ref: VAN-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3025
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: vantor_tariff_2026_h2.md
+- id: G-010
+  tag: lookup
+  question: Quillon 20' Standard Dry, Kobe to Kaohsiung — rate please.
+  as_of: '2026-09-01'
+  key:
+    carrier: QUILLON
+    origin: JPUKB
+    destination: TWKHH
+    container_type: 20DRY
+    tariff_ref: QUI-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 226
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: quillon_tariff_2026_h2.csv
+- id: G-011
+  tag: lookup
+  question: Meridian 20' Tank, Hazira Port to Valencia — rate please.
   as_of: '2026-09-01'
   key:
     carrier: MERIDIAN
-    origin: INMUN
-    destination: ESBCN
-    container_type: 20DRY
+    origin: INHZA
+    destination: ESVLC
+    container_type: 20TK
     tariff_ref: MER-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 930
+    rate_value: 4210
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_h2.pdf
-- id: G-009
-  tag: lookup
-  question: What is Halcyon Container Line's 40HC base rate from Chennai to Rotterdam?
-  as_of: '2026-09-01'
-  key:
-    carrier: HALCYON
-    origin: INMAA
-    destination: NLRTM
-    container_type: 40HC
-    tariff_ref: HAL-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1863
-    currency: EUR
-    valid_to: '2026-12-31'
-    includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
-- id: G-010
-  tag: lookup
-  question: Halcyon, 20DRY, Nhava Sheva to Hamburg — what is the base rate and its
-    currency?
-  as_of: '2026-09-01'
-  key:
-    carrier: HALCYON
-    origin: INNSA
-    destination: DEHAM
-    container_type: 20DRY
-    tariff_ref: HAL-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1207
-    currency: EUR
-    valid_to: '2026-12-31'
-    includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
-- id: G-011
-  tag: lookup
-  question: What does Halcyon quote for a 40DRY from Cochin to Rotterdam?
-  as_of: '2026-09-01'
-  key:
-    carrier: HALCYON
-    origin: INCOK
-    destination: NLRTM
-    container_type: 40DRY
-    tariff_ref: HAL-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 2769
-    currency: EUR
-    valid_to: '2026-12-31'
-    includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
 - id: G-012
   tag: lookup
-  question: Halcyon 40HC rate INVTZ to SGSIN, and when does that tariff expire?
+  question: How much does Halcyon charge for an ISO L5G1 from PKKHI to Koper?
   as_of: '2026-09-01'
   key:
     carrier: HALCYON
-    origin: INVTZ
-    destination: SGSIN
-    container_type: 40HC
+    origin: PKKHI
+    destination: SIKOP
+    container_type: 45HC
     tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2196
+    rate_value: 2624
     currency: EUR
     valid_to: '2026-12-31'
     includes_surcharge: false
     source_doc: halcyon_tariff_2026_h2.csv
 - id: G-013
-  tag: cross
-  question: What is Meridian's 40DRY rate from Chennai to Rotterdam, and does that
-    figure already include BAF?
+  tag: lookup
+  question: 'Boreal: 20'' Reefer VNSGN to CAHAL, what''s the rate and until when is
+    it valid?'
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: NLRTM
-    container_type: 40DRY
-    tariff_ref: MER-2026-H2-FCL
+    carrier: BOREAL
+    origin: VNSGN
+    destination: CAHAL
+    container_type: 20RF
+    tariff_ref: BOR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 1967
+    rate_value: 4771
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-    policy_source_required: true
+    source_doc: boreal_tariff_2026_h2.md
 - id: G-014
-  tag: cross
-  question: For Halcyon's 20DRY Chennai to Antwerp rate, is bunker (BAF) included
-    in the base rate or charged separately?
+  tag: lookup
+  question: What is Corvid Line's 20' Standard Dry rate from Laem Chabang to Tokyo?
   as_of: '2026-09-01'
   key:
-    carrier: HALCYON
-    origin: INMAA
-    destination: BEANR
+    carrier: CORVID
+    origin: THLCH
+    destination: JPTYO
     container_type: 20DRY
-    tariff_ref: HAL-2026-H2-FCL
+    tariff_ref: COR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 905
-    currency: EUR
+    rate_value: 788
+    currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
-    policy_source_required: true
+    source_doc: corvid_tariff_2026_h2.csv
 - id: G-015
-  tag: cross
-  question: Meridian 40HC Nhava Sheva to Rotterdam — is terminal handling (THC) included
-    in the rate?
+  tag: lookup
+  question: Give me Tessera Maritime's current 40FR rate INMUN to Hamburg.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: NLRTM
-    container_type: 40HC
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1966
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-    policy_source_required: true
-- id: G-016
-  tag: cross
-  question: What is Halcyon's 40HC base rate Mundra to Jebel Ali, and is any surcharge
-    included in it?
-  as_of: '2026-09-01'
-  key:
-    carrier: HALCYON
+    carrier: TESSERA
     origin: INMUN
-    destination: AEJEA
-    container_type: 40HC
-    tariff_ref: HAL-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1976
-    currency: EUR
-    valid_to: '2026-12-31'
-    includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
-    policy_source_required: true
-- id: G-017
-  tag: cross
-  question: Does Meridian's current 20DRY rate from Mundra to Rotterdam include the
-    bunker adjustment factor?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INMUN
-    destination: NLRTM
-    container_type: 20DRY
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1444
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-    policy_source_required: true
-- id: G-018
-  tag: cross
-  question: 'Halcyon 40DRY INNSA to ESBCN: quote the base rate and say whether BAF
-    is inside it.'
-  as_of: '2026-09-01'
-  key:
-    carrier: HALCYON
-    origin: INNSA
-    destination: ESBCN
-    container_type: 40DRY
-    tariff_ref: HAL-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1898
-    currency: EUR
-    valid_to: '2026-12-31'
-    includes_surcharge: false
-    source_doc: halcyon_tariff_2026_h2.csv
-    policy_source_required: true
-- id: G-019
-  tag: temporal
-  question: What is the current Meridian 40DRY rate from Chennai to Hamburg?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INMAA
     destination: DEHAM
-    container_type: 40DRY
-    tariff_ref: MER-2026-H2-FCL
+    container_type: 40FR
+    tariff_ref: TES-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2838
+    rate_value: 3617
+    currency: USD
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-016
+  tag: lookup
+  question: How much does Solstice charge for a 45HC from Laem Chabang to USLGB?
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: THLCH
+    destination: USLGB
+    container_type: 45HC
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 4248
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-020
-  tag: temporal
-  question: Meridian 20DRY Chennai to Felixstowe — which tariff applies today and
-    what is the rate?
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-017
+  tag: lookup
+  question: 'Kestrel Ocean: 40HC Calcutta to Genova, what''s the rate and until when
+    is it valid?'
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: GBFXT
-    container_type: 20DRY
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1675
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-021
-  tag: temporal
-  question: Give me Meridian's valid 40HC rate INNSA to AEJEA.
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: AEJEA
+    carrier: KESTREL
+    origin: INCCU
+    destination: ITGOA
     container_type: 40HC
+    tariff_ref: KES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1658
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
+- id: G-018
+  tag: lookup
+  question: 'Aldermoor: 40'' Open Top Hong Kong to BEANR, what''s the rate and until
+    when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: HKHKG
+    destination: BEANR
+    container_type: 40OT
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3382
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-019
+  tag: lookup
+  question: 'Vantor Shipping: 40'' Standard Dry MYTPP to Tanger Med, what''s the rate
+    and until when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: VANTOR
+    origin: MYTPP
+    destination: MAPTM
+    container_type: 40DRY
+    tariff_ref: VAN-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3846
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: vantor_tariff_2026_h2.md
+- id: G-020
+  tag: lookup
+  question: What is Quillon Marine's 20' Standard Dry rate from Yokohama to Pelabuhan
+    Klang?
+  as_of: '2026-09-01'
+  key:
+    carrier: QUILLON
+    origin: JPYOK
+    destination: MYPKG
+    container_type: 20DRY
+    tariff_ref: QUI-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 614
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: quillon_tariff_2026_h2.csv
+- id: G-021
+  tag: lookup
+  question: 'Meridian Ocean Lines: 40'' Reefer High Cube Vishakhapatnam to SAJED,
+    what''s the rate and until when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: MERIDIAN
+    origin: INVTZ
+    destination: SAJED
+    container_type: 40RH
     tariff_ref: MER-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2340
+    rate_value: 2492
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_h2.pdf
 - id: G-022
-  tag: temporal
-  question: What was Meridian's 40HC rate from Chennai to Rotterdam as of 2026-05-15?
-  as_of: '2026-05-15'
-  key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: NLRTM
-    container_type: 40HC
-    tariff_ref: MER-2026-Q2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 2534
-    currency: USD
-    valid_to: '2026-06-30'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_q2.md
-- id: G-023
-  tag: temporal
-  question: As of 2026-05-15, what did Meridian charge for a 20DRY from Mundra to
-    Hamburg?
-  as_of: '2026-05-15'
-  key:
-    carrier: MERIDIAN
-    origin: INMUN
-    destination: DEHAM
-    container_type: 20DRY
-    tariff_ref: MER-2026-Q2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 878
-    currency: USD
-    valid_to: '2026-06-30'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_q2.md
-- id: G-024
-  tag: temporal
-  question: Meridian 40DRY Cochin to Rotterdam, current tariff — rate and expiry date.
+  tag: lookup
+  question: Give me Halcyon Container Line's current 40DRY rate Haldia to NLRTM.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INCOK
+    carrier: HALCYON
+    origin: INHAL
     destination: NLRTM
     container_type: 40DRY
-    tariff_ref: MER-2026-H2-FCL
+    tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3111
+    rate_value: 1812
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
+- id: G-023
+  tag: lookup
+  question: 'Boreal Shipping: ISO 22U1 Busan to GRPIR, what''s the rate and until
+    when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: BOREAL
+    origin: KRPUS
+    destination: GRPIR
+    container_type: 20OT
+    tariff_ref: BOR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2681
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: boreal_tariff_2026_h2.md
+- id: G-024
+  tag: lookup
+  question: How much does Corvid Line charge for an ISO 22G1 from Hazira to Tanjung
+    Priok?
+  as_of: '2026-09-01'
+  key:
+    carrier: CORVID
+    origin: INHZA
+    destination: IDJKT
+    container_type: 20DRY
+    tariff_ref: COR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 704
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
+- id: G-025
+  tag: lookup
+  question: Tessera 45HC, Chattogram to Gioia Tauro — rate please.
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: BDCGP
+    destination: ITGIT
+    container_type: 45HC
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2565
+    currency: EUR
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-026
+  tag: lookup
+  question: 'Solstice Container Lines: 20'' Reefer Haiphong to Halifax, what''s the
+    rate and until when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: VNHPH
+    destination: CAHAL
+    container_type: 20RF
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 4645
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-025
-  tag: unanswerable
-  question: What is Meridian's 40HC rate from Visakhapatnam to Rotterdam?
-  as_of: '2026-09-01'
-  expected:
-    outcome: NOT_ANSWER
-- id: G-026
-  tag: unanswerable
-  question: Halcyon 20DRY Cochin to Singapore — rate?
-  as_of: '2026-09-01'
-  expected:
-    outcome: NOT_ANSWER
+    source_doc: solstice_tariff_2026_h2.md
 - id: G-027
-  tag: unanswerable
-  question: What is the Meridian rate for a 40HC from Chennai to New York (USNYC)?
+  tag: lookup
+  question: What is Kestrel's 20' Standard Dry rate from JNPT to La Spezia?
   as_of: '2026-09-01'
+  key:
+    carrier: KESTREL
+    origin: INNSA
+    destination: ITSPE
+    container_type: 20DRY
+    tariff_ref: KES-2026-H2-FCL
   expected:
-    outcome: NOT_ANSWER
+    outcome: ANSWER
+    rate_value: 1129
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
 - id: G-028
-  tag: unanswerable
-  question: What is Meridian's 20RF reefer rate Chennai to Rotterdam?
+  tag: lookup
+  question: How much does Aldermoor Line charge for an ISO 42P1 from Madras to Rotterdam?
   as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: INMAA
+    destination: NLRTM
+    container_type: 40FR
+    tariff_ref: ALD-2026-H2-FCL
   expected:
-    outcome: NOT_ANSWER
+    outcome: ANSWER
+    rate_value: 3982
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
 - id: G-029
-  tag: unanswerable
-  question: What is the LCL rate per cubic metre from Nhava Sheva to Rotterdam with
-    Halcyon?
+  tag: lookup
+  question: What is Vantor's 40DRY rate from Haldia to Santos?
   as_of: '2026-09-01'
+  key:
+    carrier: VANTOR
+    origin: INHAL
+    destination: BRSSZ
+    container_type: 40DRY
+    tariff_ref: VAN-2026-H2-FCL
   expected:
-    outcome: NOT_ANSWER
+    outcome: ANSWER
+    rate_value: 3970
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: vantor_tariff_2026_h2.md
 - id: G-030
-  tag: unanswerable
-  question: What is the air freight rate per kg from Chennai to Hamburg?
+  tag: lookup
+  question: 'Quillon Marine: 40HC Hazira to Yokohama, what''s the rate and until when
+    is it valid?'
   as_of: '2026-09-01'
+  key:
+    carrier: QUILLON
+    origin: INHZA
+    destination: JPYOK
+    container_type: 40HC
+    tariff_ref: QUI-2026-H2-FCL
   expected:
-    outcome: NOT_ANSWER
+    outcome: ANSWER
+    rate_value: 2431
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: quillon_tariff_2026_h2.csv
 - id: G-031
   tag: lookup
-  question: What is Meridian's rate for a 40' Reefer High Cube from Chennai to Jebel
-    Ali?
+  question: Give me Meridian's current 40' Open Top rate Chennai to Ningbo.
   as_of: '2026-09-01'
   key:
     carrier: MERIDIAN
     origin: INMAA
-    destination: AEJEA
-    container_type: 40RH
+    destination: CNNBO
+    container_type: 40OT
     tariff_ref: MER-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 4394
+    rate_value: 2431
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_h2.pdf
 - id: G-032
   tag: lookup
-  question: Meridian 45' High Cube, Nhava Sheva to Hamburg — rate please.
+  question: Give me Halcyon Container Line's current 20RF rate JPTYO to Piraeus.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: DEHAM
-    container_type: 45HC
-    tariff_ref: MER-2026-H2-FCL
+    carrier: HALCYON
+    origin: JPTYO
+    destination: GRPIR
+    container_type: 20RF
+    tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3588
-    currency: USD
+    rate_value: 3860
+    currency: EUR
     valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
 - id: G-033
   tag: lookup
-  question: How much does Meridian charge for a 20' Flat Rack from Mundra to Rotterdam?
+  question: 'Boreal: 20FR HKHKG to USSAV, what''s the rate and until when is it valid?'
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMUN
-    destination: NLRTM
+    carrier: BOREAL
+    origin: HKHKG
+    destination: USSAV
     container_type: 20FR
-    tariff_ref: MER-2026-H2-FCL
+    tariff_ref: BOR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3061
+    rate_value: 3125
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    source_doc: boreal_tariff_2026_h2.md
 - id: G-034
   tag: lookup
-  question: Meridian 40' Open Top INMAA to SGSIN?
+  question: Give me Corvid Line's current 40' High Cube rate VNHPH to Yokohama.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: SGSIN
-    container_type: 40OT
-    tariff_ref: MER-2026-H2-FCL
+    carrier: CORVID
+    origin: VNHPH
+    destination: JPYOK
+    container_type: 40HC
+    tariff_ref: COR-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3822
+    rate_value: 1241
     currency: USD
     valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
 - id: G-035
   tag: lookup
-  question: What is Meridian's 20' Tank rate from Nhava Sheva to Jebel Ali?
+  question: Give me Tessera Maritime's current ISO 42G1 rate Tianjin Xingang Pt to
+    ARBUE.
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: AEJEA
-    container_type: 20TK
-    tariff_ref: MER-2026-H2-FCL
+    carrier: TESSERA
+    origin: CNTXG
+    destination: ARBUE
+    container_type: 40DRY
+    tariff_ref: TES-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 4035
+    rate_value: 4413
+    currency: USD
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-036
+  tag: lookup
+  question: Solstice 40RH, Tanjung Pelepas to USSEA — rate please.
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: MYTPP
+    destination: USSEA
+    container_type: 40RH
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 6633
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-036
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-037
   tag: lookup
-  question: Quote Meridian's ISO 22R1 rate from Mundra to Jebel Ali.
+  question: 'Kestrel: ISO 45R1 Vallarpadam to ESALG, what''s the rate and until when
+    is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: KESTREL
+    origin: INCOK
+    destination: ESALG
+    container_type: 40RH
+    tariff_ref: KES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2649
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
+- id: G-038
+  tag: lookup
+  question: Aldermoor Line 45HC, Vishakhapatnam to Aarhus — rate please.
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: INVTZ
+    destination: DKAAR
+    container_type: 45HC
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3167
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-039
+  tag: lookup
+  question: Give me Vantor's current 20' Standard Dry rate Kattupalli Port to Cartagena.
+  as_of: '2026-09-01'
+  key:
+    carrier: VANTOR
+    origin: INKTP
+    destination: COCTG
+    container_type: 20DRY
+    tariff_ref: VAN-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3751
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: vantor_tariff_2026_h2.md
+- id: G-040
+  tag: lookup
+  question: Give me Quillon Marine's current 20' Standard Dry rate Tanjung Pelepas
+    to JPYOK.
+  as_of: '2026-09-01'
+  key:
+    carrier: QUILLON
+    origin: MYTPP
+    destination: JPYOK
+    container_type: 20DRY
+    tariff_ref: QUI-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 401
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: quillon_tariff_2026_h2.csv
+- id: G-041
+  tag: lookup
+  question: Meridian 40' Flat Rack, Mundra Port to KRPUS — rate please.
   as_of: '2026-09-01'
   key:
     carrier: MERIDIAN
     origin: INMUN
-    destination: AEJEA
-    container_type: 20RF
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 3451
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-037
-  tag: lookup
-  question: Meridian 40' Tank from JNPT to Rotterdam — rate and validity?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: NLRTM
-    container_type: 40TK
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 4120
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-038
-  tag: lookup
-  question: What does Meridian charge for a 20' container from Pipavav to Rotterdam?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INPAV
-    destination: NLRTM
-    container_type: 20DRY
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 1733
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-039
-  tag: lookup
-  question: Meridian 40' High Cube, Tuticorin to Colombo?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INTUT
-    destination: LKCMB
-    container_type: 40HC
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 2220
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-040
-  tag: lookup
-  question: What is Meridian's 20' Reefer rate from Chennai to Shanghai?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: CNSHA
-    container_type: 20RF
-    tariff_ref: MER-2026-H2-FCL
-  expected:
-    outcome: ANSWER
-    rate_value: 2761
-    currency: USD
-    valid_to: '2026-12-31'
-    includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-041
-  tag: lookup
-  question: Meridian 40' Flat Rack, Nhava Sheva to Savannah — current rate?
-  as_of: '2026-09-01'
-  key:
-    carrier: MERIDIAN
-    origin: INNSA
-    destination: USSAV
+    destination: KRPUS
     container_type: 40FR
     tariff_ref: MER-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3249
+    rate_value: 3202
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_h2.pdf
 - id: G-042
   tag: lookup
-  question: Halcyon 40' Reefer High Cube Chennai to Hamburg — base rate?
+  question: Halcyon Container Line 40' Non-Operating Reefer, Tuticorin to Shuwaikh
+    — rate please.
   as_of: '2026-09-01'
   key:
     carrier: HALCYON
-    origin: INMAA
-    destination: DEHAM
-    container_type: 40RH
+    origin: INTUT
+    destination: KWSWK
+    container_type: 40NOR
     tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 6250
-    currency: EUR
+    rate_value: 1121
+    currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: false
     source_doc: halcyon_tariff_2026_h2.csv
 - id: G-043
-  tag: cross
-  question: 'Halcyon 45'' High Cube from Mundra to Rotterdam: base rate, and is BAF
-    included?'
+  tag: lookup
+  question: 'Boreal: 40HC Busan to Long Beach, what''s the rate and until when is
+    it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: BOREAL
+    origin: KRPUS
+    destination: USLGB
+    container_type: 40HC
+    tariff_ref: BOR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3977
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: boreal_tariff_2026_h2.md
+- id: G-044
+  tag: lookup
+  question: 'Corvid: 40'' Standard Dry Singapore to TWKHH, what''s the rate and until
+    when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: CORVID
+    origin: SGSIN
+    destination: TWKHH
+    container_type: 40DRY
+    tariff_ref: COR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 947
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
+- id: G-045
+  tag: lookup
+  question: 'Tessera Maritime: 40'' Tank Nhava Sheva to Houston, what''s the rate
+    and until when is it valid?'
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: INNSA
+    destination: USHOU
+    container_type: 40TK
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 10561
+    currency: USD
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-046
+  tag: currency
+  question: In which currency does Aldermoor Line quote the ISO 45R1 rate from Khalifa
+    Bin Salman to GBLGP, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: BHKBS
+    destination: GBLGP
+    container_type: 40RH
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2833
+    currency: GBP
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-047
+  tag: currency
+  question: In which currency does Halcyon quote the ISO 42G1 rate from Kobe to GBLGP,
+    and what is it?
   as_of: '2026-09-01'
   key:
     carrier: HALCYON
-    origin: INMUN
-    destination: NLRTM
-    container_type: 45HC
+    origin: JPUKB
+    destination: GBLGP
+    container_type: 40DRY
     tariff_ref: HAL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2508
+    rate_value: 2899
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
+- id: G-048
+  tag: currency
+  question: In which currency does Kestrel Ocean quote the 45' High Cube rate from
+    Kolkata to La Spezia, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: KESTREL
+    origin: INCCU
+    destination: ITSPE
+    container_type: 45HC
+    tariff_ref: KES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2620
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
+- id: G-049
+  tag: currency
+  question: In which currency does Aldermoor quote the ISO 45R1 rate from INMAA to
+    Port of Felixstowe, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: INMAA
+    destination: GBFXT
+    container_type: 40RH
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2920
+    currency: GBP
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-050
+  tag: currency
+  question: In which currency does Halcyon quote the ISO 45G1 rate from JPTYO to Felixstowe,
+    and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: HALCYON
+    origin: JPTYO
+    destination: GBFXT
+    container_type: 40HC
+    tariff_ref: HAL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2929
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
+- id: G-051
+  tag: currency
+  question: In which currency does Tessera Maritime quote the 40' High Cube rate from
+    Haldia to Port of Barcelona, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: INHAL
+    destination: ESBCN
+    container_type: 40HC
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2063
+    currency: EUR
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-052
+  tag: currency
+  question: In which currency does Aldermoor Line quote the 40' Standard Dry rate
+    from Hong Kong to Port of Felixstowe, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: HKHKG
+    destination: GBFXT
+    container_type: 40DRY
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3003
+    currency: GBP
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-053
+  tag: currency
+  question: In which currency does Aldermoor quote the 40' High Cube rate from Shanghai
+    to FRLEH, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: CNSGH
+    destination: FRLEH
+    container_type: 40HC
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2535
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-054
+  tag: currency
+  question: In which currency does Tessera quote the 45' High Cube rate from Karachi
+    to ESALG, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: PKKHI
+    destination: ESALG
+    container_type: 45HC
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3126
+    currency: EUR
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+- id: G-055
+  tag: currency
+  question: In which currency does Aldermoor Line quote the 45' High Cube rate from
+    THLCH to London Gateway Port, and what is it?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: THLCH
+    destination: GBLGP
+    container_type: 45HC
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2016
+    currency: GBP
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+- id: G-056
+  tag: cross
+  question: For Meridian Ocean Lines' 20DRY INIXY to Yangshan, is bunker (BAF) included
+    in the base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: MERIDIAN
+    origin: INIXY
+    destination: CNSGH
+    container_type: 20DRY
+    tariff_ref: MER-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1284
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_h2.pdf
+    policy_source_required: true
+- id: G-057
+  tag: cross
+  question: For Halcyon's 20DRY Chennai to BHKBS, is bunker (BAF) included in the
+    base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: HALCYON
+    origin: INMAA
+    destination: BHKBS
+    container_type: 20DRY
+    tariff_ref: HAL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 452
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: halcyon_tariff_2026_h2.csv
+    policy_source_required: true
+- id: G-058
+  tag: cross
+  question: 'Boreal Shipping 20'' Standard Dry Yokohama to MTMAR: is terminal handling
+    (THC) included in the rate?'
+  as_of: '2026-09-01'
+  key:
+    carrier: BOREAL
+    origin: JPYOK
+    destination: MTMAR
+    container_type: 20DRY
+    tariff_ref: BOR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1117
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: boreal_tariff_2026_h2.md
+    policy_source_required: true
+- id: G-059
+  tag: cross
+  question: For Corvid's ISO 22G1 INHZA to CNXAM, is bunker (BAF) included in the
+    base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: CORVID
+    origin: INHZA
+    destination: CNXAM
+    container_type: 20DRY
+    tariff_ref: COR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 710
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
+    policy_source_required: true
+- id: G-060
+  tag: cross
+  question: For Tessera Maritime's ISO 22G1 Visakhapatnam to Gioia Tauro, is bunker
+    (BAF) included in the base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: INVTZ
+    destination: ITGIT
+    container_type: 20DRY
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1263
+    currency: EUR
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+    policy_source_required: true
+- id: G-061
+  tag: cross
+  question: 'Solstice Container Lines 40RH Singapore to Sydney: is terminal handling
+    (THC) included in the rate?'
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: SGSIN
+    destination: AUSYD
+    container_type: 40RH
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3116
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: solstice_tariff_2026_h2.md
+    policy_source_required: true
+- id: G-062
+  tag: cross
+  question: What is Kestrel's 40' Non-Operating Reefer rate from Tianjin Xingang Pt
+    to AEKLF, and does it already include BAF?
+  as_of: '2026-09-01'
+  key:
+    carrier: KESTREL
+    origin: CNTXG
+    destination: AEKLF
+    container_type: 40NOR
+    tariff_ref: KES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1763
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: kestrel_tariff_2026_h2.csv
+    policy_source_required: true
+- id: G-063
+  tag: cross
+  question: What is Aldermoor Line's 20' Reefer rate from OMSOH to Hamburg, and does
+    it already include BAF?
+  as_of: '2026-09-01'
+  key:
+    carrier: ALDERMOOR
+    origin: OMSOH
+    destination: DEHAM
+    container_type: 20RF
+    tariff_ref: ALD-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2701
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: aldermoor_tariff_2026_h2.pdf
+    policy_source_required: true
+- id: G-064
+  tag: cross
+  question: For Vantor's 40HC Visakhapatnam to USHOU, is bunker (BAF) included in
+    the base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: VANTOR
+    origin: INVTZ
+    destination: USHOU
+    container_type: 40HC
+    tariff_ref: VAN-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 4870
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: vantor_tariff_2026_h2.md
+    policy_source_required: true
+- id: G-065
+  tag: cross
+  question: What is Quillon Marine's 40DRY rate from Singapore to Tianjin Xingang
+    Pt, and does it already include BAF?
+  as_of: '2026-09-01'
+  key:
+    carrier: QUILLON
+    origin: SGSIN
+    destination: CNTXG
+    container_type: 40DRY
+    tariff_ref: QUI-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 514
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: quillon_tariff_2026_h2.csv
+    policy_source_required: true
+- id: G-066
+  tag: cross
+  question: 'Meridian 40HC Visakhapatnam to Djibouti: is terminal handling (THC) included
+    in the rate?'
+  as_of: '2026-09-01'
+  key:
+    carrier: MERIDIAN
+    origin: INVTZ
+    destination: DJJIB
+    container_type: 40HC
+    tariff_ref: MER-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1789
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_h2.pdf
+    policy_source_required: true
+- id: G-067
+  tag: cross
+  question: What is Halcyon's 40' High Cube rate from CNNBO to Algeciras, and does
+    it already include BAF?
+  as_of: '2026-09-01'
+  key:
+    carrier: HALCYON
+    origin: CNNBO
+    destination: ESALG
+    container_type: 40HC
+    tariff_ref: HAL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3289
     currency: EUR
     valid_to: '2026-12-31'
     includes_surcharge: false
     source_doc: halcyon_tariff_2026_h2.csv
     policy_source_required: true
-- id: G-044
+- id: G-068
+  tag: cross
+  question: For Boreal Shipping's 20FR Yantian Pt to Valencia, is bunker (BAF) included
+    in the base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: BOREAL
+    origin: CNYTN
+    destination: ESVLC
+    container_type: 20FR
+    tariff_ref: BOR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2548
+    currency: EUR
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: boreal_tariff_2026_h2.md
+    policy_source_required: true
+- id: G-069
+  tag: cross
+  question: 'Corvid 40'' High Cube Mundra Port to IDJKT: is terminal handling (THC)
+    included in the rate?'
+  as_of: '2026-09-01'
+  key:
+    carrier: CORVID
+    origin: INMUN
+    destination: IDJKT
+    container_type: 40HC
+    tariff_ref: COR-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 675
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: false
+    source_doc: corvid_tariff_2026_h2.csv
+    policy_source_required: true
+- id: G-070
+  tag: cross
+  question: For Tessera Maritime's 45HC Calcutta to Bremerhaven, is bunker (BAF) included
+    in the base rate or charged separately?
+  as_of: '2026-09-01'
+  key:
+    carrier: TESSERA
+    origin: INCCU
+    destination: DEBRV
+    container_type: 45HC
+    tariff_ref: TES-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2744
+    currency: USD
+    valid_to: '2027-01-31'
+    includes_surcharge: true
+    source_doc: tessera_tariff_2026_h2.pdf
+    policy_source_required: true
+- id: G-071
   tag: temporal
-  question: As of 2026-05-10, what was Meridian's 20' Reefer rate from Nhava Sheva
-    to Jebel Ali?
-  as_of: '2026-05-10'
+  question: As of 2026-05-15, what did Meridian charge for a 40DRY from INHAL to KEMBA?
+  as_of: '2026-05-15'
   key:
     carrier: MERIDIAN
-    origin: INNSA
-    destination: AEJEA
-    container_type: 20RF
+    origin: INHAL
+    destination: KEMBA
+    container_type: 40DRY
     tariff_ref: MER-2026-Q2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3051
+    rate_value: 1932
     currency: USD
     valid_to: '2026-06-30'
     includes_surcharge: true
     source_doc: meridian_tariff_2026_q2.md
-- id: G-045
-  tag: cross
-  question: Meridian 20' Reefer Chennai to Singapore — does that rate include BAF?
+- id: G-072
+  tag: temporal
+  question: What is Solstice Container Lines' valid ISO 22G1 rate from CNYTN to Norfolk
+    today?
   as_of: '2026-09-01'
   key:
-    carrier: MERIDIAN
-    origin: INMAA
-    destination: SGSIN
-    container_type: 20RF
-    tariff_ref: MER-2026-H2-FCL
+    carrier: SOLSTICE
+    origin: CNYTN
+    destination: USORF
+    container_type: 20DRY
+    tariff_ref: SOL-2026-H2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 3923
+    rate_value: 2941
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-    policy_source_required: true
-- id: G-046
-  tag: lookup
-  question: What is Meridian's non-operating reefer (NOR) rate from Nhava Sheva to
-    Jebel Ali?
-  as_of: '2026-09-01'
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-073
+  tag: temporal
+  question: As of 2026-05-15, what did Meridian charge for an ISO 42G1 from Mundra
+    to CNTXG?
+  as_of: '2026-05-15'
   key:
     carrier: MERIDIAN
-    origin: INNSA
-    destination: AEJEA
-    container_type: 40NOR
-    tariff_ref: MER-2026-H2-FCL
+    origin: INMUN
+    destination: CNTXG
+    container_type: 40DRY
+    tariff_ref: MER-2026-Q2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2259
+    rate_value: 1922
+    currency: USD
+    valid_to: '2026-06-30'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_q2.md
+- id: G-074
+  tag: temporal
+  question: What is Solstice Container Lines' valid 20' Standard Dry rate from Kattupalli
+    Port to Melbourne today?
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: INKTP
+    destination: AUMEL
+    container_type: 20DRY
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2368
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-047
-  tag: lookup
-  question: Meridian 40' NOR, Tuticorin to Colombo?
-  as_of: '2026-09-01'
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-075
+  tag: temporal
+  question: As of 2026-05-15, what did Meridian charge for an ISO 45G1 from Tuticorin
+    to Vancouver?
+  as_of: '2026-05-15'
   key:
     carrier: MERIDIAN
     origin: INTUT
-    destination: LKCMB
-    container_type: 40NOR
-    tariff_ref: MER-2026-H2-FCL
+    destination: CAVAN
+    container_type: 40HC
+    tariff_ref: MER-2026-Q2-FCL
   expected:
     outcome: ANSWER
-    rate_value: 2243
+    rate_value: 3560
+    currency: USD
+    valid_to: '2026-06-30'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_q2.md
+- id: G-076
+  tag: temporal
+  question: What is Solstice Container Lines' valid ISO 22G1 rate from Singapore to
+    Manzanillo today?
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: SGSIN
+    destination: MXZLO
+    container_type: 20DRY
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 3326
     currency: USD
     valid_to: '2026-12-31'
     includes_surcharge: true
-    source_doc: meridian_tariff_2026_h2.pdf
-- id: G-048
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-077
+  tag: temporal
+  question: As of 2026-05-15, what did Meridian charge for a 20' Standard Dry from
+    LKCMB to Manila?
+  as_of: '2026-05-15'
+  key:
+    carrier: MERIDIAN
+    origin: LKCMB
+    destination: PHMNL
+    container_type: 20DRY
+    tariff_ref: MER-2026-Q2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 317
+    currency: USD
+    valid_to: '2026-06-30'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_q2.md
+- id: G-078
+  tag: temporal
+  question: What is Solstice Container Lines' valid 40DRY rate from Ho Chi Minh City
+    to USOAK today?
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: VNSGN
+    destination: USOAK
+    container_type: 40DRY
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 5650
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-079
+  tag: temporal
+  question: As of 2026-05-15, what did Meridian charge for an ISO 22R1 from INIXY
+    to EGPSD?
+  as_of: '2026-05-15'
+  key:
+    carrier: MERIDIAN
+    origin: INIXY
+    destination: EGPSD
+    container_type: 20RF
+    tariff_ref: MER-2026-Q2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 1347
+    currency: USD
+    valid_to: '2026-06-30'
+    includes_surcharge: true
+    source_doc: meridian_tariff_2026_q2.md
+- id: G-080
+  tag: temporal
+  question: What is Solstice's valid 40' High Cube rate from Karachi to Sydney today?
+  as_of: '2026-09-01'
+  key:
+    carrier: SOLSTICE
+    origin: PKKHI
+    destination: AUSYD
+    container_type: 40HC
+    tariff_ref: SOL-2026-H2-FCL
+  expected:
+    outcome: ANSWER
+    rate_value: 2644
+    currency: USD
+    valid_to: '2026-12-31'
+    includes_surcharge: true
+    source_doc: solstice_tariff_2026_h2.md
+- id: G-081
   tag: unanswerable
-  question: What is Meridian's 45' High Cube rate from Chennai to Jebel Ali?
+  question: What is Meridian's 40FR rate from INHAL to OMSOH?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-049
+- id: G-082
   tag: unanswerable
-  question: Meridian 20' Tank from Chennai to Rotterdam?
+  question: What is Halcyon Container Line's 20' Tank rate from Madras to OMSOH?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-050
+- id: G-083
   tag: unanswerable
-  question: What is Halcyon's 20' Flat Rack rate from Chennai to Rotterdam?
+  question: What is Boreal's 20' Tank rate from Pelabuhan Klang to CAMTR?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-051
+- id: G-084
   tag: unanswerable
-  question: Meridian 40' Reefer High Cube Nhava Sheva to Rotterdam?
+  question: What is Corvid's 20' Tank rate from Mundra Port to Port of Hamad?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-052
+- id: G-085
   tag: unanswerable
-  question: Meridian 40' Open Top from Cochin to Genoa?
+  question: What is Tessera Maritime's 20' Flat Rack rate from Nagoya to Mombasa?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-053
+- id: G-086
   tag: unanswerable
-  question: What is Meridian's non-operating reefer rate from Chennai to Rotterdam?
+  question: What is Solstice Container Lines' ISO 42P1 rate from JNPT to AUBNE?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER
-- id: G-054
+- id: G-087
   tag: unanswerable
-  question: Halcyon non-operating reefer, Visakhapatnam to Singapore — rate?
+  question: What is Kestrel Ocean's 20' Tank rate from CNTXG to NGAPP?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-088
+  tag: unanswerable
+  question: What is Aldermoor's ISO 22U1 rate from Yokohama to DEBRV?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-089
+  tag: unanswerable
+  question: Meridian 40' High Cube from Jeddah to Ningbo — current rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-090
+  tag: unanswerable
+  question: Corvid 40' High Cube from London Gateway Port to Le Havre — current rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-091
+  tag: unanswerable
+  question: Kestrel Ocean 40' High Cube from Khalifa Bin Salman to Antwerp — current
+    rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-092
+  tag: unanswerable
+  question: Quillon Marine 40' High Cube from Ho Chi Minh City to Koper — current
+    rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-093
+  tag: unanswerable
+  question: Boreal 40' High Cube from Chattogram to Halifax — current rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-094
+  tag: unanswerable
+  question: Solstice 40' High Cube from Haiphong to Hamad — current rate?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-095
+  tag: unanswerable
+  question: What is Meridian's 40HC rate from Victoria to Rotterdam?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-096
+  tag: unanswerable
+  question: What is the LCL rate per cubic metre from Nhava Sheva to Rotterdam with
+    Halcyon?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-097
+  tag: unanswerable
+  question: What is the air freight rate per kg from Chennai to Hamburg?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-098
+  tag: unanswerable
+  question: What does Northwind Lines charge for a 40HC from Chennai to Rotterdam?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-099
+  tag: unanswerable
+  question: Which carrier has the lowest 40HC rate from Mundra to Jebel Ali, and what
+    is it?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+- id: G-100
+  tag: unanswerable
+  question: What is Meridian's 40HC rate from INXYZ to Rotterdam?
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER

@@ -24,9 +24,9 @@ def settings():
 
 def _chunk(chunk_id: str, source_doc: str) -> Chunk:
     # Text must actually contain _answerable_candidate()'s rate_value
-    # (2224), valid_to (2026-12-31) and source_span ("row") so Gate 3's
+    # (3568), valid_to (2026-12-31) and source_span ("row") so Gate 3's
     # grounding check doesn't reject these fixtures.
-    text = "row with rate 2224 valid to 2026-12-31"
+    text = "row with rate 3568 valid to 2026-12-31"
     return Chunk(
         chunk_id=chunk_id,
         source_doc=source_doc,
@@ -75,10 +75,10 @@ def _answerable_candidate(**overrides) -> RateCandidate:
     base = dict(
         answerable=True,
         carrier="MERIDIAN",
-        origin="INMAA",
-        destination="NLRTM",
+        origin="BDCGP",
+        destination="BEANR",
         container_type="40HC",
-        rate_value=2224,
+        rate_value=3568,
         currency="USD",
         valid_from=date(2026, 7, 1),
         valid_to=date(2026, 12, 31),
@@ -110,7 +110,7 @@ def test_baseline_answerable_becomes_answer(settings):
     candidate = _answerable_candidate()
     verdict = run_gates(candidate, None, None, baseline_settings)
     assert verdict.outcome == Outcome.ANSWER
-    assert verdict.candidate.rate_value == 2224
+    assert verdict.candidate.rate_value == 3568
 
 
 def test_gated_requires_context(settings):
@@ -145,7 +145,7 @@ def test_gated_clean_candidate_answers(settings):
 
     answer = to_answer(verdict, result, gated_settings)
     assert answer.outcome == Outcome.ANSWER
-    assert answer.rate_value == 2224
+    assert answer.rate_value == 3568
     assert answer.similarity_norm == 0.9
 
 

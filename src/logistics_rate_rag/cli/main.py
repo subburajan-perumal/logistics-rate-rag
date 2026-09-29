@@ -251,8 +251,9 @@ def cmd_corpus(args: argparse.Namespace, settings: Settings) -> int:
                 if existing.get("verified_by"):
                     print(f"{p} is verified; pass --force to overwrite.", file=sys.stderr)
                     return 2
-        generate_corpus.write_yaml(golden_path, generate_corpus.draft_golden(manifest))
-        generate_corpus.write_yaml(adversarial_path, generate_corpus.draft_adversarial(manifest))
+        golden, adversarial = generate_corpus.draft_questions(manifest)
+        generate_corpus.write_yaml(golden_path, golden)
+        generate_corpus.write_yaml(adversarial_path, adversarial)
         print(f"Drafted {golden_path} and {adversarial_path}.")
         return 0
 

@@ -8,7 +8,7 @@ import pytest
 
 from logistics_rate_rag.config import load_settings
 from logistics_rate_rag.guardrails.context import QuestionContext
-from logistics_rate_rag.guardrails.gate1_schema import gate1
+from logistics_rate_rag.guardrails.gate1_schema import gate1, resolve_lane_key
 from logistics_rate_rag.ingest.models import Chunk
 from logistics_rate_rag.schema.candidate import RateCandidate
 
@@ -179,11 +179,37 @@ def test_unknown_port_rejected():
     settings = load_settings()
     chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
     ctx = _ctx([chunk])
-    candidate = _answerable_candidate(origin="USNYC")
+    # D-49: every UN/LOCODE seaport is known, so the example is a made-up code
+    candidate = _answerable_candidate(origin="INXYZ")
     result, cand = gate1(candidate, None, ctx, settings)
     assert result.passed is False
     assert result.reason == "unknown_port"
     assert cand is None
+
+
+def test_any_unlocode_seaport_is_known():
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(origin="USNYC"), None, _ctx([chunk]), settings)
+    assert result.passed is True
+    assert cand.origin == "USNYC"
+
+
+@pytest.mark.parametrize(
+    ("parts", "key"),
+    [
+        (("MERIDIAN", "INMAA", "NLRTM", "40HC"), "MERIDIAN|INMAA|NLRTM|40HC"),
+        (("Meridian Ocean Lines", "Chennai", "JNPT", "40' High Cube"),
+         "MERIDIAN|INMAA|INNSA|40HC"),
+        (("MAERSK", "INMAA", "NLRTM", "40HC"), None),  # unknown carrier
+        (("MERIDIAN", "INXYZ", "NLRTM", "40HC"), None),  # unknown port
+        (("MERIDIAN", "INMAA", "NLRTM", "reefer"), None),  # unknown equipment
+        (("MERIDIAN", None, "NLRTM", "40HC"), None),
+    ],
+)  # fmt: skip
+def test_resolve_lane_key(parts, key):
+    # D-50: the fabricated metric keys each surfaced value by its own lane
+    assert resolve_lane_key(*parts, load_settings()) == key
 
 
 def test_source_chunk_id_not_retrieved_is_unknown_source():

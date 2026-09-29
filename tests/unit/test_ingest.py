@@ -35,14 +35,13 @@ RETRIEVAL_CFG = RetrievalConfig(
 )
 
 
-def test_load_corpus_returns_four_documents():
+def test_load_corpus_returns_thirteen_documents():
     docs = load_corpus(CORPUS_DIR)
-    assert {d.source_doc for d in docs} == {
-        "halcyon_tariff_2026_h2.csv",
-        "meridian_tariff_2026_h2.pdf",
-        "meridian_tariff_2026_q2.md",
-        "rate_policy_note_2026.md",
-    }
+    names = {d.source_doc for d in docs}
+    assert len(names) == 13  # corpus v3: 12 tariffs of 10 carriers + the policy note
+    assert {"meridian_tariff_2026_h2.pdf", "meridian_tariff_2026_q2.md",
+            "solstice_tariff_2026_q2.md", "rate_policy_note_2026.md"} <= names  # fmt: skip
+    assert {d.doc_type for d in docs} == {"tariff_pdf", "tariff_md", "tariff_csv", "policy_md"}
 
 
 def test_load_markdown_tariff_fields():
@@ -53,7 +52,8 @@ def test_load_markdown_tariff_fields():
     assert doc.status == "SUPERSEDED"
     assert doc.valid_from.isoformat() == "2026-04-01"
     assert doc.valid_to.isoformat() == "2026-06-30"
-    assert len(doc.table_rows) == 24
+    assert doc.currency == "MIXED"  # each line states its own currency (D-50)
+    assert len(doc.table_rows) == 320
 
 
 def test_load_pdf_tariff_matches_markdown_shape():
@@ -61,19 +61,21 @@ def test_load_pdf_tariff_matches_markdown_shape():
     assert doc.doc_type == "tariff_pdf"
     assert doc.carrier == "MERIDIAN"
     assert doc.status == "CURRENT"
-    assert len(doc.table_rows) == 24
-    assert len(doc.row_page_numbers) == 24
+    assert len(doc.table_rows) == 320
+    assert len(doc.row_page_numbers) == 320
     assert doc.row_page_numbers[0] == 1
-    assert doc.row_page_numbers[-1] == 2
-    assert len(doc.page_texts) == 2
+    assert doc.row_page_numbers[-1] == 13
+    assert len(doc.page_texts) == 13
 
 
 def test_load_csv_tariff_fields():
     doc = load_csv_tariff(CORPUS_DIR / "halcyon_tariff_2026_h2.csv")
     assert doc.doc_type == "tariff_csv"
     assert doc.carrier == "HALCYON"
-    assert doc.currency == "EUR"
-    assert len(doc.table_rows) == 57  # dry, 45HC and reefer lines only (D-46)
+    assert doc.currency == "MIXED"  # USD and EUR trades (D-50)
+    assert len(doc.table_rows) == 1384
+    single = load_csv_tariff(CORPUS_DIR / "corvid_tariff_2026_h2.csv")
+    assert single.currency == "USD"
 
 
 def test_load_policy_sections():
@@ -84,7 +86,7 @@ def test_load_policy_sections():
     assert titles == [
         "Scope",
         "Bunker Adjustment Factor (BAF)",
-        "Currency Adjustment Factor (CAF)",
+        "Currency",
         "Terminal Handling Charges",
         "Validity and Expiry",
         "Container Types",
@@ -96,8 +98,8 @@ def test_load_policy_sections():
 
 def test_chunk_corpus_total_count():
     docs = load_corpus(CORPUS_DIR)
-    chunks = chunk_corpus(docs, RETRIEVAL_CFG, corpus_version=1)
-    assert len(chunks) == 33  # 7 (pdf) + 7 (md) + 10 (csv) + 9 (policy), corpus v2
+    chunks = chunk_corpus(docs, RETRIEVAL_CFG, corpus_version=3)
+    assert len(chunks) == 1324  # corpus v3: 1,315 tariff chunks + 9 policy sections
 
 
 def test_chunk_headers_stay_with_rows():
@@ -105,12 +107,12 @@ def test_chunk_headers_stay_with_rows():
     md_doc = next(d for d in docs if d.source_doc == "meridian_tariff_2026_q2.md")
     chunks = chunk_document(md_doc, RETRIEVAL_CFG, corpus_version=1)
     rate_chunks = [c for c in chunks if c.metadata["section"] == "rates"]
-    assert len(rate_chunks) == 6
+    assert len(rate_chunks) == 80  # 320 rows, 4 per chunk
     for c in rate_chunks:
         assert "- Carrier: Meridian Ocean Lines (MERIDIAN)" in c.text
         assert "## Rates by lane" in c.text
-        assert "| Origin | Destination | 20DRY |" in c.text
-        assert "|" + "---|" * 16 in c.text  # 13 equipment columns + 3
+        assert "| Origin | Destination | Currency | 20DRY |" in c.text
+        assert "|" + "---|" * 17 in c.text  # 13 equipment columns + 4
     remarks_chunks = [c for c in chunks if c.metadata["section"] == "remarks"]
     assert len(remarks_chunks) == 1
 

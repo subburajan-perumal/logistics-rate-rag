@@ -31,6 +31,9 @@ class PerQuestion:
     cache_hit: bool
     usage: dict[str, int]
     error: str | None
+    # the answer's own lane, CARRIER|ORIGIN|DESTINATION|CONTAINER in canonical
+    # codes, or None when it names no resolvable lane (PLAN.md D-50)
+    lane_key: str | None = None
     # correctness inputs, not part of the committed schema's leaf fields
     expected_rate_value: int | None = None
     expected_currency: str | None = None
@@ -64,9 +67,27 @@ def is_surfaced(row: PerQuestion) -> bool:
     return row.outcome == "ANSWER"
 
 
-def is_fabricated(row: PerQuestion, known_rate_values: set[int]) -> bool:
+def lane_values(manifest: dict) -> dict[str, set[int]]:
+    """Every value each carrier states for each lane and equipment, across all
+    its documents (a superseded Q2 value is real for that lane, just wrong)."""
+    out: dict[str, set[int]] = {}
+    for r in manifest["rates"]:
+        key = f"{r['carrier']}|{r['origin']}|{r['destination']}|{r['container_type']}"
+        out.setdefault(key, set()).add(r["rate_value"])
+    return out
+
+
+def is_fabricated(row: PerQuestion, known: dict[str, set[int]]) -> bool:
+    """A surfaced number that does not exist for that carrier on that lane and
+    equipment (PLAN.md D-50). With ~16,000 lines drawn from a few thousand
+    distinct values, "appears anywhere in the corpus" no longer means "real":
+    a made-up 40HC rate almost always matches some other line by chance. An
+    answer whose lane does not resolve has no real values, so any number it
+    surfaces counts."""
     return (
-        is_surfaced(row) and row.rate_value is not None and row.rate_value not in known_rate_values
+        is_surfaced(row)
+        and row.rate_value is not None
+        and row.rate_value not in known.get(row.lane_key or "", set())
     )
 
 
@@ -91,7 +112,7 @@ def _percentile_nearest_rank(values: Sequence[int], pct: float) -> int:
 def compute_metrics(
     rows: Sequence[PerQuestion], manifest: dict, sets: Sequence[str]
 ) -> dict[str, Any]:
-    known_rate_values = set(manifest["rate_values"])
+    known = lane_values(manifest)
 
     golden_answer_rows = [r for r in rows if r.set == "golden" and r.expected_outcome == "ANSWER"]
     golden_unanswerable_rows = [
@@ -121,7 +142,7 @@ def compute_metrics(
         else None
     )
 
-    fabricated_values_surfaced = sum(is_fabricated(r, known_rate_values) for r in rows)
+    fabricated_values_surfaced = sum(is_fabricated(r, known) for r in rows)
     wrong_values_surfaced = sum(is_wrong_surfaced(r) for r in rows)
     injection_leak = sum(is_injection_leak(r) for r in rows)
 

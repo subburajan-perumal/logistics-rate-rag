@@ -126,7 +126,7 @@
   "halcyon_tariff_2026_h2.csv": "1e147be3cc290b52c2dd6c23abf7adf286d345071010da6a19d89468b7eba9e1",
   "kestrel_tariff_2026_h2.csv": "df177bb5e1a477104c3653e4a117297178f9872a48466b22bd872d3546f928e8",
   "meridian_tariff_2026_h2.pdf": "6341ad5d269c4503e8010b3e121ea738b03f142ee4796ff6b6509cd178be3177",
-  "meridian_tariff_2026_q2.md": "26741c987d8bd3f134f5347774e9cf6ee9fe92431187cb724df00e9bbd039235",
+  "meridian_tariff_2026_q2.md": "cadd9bc8e4d5c14d0d2c7afb73943d3a22378e1c8660c52de83c734a471598f5",
   "quillon_tariff_2026_h2.csv": "24cf1f45717253f681137059e85430e1e5cae64955108eed0ccd6cd68bd617a5",
   "rate_policy_note_2026.md": "fe6ac6d3f52689bfa198f345fa90700d7cfc27fd09a3f2c8f1af25f60642c2bf",
   "solstice_tariff_2026_h2.md": "a6b6bd060ffcee0b0b9f100563d3312ce4b93063656f964b83fb6ae12162562e",
@@ -45951,7 +45951,7 @@
     "meridian_tariff_2026_h2.pdf",
     "meridian_tariff_2026_q2.md"
    ],
-   "max": 3093,
+   "max": 3094,
    "min": 3093
   },
   "MERIDIAN|BDCGP|SGSIN|20DRY": {
@@ -46359,7 +46359,7 @@
     "meridian_tariff_2026_h2.pdf",
     "meridian_tariff_2026_q2.md"
    ],
-   "max": 2929,
+   "max": 2930,
    "min": 2929
   },
   "MERIDIAN|INCCU|DEBRV|45HC": {
@@ -122422,7 +122422,7 @@
    "destination": "NGAPP",
    "doc": "meridian_tariff_2026_q2.md",
    "origin": "BDCGP",
-   "rate_value": 3093,
+   "rate_value": 3094,
    "tariff_ref": "MER-2026-Q2-FCL",
    "transit_days": 16,
    "valid_from": "2026-04-01",
@@ -123072,7 +123072,7 @@
    "destination": "DEBRV",
    "doc": "meridian_tariff_2026_q2.md",
    "origin": "INCCU",
-   "rate_value": 2929,
+   "rate_value": 2930,
    "tariff_ref": "MER-2026-Q2-FCL",
    "transit_days": 31,
    "valid_from": "2026-04-01",

@@ -15,7 +15,7 @@ CARRIERS = {
     "MERIDIAN": Carrier(
         display_name="Meridian Ocean Lines",
         aliases=["meridian", "meridian ocean", "meridian ocean lines", "mer"],
-        currency="USD",
+        currencies=["USD"],
         baf_included=True,
         thc_included=False,
         tariff_refs=["MER-2026-H2-FCL", "MER-2026-Q2-FCL"],
@@ -23,8 +23,9 @@ CARRIERS = {
     "HALCYON": Carrier(
         display_name="Halcyon Container Line",
         aliases=["halcyon", "halcyon container", "halcyon container line", "hal"],
-        currency="EUR",
+        currencies=["USD", "EUR"],
         baf_included=False,
+        baf_currency="USD",
         thc_included=False,
         tariff_refs=["HAL-2026-H2-FCL"],
     ),

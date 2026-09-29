@@ -57,10 +57,10 @@ def _candidate(**overrides) -> RateCandidate:
     base = dict(
         answerable=True,
         carrier="MERIDIAN",
-        origin="INMAA",
-        destination="NLRTM",
+        origin="BDCGP",
+        destination="BEANR",
         container_type="40HC",
-        rate_value=2224,
+        rate_value=3568,
         currency="USD",
         valid_from=date(2026, 7, 1),
         valid_to=date(2026, 12, 31),
@@ -93,7 +93,7 @@ def test_carrier_known_fails_for_unknown_carrier(settings):
 
 
 def test_rate_in_range_passes_for_real_lane(settings):
-    # 2224 is the actual manifest value for MERIDIAN|INMAA|NLRTM|40HC.
+    # 3568 is the actual manifest value for MERIDIAN|BDCGP|BEANR|40HC (corpus v3).
     result = rate_in_range(_candidate(), _ctx([]), settings, {"tolerance_pct": 0})
     assert result.passed is True
 
@@ -107,7 +107,7 @@ def test_rate_in_range_fails_outside_range(settings):
 
 
 def test_rate_in_range_missing_lane(settings):
-    candidate = _candidate(origin="INVTZ", destination="NLRTM")
+    candidate = _candidate(origin="INVTZ", destination="NLRTM")  # no such Meridian lane
     result = rate_in_range(candidate, _ctx([]), settings, {"tolerance_pct": 0})
     assert result.passed is False
     assert result.details["missing"] is True
