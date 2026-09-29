@@ -1481,6 +1481,11 @@ stores and both modes; results committed.
       D-11 note on unfiltered dates) (reviewed 2026-09-29; D-43/44/45 and
       both tuned thresholds added)
 - [ ] Fresh clone on the **other** machine (Mac): `python -m venv`,
+      (Windows stand-in done 2026-09-29 from a clean GitHub clone: **7.5 min**
+      total incl. the 22 MB FlashRank download and 30 live questions; same
+      numbers as the committed run. It first failed on a stale
+      pip-freeze self-pin in `requirements.lock`, fixed in 871787a, and CI
+      now installs from the lock. The Mac run itself is still open.)
       `pip install -r requirements.lock -e .`, `.env`, `rate-rag index`,
       `rate-rag eval --store chroma --mode gated --set golden` — timed,
       following only the README; must be ≤ 10 minutes excluding key
@@ -1491,18 +1496,19 @@ committed results; architecture doc reviewed against the code.
 
 ### Phase 10 — Publish + promote (1 session)
 
-- [ ] Second secret scan (`git log -p --all | grep -E "AIza|pcsk_"`) → clean
+- [x] Second secret scan (`git log -p --all | grep -E "AIza|pcsk_"`) → clean
+      (2026-09-29: 0 hits, no `.env` in history; the repo was already public)
 - [ ] Repo → public; topics `rag`, `langchain`, `pinecone`, `chromadb`,
       `gemini`, `guardrails`
-- [ ] Vault: `4 Career Profile/Project - Deterministic RAG Agent.md`
+- [x] Vault: `4 Career Profile/Project - Deterministic RAG Agent.md`
       (metric, artifact link, one STAR line) — passes the promotion
       checklist
 - [ ] Master resume gains the §1 bullet with real numbers
-- [ ] `2 Upskilling/_Overview.md` rows for LangChain, Vector DB,
+- [x] `2 Upskilling/_Overview.md` rows for LangChain, Vector DB,
       Deterministic AI → `practicing`
 - [ ] LinkedIn post drafted in Personal Branding Strategy (before/after
       numbers, wording rules, not posted by an agent)
-- [ ] Playbook gains a "guardrail gates" section sourced from this repo
+- [x] Playbook gains a "guardrail gates" section sourced from this repo
 
 **Acceptance:** everything in §21 ticked.
 
@@ -1612,6 +1618,7 @@ section and this plan.
 | 2026-09-23 | Windows | - | User flagged the live Streamlit demo was still showing the Phase 2 maintenance-mode placeholder despite Phases 3-6 landing the real chain and all three gates. Rebuilt `demo/app.py` against the actual gated pipeline (`CandidateChain` + `run_gates`, same as `rate-rag ask`) with a live **Guardrail trace** panel and 5 one-click example questions spanning `ANSWER`/`REJECT`/`REFUSED`; rewrote `demo/requirements.txt` (was still the old scaffold's dependency set with no way to even import `logistics_rate_rag`) | Live-verified locally via headless `streamlit run` + browser automation, not just "it imports": the superseded-tariff trap correctly returned `REJECT` → `rule:not_expired` with real `as_of`/`valid_from`/`valid_to` in the trace; the normal lookup returned `ANSWER` with `rate_value=2224`, matching the Phase 1-verified golden value | (housekeeping, not a phase) |
 | 2026-09-29 | Windows | 2b (+7 code) | `store/lexical.py` (BM25 + RRF), `rerank/` (noop, FlashRank, Pinecone), `build_retriever` factory wired into `ask`/`eval`/tuning, `rate-rag recall`, `with_reranker` threshold tuned; `PineconeBackend` + `build_backend`; `eval` expands `both`/`ablation` into one run per combination; `write_latest` rewritten to the SPEC §7.5 report; `cost_usd` in usage totals; 31 new tests (140 total) | **D-43** (tokenizer) found by the first live recall: hybrid 0.958 < dense 1.000 on G-008; fixed, all three stages 1.000. `with_reranker` threshold **0.664151** (22 correct / 0 incorrect, hybrid + FlashRank). All four `RETRIEVAL_MODE` × `RERANKER` combinations return the verified G-008 value live. **Metric bug fixed**: `adversarial_rejection_rate` counted only REJECT/NEEDS_REVIEW, not REFUSED, so the 2026-09-23 gated run reported 0.133 for what was 14/15 = 0.933 (§13.3 says `outcome ≠ ANSWER`). **D-44** (Pinecone list+fetch). | Phase 7 live run needs `PINECONE_API_KEY`; Phase 8 Chroma half can run now |
 | 2026-09-29 | Windows | 8 (Chroma) + 9 | Phase 8 on Chroma: `eval --mode both --set all` on hybrid + FlashRank, rerank and hybrid ablations, enrichment index + enriched recall; **D-45** (carrier alias resolved in Gate 1) found in the first gated run and all gated runs re-served from cache; `write_latest` keys runs by question set and sums spend across all files; demo labels its real dense/no-reranker settings; README and `architecture.md` rewritten | Hybrid + FlashRank, 45 questions: wrong values **4 → 0**, superseded/injected leaks **2 → 0**, adversarial rejection **0.80 → 1.00**, golden accuracy 0.958 both ways (1 abstention, G-015 `surcharge_consistent`), fabricated 0 both ways. rerank_lift, hybrid_lift, enrichment_lift all **0.000** (ceiling). Spend recorded: $0.28 + $0.022 enrichment. 147 tests | Phase 7 live (needs `PINECONE_API_KEY`), then the uncached both-store Phase 8 run, Mac fresh clone, Phase 10 |
+| 2026-09-29 | Windows | 9 (fresh clone) + 10 (part) | Timed fresh clone from GitHub; lock fix; CI switched to the lock install; second full-history secret scan (repo already public); vault Career Profile note, playbook "guardrail gates" section, Upskilling rows → practicing | Fresh clone **450 s** (install 200 s, index 7 s, 30 live gated questions + FlashRank download 243 s): golden 0.958, 0 wrong, 0 fabricated, matching the committed run. Secret scan: 0 hits for `AIza`/`pcsk_` in `git log -p --all`, no `.env` ever added. CI green on the lock install | Pinecone key → Phase 7 live + uncached both-store run; Mac fresh clone; resume bullet + LinkedIn post (user); GitHub topics (user) |
 
 ## Appendix B — Sources checked on 2026-09-17
 
