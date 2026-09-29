@@ -65,7 +65,7 @@ report measures.
 ```
 data/corpus/*  ──► loaders (md / csv / pdf via pdfplumber) ──► LoadedDocument (canonical text)
                ──► chunking (header block replicated into every table chunk; 4 lanes/chunk md+pdf, 6 rows/chunk csv, 1 section/chunk policy)
-               ──► 33 Chunk{chunk_id, text, metadata, content_sha256}   (corpus v2: 13 equipment columns, dashes = not offered)
+               ──► 1,324 Chunk{chunk_id, text, metadata, content_sha256}   (corpus v3: 12 tariffs, 13 equipment columns + per-line Currency, dashes = not offered)
                ──► [optional --enrich: LLM description prepended to index_text only]
                ──► GeminiEmbedder.embed_documents (batches of 100, normalised)
                ──► StoreBackend.upsert (diff by chunk_id + content hash → idempotent)

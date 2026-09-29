@@ -1,0 +1,2772 @@
+{
+  "run_id": "20260929T094434Z-pinecone-recall-noexpand",
+  "config": {
+    "store": "pinecone",
+    "enriched": false,
+    "query_expansion": false,
+    "reranker": "flashrank",
+    "k_retrieve": 12,
+    "k_final": 6,
+    "rrf_k": 60,
+    "questions": 80,
+    "corpus_version": 3
+  },
+  "recall": {
+    "retrieval_recall@6_dense": 0.9625,
+    "retrieval_recall@6_hybrid": 0.9625,
+    "retrieval_recall@6_reranked": 0.975
+  },
+  "rows": [
+    {
+      "id": "G-001",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#059"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#065",
+        "meridian_tariff_2026_h2#036",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#059",
+        "meridian_tariff_2026_h2#058",
+        "meridian_tariff_2026_q2#065"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#059",
+        "meridian_tariff_2026_h2#065",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#036",
+        "meridian_tariff_2026_h2#074"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#036",
+        "meridian_tariff_2026_h2#074",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#034",
+        "meridian_tariff_2026_h2#033",
+        "meridian_tariff_2026_h2#059"
+      ]
+    },
+    {
+      "id": "G-002",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#219"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#220",
+        "halcyon_tariff_2026_h2#093",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#223",
+        "halcyon_tariff_2026_h2#219",
+        "halcyon_tariff_2026_h2#224"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#220",
+        "halcyon_tariff_2026_h2#219",
+        "halcyon_tariff_2026_h2#224",
+        "halcyon_tariff_2026_h2#223",
+        "halcyon_tariff_2026_h2#139",
+        "halcyon_tariff_2026_h2#093"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#220",
+        "halcyon_tariff_2026_h2#219",
+        "halcyon_tariff_2026_h2#217",
+        "halcyon_tariff_2026_h2#224",
+        "halcyon_tariff_2026_h2#139",
+        "halcyon_tariff_2026_h2#218"
+      ]
+    },
+    {
+      "id": "G-003",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#065"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#065",
+        "boreal_tariff_2026_h2#063",
+        "boreal_tariff_2026_h2#064",
+        "boreal_tariff_2026_h2#054",
+        "boreal_tariff_2026_h2#066",
+        "boreal_tariff_2026_h2#019"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#065",
+        "boreal_tariff_2026_h2#064",
+        "boreal_tariff_2026_h2#063",
+        "boreal_tariff_2026_h2#066",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#065",
+        "boreal_tariff_2026_h2#066",
+        "boreal_tariff_2026_h2#064",
+        "boreal_tariff_2026_h2#063",
+        "boreal_tariff_2026_h2#062",
+        "boreal_tariff_2026_h2#019"
+      ]
+    },
+    {
+      "id": "G-004",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#063"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#063",
+        "corvid_tariff_2026_h2#062",
+        "corvid_tariff_2026_h2#065",
+        "corvid_tariff_2026_h2#066",
+        "corvid_tariff_2026_h2#064",
+        "corvid_tariff_2026_h2#067"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#063",
+        "corvid_tariff_2026_h2#062",
+        "corvid_tariff_2026_h2#078",
+        "corvid_tariff_2026_h2#066",
+        "corvid_tariff_2026_h2#064",
+        "corvid_tariff_2026_h2#040"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#063",
+        "corvid_tariff_2026_h2#002",
+        "corvid_tariff_2026_h2#078",
+        "corvid_tariff_2026_h2#011",
+        "corvid_tariff_2026_h2#008",
+        "corvid_tariff_2026_h2#062"
+      ]
+    },
+    {
+      "id": "G-005",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#040"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#042",
+        "tessera_tariff_2026_h2#030",
+        "tessera_tariff_2026_h2#029",
+        "tessera_tariff_2026_h2#054",
+        "tessera_tariff_2026_h2#040"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#040",
+        "tessera_tariff_2026_h2#042",
+        "rate_policy_note_2026#001",
+        "tessera_tariff_2026_h2#075",
+        "tessera_tariff_2026_h2#030"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#040",
+        "tessera_tariff_2026_h2#042",
+        "tessera_tariff_2026_h2#030",
+        "tessera_tariff_2026_h2#029",
+        "tessera_tariff_2026_h2#054"
+      ]
+    },
+    {
+      "id": "G-006",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#050"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_q2#051",
+        "solstice_tariff_2026_q2#050",
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_q2#049"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_q2#050",
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_q2#051",
+        "solstice_tariff_2026_q2#049"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_q2#050",
+        "solstice_tariff_2026_q2#049",
+        "solstice_tariff_2026_q2#051"
+      ]
+    },
+    {
+      "id": "G-007",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#181"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#171",
+        "kestrel_tariff_2026_h2#161",
+        "kestrel_tariff_2026_h2#106",
+        "kestrel_tariff_2026_h2#016",
+        "kestrel_tariff_2026_h2#181",
+        "kestrel_tariff_2026_h2#124"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#171",
+        "kestrel_tariff_2026_h2#181",
+        "kestrel_tariff_2026_h2#178",
+        "kestrel_tariff_2026_h2#143",
+        "kestrel_tariff_2026_h2#179",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#171",
+        "kestrel_tariff_2026_h2#181",
+        "kestrel_tariff_2026_h2#143",
+        "kestrel_tariff_2026_h2#106",
+        "kestrel_tariff_2026_h2#161",
+        "kestrel_tariff_2026_h2#016"
+      ]
+    },
+    {
+      "id": "G-008",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#044"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#044",
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#001",
+        "aldermoor_tariff_2026_h2#004",
+        "aldermoor_tariff_2026_h2#000",
+        "aldermoor_tariff_2026_h2#050"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#044",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#005",
+        "rate_policy_note_2026#000",
+        "aldermoor_tariff_2026_h2#001",
+        "aldermoor_tariff_2026_h2#065"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#044",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#001",
+        "aldermoor_tariff_2026_h2#004",
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#057"
+      ]
+    },
+    {
+      "id": "G-009",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "vantor_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "vantor_tariff_2026_h2#005",
+        "vantor_tariff_2026_h2#006",
+        "vantor_tariff_2026_h2#004",
+        "vantor_tariff_2026_h2#047",
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#063"
+      ],
+      "hybrid_top": [
+        "vantor_tariff_2026_h2#005",
+        "vantor_tariff_2026_h2#006",
+        "vantor_tariff_2026_h2#004",
+        "rate_policy_note_2026#005",
+        "vantor_tariff_2026_h2#002",
+        "vantor_tariff_2026_h2#036"
+      ],
+      "reranked_top": [
+        "vantor_tariff_2026_h2#005",
+        "vantor_tariff_2026_h2#006",
+        "vantor_tariff_2026_h2#004",
+        "vantor_tariff_2026_h2#061",
+        "vantor_tariff_2026_h2#002",
+        "vantor_tariff_2026_h2#063"
+      ]
+    },
+    {
+      "id": "G-010",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "quillon_tariff_2026_h2#014",
+        "quillon_tariff_2026_h2#029",
+        "quillon_tariff_2026_h2#064",
+        "quillon_tariff_2026_h2#073",
+        "quillon_tariff_2026_h2#103",
+        "quillon_tariff_2026_h2#111",
+        "quillon_tariff_2026_h2#142",
+        "quillon_tariff_2026_h2#166"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": false,
+      "dense_top": [
+        "quillon_tariff_2026_h2#112",
+        "quillon_tariff_2026_h2#171",
+        "quillon_tariff_2026_h2#106",
+        "quillon_tariff_2026_h2#111",
+        "quillon_tariff_2026_h2#084",
+        "quillon_tariff_2026_h2#109"
+      ],
+      "hybrid_top": [
+        "quillon_tariff_2026_h2#112",
+        "quillon_tariff_2026_h2#111",
+        "quillon_tariff_2026_h2#171",
+        "quillon_tariff_2026_h2#131",
+        "rate_policy_note_2026#005",
+        "quillon_tariff_2026_h2#106"
+      ],
+      "reranked_top": [
+        "quillon_tariff_2026_h2#112",
+        "quillon_tariff_2026_h2#174",
+        "quillon_tariff_2026_h2#106",
+        "quillon_tariff_2026_h2#172",
+        "quillon_tariff_2026_h2#170",
+        "quillon_tariff_2026_h2#171"
+      ]
+    },
+    {
+      "id": "G-011",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#022"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#022",
+        "meridian_tariff_2026_h2#025",
+        "meridian_tariff_2026_q2#022",
+        "meridian_tariff_2026_h2#023",
+        "meridian_tariff_2026_q2#025",
+        "meridian_tariff_2026_h2#021"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#022",
+        "meridian_tariff_2026_q2#022",
+        "meridian_tariff_2026_h2#023",
+        "meridian_tariff_2026_q2#023",
+        "meridian_tariff_2026_h2#025",
+        "meridian_tariff_2026_h2#033"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#022",
+        "meridian_tariff_2026_h2#033",
+        "meridian_tariff_2026_h2#022",
+        "meridian_tariff_2026_q2#033",
+        "meridian_tariff_2026_h2#021",
+        "meridian_tariff_2026_h2#025"
+      ]
+    },
+    {
+      "id": "G-012",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#063",
+        "halcyon_tariff_2026_h2#172",
+        "halcyon_tariff_2026_h2#225"
+      ],
+      "dense_hit": false,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#103",
+        "halcyon_tariff_2026_h2#113",
+        "halcyon_tariff_2026_h2#022",
+        "halcyon_tariff_2026_h2#201",
+        "halcyon_tariff_2026_h2#193",
+        "halcyon_tariff_2026_h2#222"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#113",
+        "halcyon_tariff_2026_h2#103",
+        "halcyon_tariff_2026_h2#022",
+        "halcyon_tariff_2026_h2#225",
+        "halcyon_tariff_2026_h2#221",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#225",
+        "halcyon_tariff_2026_h2#027",
+        "halcyon_tariff_2026_h2#113",
+        "halcyon_tariff_2026_h2#103",
+        "halcyon_tariff_2026_h2#022",
+        "halcyon_tariff_2026_h2#222"
+      ]
+    },
+    {
+      "id": "G-013",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#073"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#073",
+        "boreal_tariff_2026_h2#074",
+        "boreal_tariff_2026_h2#071",
+        "boreal_tariff_2026_h2#072",
+        "boreal_tariff_2026_h2#063",
+        "boreal_tariff_2026_h2#070"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#073",
+        "rate_policy_note_2026#001",
+        "boreal_tariff_2026_h2#074",
+        "rate_policy_note_2026#004",
+        "boreal_tariff_2026_h2#071",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#073",
+        "boreal_tariff_2026_h2#074",
+        "boreal_tariff_2026_h2#070",
+        "boreal_tariff_2026_h2#072",
+        "boreal_tariff_2026_h2#071",
+        "boreal_tariff_2026_h2#063"
+      ]
+    },
+    {
+      "id": "G-014",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#110",
+        "corvid_tariff_2026_h2#112"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#112",
+        "corvid_tariff_2026_h2#113",
+        "corvid_tariff_2026_h2#110",
+        "corvid_tariff_2026_h2#111",
+        "corvid_tariff_2026_h2#114",
+        "corvid_tariff_2026_h2#045"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#112",
+        "corvid_tariff_2026_h2#113",
+        "corvid_tariff_2026_h2#110",
+        "corvid_tariff_2026_h2#111",
+        "corvid_tariff_2026_h2#088",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#112",
+        "corvid_tariff_2026_h2#113",
+        "corvid_tariff_2026_h2#111",
+        "corvid_tariff_2026_h2#110",
+        "corvid_tariff_2026_h2#052",
+        "corvid_tariff_2026_h2#027"
+      ]
+    },
+    {
+      "id": "G-015",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#041"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#050",
+        "tessera_tariff_2026_h2#042",
+        "tessera_tariff_2026_h2#040",
+        "tessera_tariff_2026_h2#037",
+        "tessera_tariff_2026_h2#044"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#042",
+        "tessera_tariff_2026_h2#040",
+        "tessera_tariff_2026_h2#050",
+        "tessera_tariff_2026_h2#025",
+        "tessera_tariff_2026_h2#021"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#021",
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#050",
+        "tessera_tariff_2026_h2#025",
+        "tessera_tariff_2026_h2#013",
+        "tessera_tariff_2026_h2#042"
+      ]
+    },
+    {
+      "id": "G-016",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#060"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#060",
+        "solstice_tariff_2026_q2#060",
+        "solstice_tariff_2026_h2#059",
+        "solstice_tariff_2026_q2#059",
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_h2#048"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#060",
+        "solstice_tariff_2026_q2#060",
+        "solstice_tariff_2026_h2#059",
+        "solstice_tariff_2026_q2#059",
+        "rate_policy_note_2026#000",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_q2#060",
+        "solstice_tariff_2026_q2#059",
+        "solstice_tariff_2026_h2#060",
+        "solstice_tariff_2026_h2#059",
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_h2#048"
+      ]
+    },
+    {
+      "id": "G-017",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#040",
+        "kestrel_tariff_2026_h2#046"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#112",
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#040",
+        "kestrel_tariff_2026_h2#058"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#041",
+        "rate_policy_note_2026#004",
+        "kestrel_tariff_2026_h2#042",
+        "rate_policy_note_2026#001",
+        "kestrel_tariff_2026_h2#112",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#040",
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#095",
+        "kestrel_tariff_2026_h2#112"
+      ]
+    },
+    {
+      "id": "G-018",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#016"
+      ],
+      "dense_hit": false,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "aldermoor_tariff_2026_h2#006",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#061",
+        "aldermoor_tariff_2026_h2#012"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "aldermoor_tariff_2026_h2#016",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#006",
+        "rate_policy_note_2026#004",
+        "aldermoor_tariff_2026_h2#013"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "aldermoor_tariff_2026_h2#016",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#012",
+        "aldermoor_tariff_2026_h2#061"
+      ]
+    },
+    {
+      "id": "G-019",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#047"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "vantor_tariff_2026_h2#047",
+        "vantor_tariff_2026_h2#039",
+        "vantor_tariff_2026_h2#046",
+        "vantor_tariff_2026_h2#001",
+        "vantor_tariff_2026_h2#030",
+        "vantor_tariff_2026_h2#025"
+      ],
+      "hybrid_top": [
+        "vantor_tariff_2026_h2#047",
+        "vantor_tariff_2026_h2#059",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001",
+        "vantor_tariff_2026_h2#039",
+        "rate_policy_note_2026#004"
+      ],
+      "reranked_top": [
+        "vantor_tariff_2026_h2#030",
+        "vantor_tariff_2026_h2#039",
+        "vantor_tariff_2026_h2#001",
+        "vantor_tariff_2026_h2#047",
+        "vantor_tariff_2026_h2#059",
+        "vantor_tariff_2026_h2#046"
+      ]
+    },
+    {
+      "id": "G-020",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "quillon_tariff_2026_h2#118"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#139",
+        "quillon_tariff_2026_h2#118",
+        "quillon_tariff_2026_h2#138",
+        "quillon_tariff_2026_h2#100",
+        "quillon_tariff_2026_h2#116"
+      ],
+      "hybrid_top": [
+        "quillon_tariff_2026_h2#118",
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#100",
+        "quillon_tariff_2026_h2#014",
+        "rate_policy_note_2026#005",
+        "quillon_tariff_2026_h2#139"
+      ],
+      "reranked_top": [
+        "quillon_tariff_2026_h2#126",
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#118",
+        "quillon_tariff_2026_h2#014",
+        "quillon_tariff_2026_h2#067",
+        "quillon_tariff_2026_h2#100"
+      ]
+    },
+    {
+      "id": "G-021",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#051",
+        "meridian_tariff_2026_h2#064"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#064",
+        "meridian_tariff_2026_q2#064",
+        "meridian_tariff_2026_q2#062",
+        "meridian_tariff_2026_h2#062",
+        "meridian_tariff_2026_h2#060",
+        "meridian_tariff_2026_h2#065"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#064",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#064",
+        "rate_policy_note_2026#004",
+        "meridian_tariff_2026_q2#062",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#064",
+        "meridian_tariff_2026_q2#062",
+        "meridian_tariff_2026_h2#064",
+        "meridian_tariff_2026_h2#062",
+        "meridian_tariff_2026_h2#060"
+      ]
+    },
+    {
+      "id": "G-022",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#088",
+        "halcyon_tariff_2026_h2#095"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#087",
+        "halcyon_tariff_2026_h2#084",
+        "halcyon_tariff_2026_h2#085",
+        "halcyon_tariff_2026_h2#088",
+        "halcyon_tariff_2026_h2#083",
+        "halcyon_tariff_2026_h2#086"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#088",
+        "halcyon_tariff_2026_h2#084",
+        "halcyon_tariff_2026_h2#087",
+        "halcyon_tariff_2026_h2#083",
+        "halcyon_tariff_2026_h2#085",
+        "halcyon_tariff_2026_h2#089"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#089",
+        "halcyon_tariff_2026_h2#084",
+        "halcyon_tariff_2026_h2#090",
+        "halcyon_tariff_2026_h2#088",
+        "halcyon_tariff_2026_h2#087",
+        "halcyon_tariff_2026_h2#086"
+      ]
+    },
+    {
+      "id": "G-023",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#047",
+        "boreal_tariff_2026_h2#050"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#050",
+        "boreal_tariff_2026_h2#049",
+        "boreal_tariff_2026_h2#051",
+        "boreal_tariff_2026_h2#052",
+        "boreal_tariff_2026_h2#006",
+        "boreal_tariff_2026_h2#042"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#050",
+        "rate_policy_note_2026#001",
+        "boreal_tariff_2026_h2#049",
+        "rate_policy_note_2026#004",
+        "boreal_tariff_2026_h2#051",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#050",
+        "boreal_tariff_2026_h2#049",
+        "boreal_tariff_2026_h2#052",
+        "boreal_tariff_2026_h2#051",
+        "boreal_tariff_2026_h2#042",
+        "boreal_tariff_2026_h2#075"
+      ]
+    },
+    {
+      "id": "G-024",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#029"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#030",
+        "corvid_tariff_2026_h2#032",
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#034",
+        "corvid_tariff_2026_h2#054"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#030",
+        "corvid_tariff_2026_h2#032",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#055",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#030",
+        "corvid_tariff_2026_h2#094",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#032",
+        "corvid_tariff_2026_h2#093"
+      ]
+    },
+    {
+      "id": "G-025",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#002",
+        "tessera_tariff_2026_h2#039"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#002",
+        "tessera_tariff_2026_h2#071",
+        "tessera_tariff_2026_h2#001",
+        "tessera_tariff_2026_h2#072",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#030"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#002",
+        "tessera_tariff_2026_h2#071",
+        "tessera_tariff_2026_h2#001",
+        "tessera_tariff_2026_h2#072",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#030"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#002",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#000",
+        "tessera_tariff_2026_h2#041",
+        "tessera_tariff_2026_h2#001",
+        "tessera_tariff_2026_h2#055"
+      ]
+    },
+    {
+      "id": "G-026",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#064"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#065",
+        "solstice_tariff_2026_q2#065",
+        "solstice_tariff_2026_h2#064",
+        "solstice_tariff_2026_h2#066",
+        "solstice_tariff_2026_h2#067",
+        "solstice_tariff_2026_q2#064"
+      ],
+      "hybrid_top": [
+        "rate_policy_note_2026#004",
+        "solstice_tariff_2026_h2#065",
+        "rate_policy_note_2026#001",
+        "solstice_tariff_2026_q2#065",
+        "rate_policy_note_2026#005",
+        "solstice_tariff_2026_h2#064"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#064",
+        "solstice_tariff_2026_q2#064",
+        "solstice_tariff_2026_h2#065",
+        "solstice_tariff_2026_h2#066",
+        "solstice_tariff_2026_h2#067",
+        "solstice_tariff_2026_q2#065"
+      ]
+    },
+    {
+      "id": "G-027",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#113"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": false,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#114",
+        "kestrel_tariff_2026_h2#112",
+        "kestrel_tariff_2026_h2#127",
+        "kestrel_tariff_2026_h2#177",
+        "kestrel_tariff_2026_h2#107"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#177",
+        "kestrel_tariff_2026_h2#127",
+        "kestrel_tariff_2026_h2#114",
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#135"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#177",
+        "kestrel_tariff_2026_h2#135",
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#114",
+        "kestrel_tariff_2026_h2#127",
+        "kestrel_tariff_2026_h2#041"
+      ]
+    },
+    {
+      "id": "G-028",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#028"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#028",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#026",
+        "aldermoor_tariff_2026_h2#020",
+        "aldermoor_tariff_2026_h2#031"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#023",
+        "aldermoor_tariff_2026_h2#033",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#028",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#028",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#040",
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#033",
+        "aldermoor_tariff_2026_h2#041"
+      ]
+    },
+    {
+      "id": "G-029",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "vantor_tariff_2026_h2#013"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "vantor_tariff_2026_h2#015",
+        "vantor_tariff_2026_h2#014",
+        "vantor_tariff_2026_h2#016",
+        "vantor_tariff_2026_h2#017",
+        "vantor_tariff_2026_h2#013",
+        "vantor_tariff_2026_h2#029"
+      ],
+      "hybrid_top": [
+        "vantor_tariff_2026_h2#013",
+        "vantor_tariff_2026_h2#015",
+        "vantor_tariff_2026_h2#014",
+        "vantor_tariff_2026_h2#016",
+        "vantor_tariff_2026_h2#017",
+        "vantor_tariff_2026_h2#006"
+      ],
+      "reranked_top": [
+        "vantor_tariff_2026_h2#013",
+        "vantor_tariff_2026_h2#016",
+        "vantor_tariff_2026_h2#015",
+        "vantor_tariff_2026_h2#014",
+        "vantor_tariff_2026_h2#017",
+        "vantor_tariff_2026_h2#029"
+      ]
+    },
+    {
+      "id": "G-030",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "quillon_tariff_2026_h2#062"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "quillon_tariff_2026_h2#062",
+        "quillon_tariff_2026_h2#067",
+        "quillon_tariff_2026_h2#061",
+        "quillon_tariff_2026_h2#056",
+        "quillon_tariff_2026_h2#152",
+        "quillon_tariff_2026_h2#114"
+      ],
+      "hybrid_top": [
+        "quillon_tariff_2026_h2#062",
+        "quillon_tariff_2026_h2#061",
+        "quillon_tariff_2026_h2#120",
+        "quillon_tariff_2026_h2#116",
+        "rate_policy_note_2026#004",
+        "quillon_tariff_2026_h2#067"
+      ],
+      "reranked_top": [
+        "quillon_tariff_2026_h2#152",
+        "quillon_tariff_2026_h2#062",
+        "quillon_tariff_2026_h2#116",
+        "quillon_tariff_2026_h2#114",
+        "quillon_tariff_2026_h2#067",
+        "quillon_tariff_2026_h2#120"
+      ]
+    },
+    {
+      "id": "G-031",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#037",
+        "meridian_tariff_2026_h2#063"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#037",
+        "meridian_tariff_2026_h2#038",
+        "meridian_tariff_2026_q2#037",
+        "meridian_tariff_2026_h2#035",
+        "meridian_tariff_2026_h2#040",
+        "meridian_tariff_2026_h2#036"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#037",
+        "meridian_tariff_2026_h2#041",
+        "meridian_tariff_2026_q2#037",
+        "meridian_tariff_2026_h2#038",
+        "meridian_tariff_2026_h2#040",
+        "meridian_tariff_2026_h2#039"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#037",
+        "meridian_tariff_2026_h2#041",
+        "meridian_tariff_2026_h2#039",
+        "meridian_tariff_2026_h2#040",
+        "meridian_tariff_2026_h2#038",
+        "meridian_tariff_2026_q2#037"
+      ]
+    },
+    {
+      "id": "G-032",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#180"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#180",
+        "halcyon_tariff_2026_h2#057",
+        "halcyon_tariff_2026_h2#077",
+        "halcyon_tariff_2026_h2#179",
+        "halcyon_tariff_2026_h2#111",
+        "halcyon_tariff_2026_h2#008"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#180",
+        "halcyon_tariff_2026_h2#179",
+        "halcyon_tariff_2026_h2#057",
+        "halcyon_tariff_2026_h2#120",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#077"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#180",
+        "halcyon_tariff_2026_h2#120",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#111",
+        "halcyon_tariff_2026_h2#110",
+        "halcyon_tariff_2026_h2#057"
+      ]
+    },
+    {
+      "id": "G-033",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#029"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#029",
+        "boreal_tariff_2026_h2#028",
+        "boreal_tariff_2026_h2#025",
+        "boreal_tariff_2026_h2#027",
+        "boreal_tariff_2026_h2#026",
+        "boreal_tariff_2026_h2#060"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#029",
+        "rate_policy_note_2026#001",
+        "boreal_tariff_2026_h2#028",
+        "rate_policy_note_2026#004",
+        "boreal_tariff_2026_h2#025",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#029",
+        "boreal_tariff_2026_h2#026",
+        "boreal_tariff_2026_h2#027",
+        "boreal_tariff_2026_h2#060",
+        "boreal_tariff_2026_h2#028",
+        "boreal_tariff_2026_h2#025"
+      ]
+    },
+    {
+      "id": "G-034",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#116"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#116",
+        "corvid_tariff_2026_h2#119",
+        "corvid_tariff_2026_h2#099",
+        "corvid_tariff_2026_h2#035",
+        "corvid_tariff_2026_h2#037",
+        "corvid_tariff_2026_h2#061"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#116",
+        "corvid_tariff_2026_h2#037",
+        "corvid_tariff_2026_h2#115",
+        "corvid_tariff_2026_h2#102",
+        "corvid_tariff_2026_h2#014",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#116",
+        "corvid_tariff_2026_h2#119",
+        "corvid_tariff_2026_h2#035",
+        "corvid_tariff_2026_h2#014",
+        "corvid_tariff_2026_h2#099",
+        "corvid_tariff_2026_h2#115"
+      ]
+    },
+    {
+      "id": "G-035",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#007"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#008",
+        "tessera_tariff_2026_h2#009",
+        "tessera_tariff_2026_h2#006",
+        "tessera_tariff_2026_h2#007",
+        "tessera_tariff_2026_h2#010",
+        "tessera_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#008",
+        "tessera_tariff_2026_h2#007",
+        "tessera_tariff_2026_h2#009",
+        "tessera_tariff_2026_h2#006",
+        "tessera_tariff_2026_h2#010",
+        "tessera_tariff_2026_h2#005"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#008",
+        "tessera_tariff_2026_h2#007",
+        "tessera_tariff_2026_h2#010",
+        "tessera_tariff_2026_h2#009",
+        "tessera_tariff_2026_h2#006",
+        "tessera_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-036",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#051"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_q2#051",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_q2#049",
+        "solstice_tariff_2026_q2#050"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_q2#051",
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_q2#049",
+        "solstice_tariff_2026_q2#050"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_q2#051",
+        "solstice_tariff_2026_h2#051",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_h2#049",
+        "solstice_tariff_2026_q2#050",
+        "solstice_tariff_2026_q2#049"
+      ]
+    },
+    {
+      "id": "G-037",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#046"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#047",
+        "kestrel_tariff_2026_h2#087",
+        "kestrel_tariff_2026_h2#046",
+        "kestrel_tariff_2026_h2#084",
+        "kestrel_tariff_2026_h2#100",
+        "kestrel_tariff_2026_h2#124"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#047",
+        "rate_policy_note_2026#004",
+        "kestrel_tariff_2026_h2#087",
+        "rate_policy_note_2026#001",
+        "kestrel_tariff_2026_h2#046",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#100",
+        "kestrel_tariff_2026_h2#046",
+        "kestrel_tariff_2026_h2#087",
+        "kestrel_tariff_2026_h2#099",
+        "kestrel_tariff_2026_h2#047",
+        "kestrel_tariff_2026_h2#124"
+      ]
+    },
+    {
+      "id": "G-038",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#034"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#034",
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#022",
+        "aldermoor_tariff_2026_h2#020",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#021"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#034",
+        "aldermoor_tariff_2026_h2#022",
+        "aldermoor_tariff_2026_h2#024",
+        "aldermoor_tariff_2026_h2#021",
+        "aldermoor_tariff_2026_h2#020",
+        "aldermoor_tariff_2026_h2#058"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#058",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#055",
+        "aldermoor_tariff_2026_h2#034",
+        "aldermoor_tariff_2026_h2#030",
+        "aldermoor_tariff_2026_h2#020"
+      ]
+    },
+    {
+      "id": "G-039",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "vantor_tariff_2026_h2#024"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#024",
+        "vantor_tariff_2026_h2#026",
+        "vantor_tariff_2026_h2#038",
+        "vantor_tariff_2026_h2#040",
+        "vantor_tariff_2026_h2#027"
+      ],
+      "hybrid_top": [
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#024",
+        "rate_policy_note_2026#005",
+        "vantor_tariff_2026_h2#026",
+        "vantor_tariff_2026_h2#034",
+        "vantor_tariff_2026_h2#038"
+      ],
+      "reranked_top": [
+        "vantor_tariff_2026_h2#024",
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#026",
+        "vantor_tariff_2026_h2#027",
+        "vantor_tariff_2026_h2#034",
+        "vantor_tariff_2026_h2#038"
+      ]
+    },
+    {
+      "id": "G-040",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "quillon_tariff_2026_h2#018",
+        "quillon_tariff_2026_h2#138"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "quillon_tariff_2026_h2#139",
+        "quillon_tariff_2026_h2#138",
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#140",
+        "quillon_tariff_2026_h2#104",
+        "quillon_tariff_2026_h2#101"
+      ],
+      "hybrid_top": [
+        "quillon_tariff_2026_h2#139",
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#138",
+        "quillon_tariff_2026_h2#140",
+        "quillon_tariff_2026_h2#141",
+        "quillon_tariff_2026_h2#104"
+      ],
+      "reranked_top": [
+        "quillon_tariff_2026_h2#139",
+        "quillon_tariff_2026_h2#104",
+        "quillon_tariff_2026_h2#119",
+        "quillon_tariff_2026_h2#138",
+        "quillon_tariff_2026_h2#142",
+        "quillon_tariff_2026_h2#141"
+      ]
+    },
+    {
+      "id": "G-041",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#044",
+        "meridian_tariff_2026_h2#047"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#044",
+        "meridian_tariff_2026_q2#044",
+        "meridian_tariff_2026_q2#043",
+        "meridian_tariff_2026_h2#043",
+        "meridian_tariff_2026_h2#045",
+        "meridian_tariff_2026_q2#045"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#044",
+        "meridian_tariff_2026_q2#044",
+        "meridian_tariff_2026_q2#043",
+        "meridian_tariff_2026_h2#043",
+        "meridian_tariff_2026_h2#045",
+        "meridian_tariff_2026_q2#045"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#044",
+        "meridian_tariff_2026_q2#044",
+        "meridian_tariff_2026_h2#043",
+        "meridian_tariff_2026_h2#045",
+        "meridian_tariff_2026_h2#042",
+        "meridian_tariff_2026_q2#045"
+      ]
+    },
+    {
+      "id": "G-042",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#160"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#159",
+        "halcyon_tariff_2026_h2#160",
+        "halcyon_tariff_2026_h2#158",
+        "halcyon_tariff_2026_h2#138",
+        "halcyon_tariff_2026_h2#146",
+        "halcyon_tariff_2026_h2#157"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#159",
+        "halcyon_tariff_2026_h2#160",
+        "halcyon_tariff_2026_h2#158",
+        "halcyon_tariff_2026_h2#157",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#138"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#159",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#160",
+        "halcyon_tariff_2026_h2#157",
+        "halcyon_tariff_2026_h2#156",
+        "halcyon_tariff_2026_h2#158"
+      ]
+    },
+    {
+      "id": "G-043",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#052"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#052",
+        "boreal_tariff_2026_h2#049",
+        "boreal_tariff_2026_h2#051",
+        "boreal_tariff_2026_h2#050",
+        "boreal_tariff_2026_h2#024",
+        "boreal_tariff_2026_h2#012"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#052",
+        "rate_policy_note_2026#001",
+        "boreal_tariff_2026_h2#049",
+        "rate_policy_note_2026#004",
+        "boreal_tariff_2026_h2#051",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#052",
+        "boreal_tariff_2026_h2#012",
+        "boreal_tariff_2026_h2#024",
+        "boreal_tariff_2026_h2#050",
+        "boreal_tariff_2026_h2#049",
+        "boreal_tariff_2026_h2#051"
+      ]
+    },
+    {
+      "id": "G-044",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#109"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#109",
+        "corvid_tariff_2026_h2#053",
+        "corvid_tariff_2026_h2#108",
+        "corvid_tariff_2026_h2#060",
+        "corvid_tariff_2026_h2#101",
+        "corvid_tariff_2026_h2#088"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#109",
+        "corvid_tariff_2026_h2#108",
+        "rate_policy_note_2026#005",
+        "corvid_tariff_2026_h2#053",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#109",
+        "corvid_tariff_2026_h2#108",
+        "corvid_tariff_2026_h2#101",
+        "corvid_tariff_2026_h2#053",
+        "corvid_tariff_2026_h2#088",
+        "corvid_tariff_2026_h2#052"
+      ]
+    },
+    {
+      "id": "G-045",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#045"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#045",
+        "tessera_tariff_2026_h2#043",
+        "tessera_tariff_2026_h2#031",
+        "tessera_tariff_2026_h2#046",
+        "tessera_tariff_2026_h2#028",
+        "tessera_tariff_2026_h2#044"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#045",
+        "tessera_tariff_2026_h2#043",
+        "tessera_tariff_2026_h2#046",
+        "tessera_tariff_2026_h2#044",
+        "tessera_tariff_2026_h2#042",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#045",
+        "tessera_tariff_2026_h2#043",
+        "tessera_tariff_2026_h2#046",
+        "tessera_tariff_2026_h2#044",
+        "tessera_tariff_2026_h2#042",
+        "tessera_tariff_2026_h2#031"
+      ]
+    },
+    {
+      "id": "G-046",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#041"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#004",
+        "aldermoor_tariff_2026_h2#055",
+        "aldermoor_tariff_2026_h2#001",
+        "aldermoor_tariff_2026_h2#050",
+        "aldermoor_tariff_2026_h2#057"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#004",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#055",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#004",
+        "aldermoor_tariff_2026_h2#057",
+        "aldermoor_tariff_2026_h2#043",
+        "aldermoor_tariff_2026_h2#055",
+        "aldermoor_tariff_2026_h2#053"
+      ]
+    },
+    {
+      "id": "G-047",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#098",
+        "halcyon_tariff_2026_h2#182",
+        "halcyon_tariff_2026_h2#196"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#184",
+        "halcyon_tariff_2026_h2#182",
+        "halcyon_tariff_2026_h2#185",
+        "halcyon_tariff_2026_h2#183",
+        "halcyon_tariff_2026_h2#186",
+        "halcyon_tariff_2026_h2#187"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#182",
+        "halcyon_tariff_2026_h2#183",
+        "halcyon_tariff_2026_h2#184",
+        "halcyon_tariff_2026_h2#185",
+        "halcyon_tariff_2026_h2#186",
+        "halcyon_tariff_2026_h2#187"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#183",
+        "halcyon_tariff_2026_h2#184",
+        "halcyon_tariff_2026_h2#182",
+        "halcyon_tariff_2026_h2#188",
+        "halcyon_tariff_2026_h2#185",
+        "halcyon_tariff_2026_h2#187"
+      ]
+    },
+    {
+      "id": "G-048",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#057"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#040",
+        "kestrel_tariff_2026_h2#044",
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#114"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#113",
+        "kestrel_tariff_2026_h2#127",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#042",
+        "kestrel_tariff_2026_h2#041",
+        "kestrel_tariff_2026_h2#177",
+        "kestrel_tariff_2026_h2#114",
+        "kestrel_tariff_2026_h2#127",
+        "kestrel_tariff_2026_h2#040"
+      ]
+    },
+    {
+      "id": "G-049",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#028",
+        "aldermoor_tariff_2026_h2#051"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#028",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#025",
+        "aldermoor_tariff_2026_h2#031",
+        "aldermoor_tariff_2026_h2#026"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#028",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#029",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#027",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#028",
+        "aldermoor_tariff_2026_h2#025",
+        "aldermoor_tariff_2026_h2#027",
+        "aldermoor_tariff_2026_h2#026",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#031"
+      ]
+    },
+    {
+      "id": "G-050",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#050",
+        "halcyon_tariff_2026_h2#177"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#177",
+        "halcyon_tariff_2026_h2#179",
+        "halcyon_tariff_2026_h2#178",
+        "halcyon_tariff_2026_h2#180",
+        "halcyon_tariff_2026_h2#182",
+        "halcyon_tariff_2026_h2#181"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#177",
+        "halcyon_tariff_2026_h2#179",
+        "halcyon_tariff_2026_h2#180",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#178"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#177",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#180",
+        "halcyon_tariff_2026_h2#178",
+        "halcyon_tariff_2026_h2#179",
+        "halcyon_tariff_2026_h2#181"
+      ]
+    },
+    {
+      "id": "G-051",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#021"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#021",
+        "tessera_tariff_2026_h2#022",
+        "tessera_tariff_2026_h2#023",
+        "tessera_tariff_2026_h2#020",
+        "tessera_tariff_2026_h2#014",
+        "tessera_tariff_2026_h2#024"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#021",
+        "tessera_tariff_2026_h2#022",
+        "tessera_tariff_2026_h2#020",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#021",
+        "tessera_tariff_2026_h2#022",
+        "tessera_tariff_2026_h2#020",
+        "tessera_tariff_2026_h2#023",
+        "tessera_tariff_2026_h2#014",
+        "tessera_tariff_2026_h2#024"
+      ]
+    },
+    {
+      "id": "G-052",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#017"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#006",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#012",
+        "aldermoor_tariff_2026_h2#061"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#013",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#006",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#017",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#006",
+        "aldermoor_tariff_2026_h2#039",
+        "aldermoor_tariff_2026_h2#061"
+      ]
+    },
+    {
+      "id": "G-053",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#010"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#010",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#011",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#009",
+        "aldermoor_tariff_2026_h2#012"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#010",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#008",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#011",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#010",
+        "aldermoor_tariff_2026_h2#011",
+        "aldermoor_tariff_2026_h2#009",
+        "aldermoor_tariff_2026_h2#013",
+        "aldermoor_tariff_2026_h2#008",
+        "aldermoor_tariff_2026_h2#006"
+      ]
+    },
+    {
+      "id": "G-054",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#071"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#071",
+        "tessera_tariff_2026_h2#072",
+        "tessera_tariff_2026_h2#067",
+        "tessera_tariff_2026_h2#073",
+        "tessera_tariff_2026_h2#063",
+        "tessera_tariff_2026_h2#066"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#071",
+        "tessera_tariff_2026_h2#070",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001",
+        "tessera_tariff_2026_h2#072",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#073",
+        "tessera_tariff_2026_h2#072",
+        "tessera_tariff_2026_h2#071",
+        "tessera_tariff_2026_h2#070",
+        "tessera_tariff_2026_h2#063",
+        "tessera_tariff_2026_h2#067"
+      ]
+    },
+    {
+      "id": "G-055",
+      "tag": "currency",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#059"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#059",
+        "aldermoor_tariff_2026_h2#000",
+        "aldermoor_tariff_2026_h2#050",
+        "aldermoor_tariff_2026_h2#060",
+        "aldermoor_tariff_2026_h2#023"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#059",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#000",
+        "rate_policy_note_2026#002"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#005",
+        "aldermoor_tariff_2026_h2#029",
+        "aldermoor_tariff_2026_h2#023",
+        "aldermoor_tariff_2026_h2#059",
+        "aldermoor_tariff_2026_h2#053",
+        "aldermoor_tariff_2026_h2#060"
+      ]
+    },
+    {
+      "id": "G-056",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#027"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#028",
+        "meridian_tariff_2026_q2#028",
+        "meridian_tariff_2026_h2#030",
+        "meridian_tariff_2026_h2#027",
+        "meridian_tariff_2026_h2#012",
+        "meridian_tariff_2026_h2#029"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#028",
+        "meridian_tariff_2026_h2#080",
+        "meridian_tariff_2026_q2#028",
+        "meridian_tariff_2026_q2#080",
+        "meridian_tariff_2026_h2#030",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#027",
+        "meridian_tariff_2026_h2#030",
+        "meridian_tariff_2026_h2#031",
+        "meridian_tariff_2026_h2#027",
+        "meridian_tariff_2026_h2#029",
+        "meridian_tariff_2026_q2#028"
+      ]
+    },
+    {
+      "id": "G-057",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#125"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#125",
+        "halcyon_tariff_2026_h2#129",
+        "halcyon_tariff_2026_h2#116",
+        "halcyon_tariff_2026_h2#093",
+        "halcyon_tariff_2026_h2#126",
+        "halcyon_tariff_2026_h2#127"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#125",
+        "halcyon_tariff_2026_h2#129",
+        "halcyon_tariff_2026_h2#126",
+        "halcyon_tariff_2026_h2#127",
+        "halcyon_tariff_2026_h2#093",
+        "halcyon_tariff_2026_h2#132"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#126",
+        "halcyon_tariff_2026_h2#125",
+        "halcyon_tariff_2026_h2#124",
+        "halcyon_tariff_2026_h2#132",
+        "halcyon_tariff_2026_h2#131",
+        "halcyon_tariff_2026_h2#093"
+      ]
+    },
+    {
+      "id": "G-058",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#046"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#046",
+        "boreal_tariff_2026_h2#045",
+        "boreal_tariff_2026_h2#039",
+        "boreal_tariff_2026_h2#047",
+        "boreal_tariff_2026_h2#048",
+        "boreal_tariff_2026_h2#041"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#046",
+        "boreal_tariff_2026_h2#045",
+        "boreal_tariff_2026_h2#048",
+        "boreal_tariff_2026_h2#047",
+        "boreal_tariff_2026_h2#039",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#046",
+        "boreal_tariff_2026_h2#045",
+        "boreal_tariff_2026_h2#048",
+        "boreal_tariff_2026_h2#047",
+        "boreal_tariff_2026_h2#039",
+        "boreal_tariff_2026_h2#038"
+      ]
+    },
+    {
+      "id": "G-059",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#029"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#018",
+        "corvid_tariff_2026_h2#058",
+        "corvid_tariff_2026_h2#036",
+        "corvid_tariff_2026_h2#017"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#032",
+        "corvid_tariff_2026_h2#030",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#001",
+        "corvid_tariff_2026_h2#029",
+        "corvid_tariff_2026_h2#018",
+        "corvid_tariff_2026_h2#030",
+        "corvid_tariff_2026_h2#031",
+        "corvid_tariff_2026_h2#032"
+      ]
+    },
+    {
+      "id": "G-060",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#055"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#055",
+        "tessera_tariff_2026_h2#054",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#053",
+        "tessera_tariff_2026_h2#056",
+        "tessera_tariff_2026_h2#030"
+      ],
+      "hybrid_top": [
+        "tessera_tariff_2026_h2#055",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#006",
+        "tessera_tariff_2026_h2#054",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#075"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#056",
+        "tessera_tariff_2026_h2#075",
+        "tessera_tariff_2026_h2#055",
+        "tessera_tariff_2026_h2#057",
+        "tessera_tariff_2026_h2#034",
+        "tessera_tariff_2026_h2#054"
+      ]
+    },
+    {
+      "id": "G-061",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#023",
+        "solstice_tariff_2026_h2#031",
+        "solstice_tariff_2026_h2#056"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_h2#056",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_q2#030",
+        "solstice_tariff_2026_h2#022",
+        "solstice_tariff_2026_q2#058"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#056",
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_q2#056",
+        "solstice_tariff_2026_h2#057",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_q2#058"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#056",
+        "solstice_tariff_2026_q2#056",
+        "solstice_tariff_2026_q2#030",
+        "solstice_tariff_2026_h2#055",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_h2#025"
+      ]
+    },
+    {
+      "id": "G-062",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "kestrel_tariff_2026_h2#023"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "kestrel_tariff_2026_h2#022",
+        "kestrel_tariff_2026_h2#024",
+        "kestrel_tariff_2026_h2#023",
+        "kestrel_tariff_2026_h2#032",
+        "kestrel_tariff_2026_h2#031",
+        "kestrel_tariff_2026_h2#107"
+      ],
+      "hybrid_top": [
+        "kestrel_tariff_2026_h2#022",
+        "kestrel_tariff_2026_h2#023",
+        "kestrel_tariff_2026_h2#024",
+        "kestrel_tariff_2026_h2#025",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "kestrel_tariff_2026_h2#025",
+        "kestrel_tariff_2026_h2#023",
+        "kestrel_tariff_2026_h2#022",
+        "kestrel_tariff_2026_h2#024",
+        "kestrel_tariff_2026_h2#021",
+        "rate_policy_note_2026#005"
+      ]
+    },
+    {
+      "id": "G-063",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "aldermoor_tariff_2026_h2#050"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "aldermoor_tariff_2026_h2#050",
+        "aldermoor_tariff_2026_h2#004",
+        "aldermoor_tariff_2026_h2#061",
+        "aldermoor_tariff_2026_h2#044",
+        "aldermoor_tariff_2026_h2#048",
+        "aldermoor_tariff_2026_h2#049"
+      ],
+      "hybrid_top": [
+        "aldermoor_tariff_2026_h2#050",
+        "rate_policy_note_2026#001",
+        "aldermoor_tariff_2026_h2#004",
+        "rate_policy_note_2026#005",
+        "aldermoor_tariff_2026_h2#061",
+        "rate_policy_note_2026#004"
+      ],
+      "reranked_top": [
+        "aldermoor_tariff_2026_h2#050",
+        "aldermoor_tariff_2026_h2#048",
+        "aldermoor_tariff_2026_h2#049",
+        "aldermoor_tariff_2026_h2#044",
+        "aldermoor_tariff_2026_h2#061",
+        "aldermoor_tariff_2026_h2#065"
+      ]
+    },
+    {
+      "id": "G-064",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "vantor_tariff_2026_h2#041"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "vantor_tariff_2026_h2#041",
+        "vantor_tariff_2026_h2#040",
+        "vantor_tariff_2026_h2#042",
+        "vantor_tariff_2026_h2#012",
+        "vantor_tariff_2026_h2#025",
+        "vantor_tariff_2026_h2#013"
+      ],
+      "hybrid_top": [
+        "vantor_tariff_2026_h2#041",
+        "rate_policy_note_2026#006",
+        "vantor_tariff_2026_h2#040",
+        "vantor_tariff_2026_h2#065",
+        "rate_policy_note_2026#001",
+        "vantor_tariff_2026_h2#042"
+      ],
+      "reranked_top": [
+        "vantor_tariff_2026_h2#041",
+        "vantor_tariff_2026_h2#042",
+        "vantor_tariff_2026_h2#040",
+        "vantor_tariff_2026_h2#012",
+        "rate_policy_note_2026#001",
+        "vantor_tariff_2026_h2#044"
+      ]
+    },
+    {
+      "id": "G-065",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "quillon_tariff_2026_h2#039",
+        "quillon_tariff_2026_h2#075",
+        "quillon_tariff_2026_h2#161"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "quillon_tariff_2026_h2#161",
+        "quillon_tariff_2026_h2#019",
+        "quillon_tariff_2026_h2#165",
+        "quillon_tariff_2026_h2#020",
+        "quillon_tariff_2026_h2#018",
+        "quillon_tariff_2026_h2#160"
+      ],
+      "hybrid_top": [
+        "quillon_tariff_2026_h2#161",
+        "quillon_tariff_2026_h2#019",
+        "quillon_tariff_2026_h2#020",
+        "quillon_tariff_2026_h2#018",
+        "quillon_tariff_2026_h2#169",
+        "quillon_tariff_2026_h2#076"
+      ],
+      "reranked_top": [
+        "quillon_tariff_2026_h2#161",
+        "quillon_tariff_2026_h2#000",
+        "quillon_tariff_2026_h2#076",
+        "quillon_tariff_2026_h2#019",
+        "quillon_tariff_2026_h2#165",
+        "quillon_tariff_2026_h2#169"
+      ]
+    },
+    {
+      "id": "G-066",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#061"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#064",
+        "meridian_tariff_2026_h2#061",
+        "meridian_tariff_2026_h2#062",
+        "meridian_tariff_2026_h2#060",
+        "meridian_tariff_2026_q2#064",
+        "meridian_tariff_2026_q2#062"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#061",
+        "meridian_tariff_2026_q2#061",
+        "meridian_tariff_2026_h2#064",
+        "meridian_tariff_2026_h2#062",
+        "meridian_tariff_2026_h2#060",
+        "meridian_tariff_2026_q2#064"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#061",
+        "meridian_tariff_2026_q2#061",
+        "meridian_tariff_2026_h2#064",
+        "meridian_tariff_2026_h2#062",
+        "meridian_tariff_2026_h2#065",
+        "meridian_tariff_2026_h2#060"
+      ]
+    },
+    {
+      "id": "G-067",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#016"
+      ],
+      "dense_hit": false,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#017",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#022",
+        "halcyon_tariff_2026_h2#084",
+        "halcyon_tariff_2026_h2#019",
+        "halcyon_tariff_2026_h2#014"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#017",
+        "halcyon_tariff_2026_h2#022",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#003",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#004"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#017",
+        "halcyon_tariff_2026_h2#016",
+        "halcyon_tariff_2026_h2#022",
+        "halcyon_tariff_2026_h2#019",
+        "halcyon_tariff_2026_h2#084",
+        "halcyon_tariff_2026_h2#003"
+      ]
+    },
+    {
+      "id": "G-068",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "boreal_tariff_2026_h2#022"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "boreal_tariff_2026_h2#022",
+        "boreal_tariff_2026_h2#021",
+        "boreal_tariff_2026_h2#023",
+        "boreal_tariff_2026_h2#014",
+        "boreal_tariff_2026_h2#015",
+        "boreal_tariff_2026_h2#009"
+      ],
+      "hybrid_top": [
+        "boreal_tariff_2026_h2#022",
+        "rate_policy_note_2026#006",
+        "boreal_tariff_2026_h2#021",
+        "boreal_tariff_2026_h2#075",
+        "boreal_tariff_2026_h2#023",
+        "boreal_tariff_2026_h2#014"
+      ],
+      "reranked_top": [
+        "boreal_tariff_2026_h2#022",
+        "boreal_tariff_2026_h2#021",
+        "boreal_tariff_2026_h2#024",
+        "boreal_tariff_2026_h2#023",
+        "boreal_tariff_2026_h2#014",
+        "boreal_tariff_2026_h2#017"
+      ]
+    },
+    {
+      "id": "G-069",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "corvid_tariff_2026_h2#010",
+        "corvid_tariff_2026_h2#054"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "corvid_tariff_2026_h2#054",
+        "corvid_tariff_2026_h2#055",
+        "corvid_tariff_2026_h2#057",
+        "corvid_tariff_2026_h2#056",
+        "corvid_tariff_2026_h2#034",
+        "corvid_tariff_2026_h2#085"
+      ],
+      "hybrid_top": [
+        "corvid_tariff_2026_h2#054",
+        "corvid_tariff_2026_h2#034",
+        "corvid_tariff_2026_h2#055",
+        "corvid_tariff_2026_h2#056",
+        "corvid_tariff_2026_h2#085",
+        "corvid_tariff_2026_h2#057"
+      ],
+      "reranked_top": [
+        "corvid_tariff_2026_h2#054",
+        "rate_policy_note_2026#005",
+        "corvid_tariff_2026_h2#055",
+        "corvid_tariff_2026_h2#085",
+        "corvid_tariff_2026_h2#057",
+        "corvid_tariff_2026_h2#056"
+      ]
+    },
+    {
+      "id": "G-070",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "tessera_tariff_2026_h2#013"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "tessera_tariff_2026_h2#013",
+        "tessera_tariff_2026_h2#014",
+        "tessera_tariff_2026_h2#017",
+        "tessera_tariff_2026_h2#016",
+        "tessera_tariff_2026_h2#022",
+        "tessera_tariff_2026_h2#041"
+      ],
+      "hybrid_top": [
+        "rate_policy_note_2026#006",
+        "tessera_tariff_2026_h2#013",
+        "tessera_tariff_2026_h2#014",
+        "tessera_tariff_2026_h2#075",
+        "rate_policy_note_2026#000",
+        "tessera_tariff_2026_h2#017"
+      ],
+      "reranked_top": [
+        "tessera_tariff_2026_h2#013",
+        "tessera_tariff_2026_h2#016",
+        "tessera_tariff_2026_h2#015",
+        "tessera_tariff_2026_h2#012",
+        "tessera_tariff_2026_h2#014",
+        "tessera_tariff_2026_h2#022"
+      ]
+    },
+    {
+      "id": "G-071",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#017"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#017",
+        "meridian_tariff_2026_h2#017",
+        "meridian_tariff_2026_q2#019",
+        "meridian_tariff_2026_q2#032",
+        "meridian_tariff_2026_h2#019",
+        "meridian_tariff_2026_q2#020"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#017",
+        "meridian_tariff_2026_h2#017",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#000",
+        "meridian_tariff_2026_q2#019",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#017",
+        "meridian_tariff_2026_h2#017",
+        "meridian_tariff_2026_q2#019",
+        "meridian_tariff_2026_q2#032",
+        "meridian_tariff_2026_q2#020",
+        "meridian_tariff_2026_h2#019"
+      ]
+    },
+    {
+      "id": "G-072",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#017"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#017",
+        "solstice_tariff_2026_h2#016",
+        "solstice_tariff_2026_h2#014",
+        "solstice_tariff_2026_q2#017",
+        "solstice_tariff_2026_h2#015",
+        "solstice_tariff_2026_h2#011"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#017",
+        "solstice_tariff_2026_h2#014",
+        "solstice_tariff_2026_q2#017",
+        "solstice_tariff_2026_h2#016",
+        "solstice_tariff_2026_h2#015",
+        "solstice_tariff_2026_q2#014"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#017",
+        "solstice_tariff_2026_h2#014",
+        "solstice_tariff_2026_q2#017",
+        "solstice_tariff_2026_q2#014",
+        "solstice_tariff_2026_h2#016",
+        "solstice_tariff_2026_h2#002"
+      ]
+    },
+    {
+      "id": "G-073",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#042"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#043",
+        "meridian_tariff_2026_q2#044",
+        "meridian_tariff_2026_q2#042",
+        "meridian_tariff_2026_h2#043",
+        "meridian_tariff_2026_q2#029",
+        "meridian_tariff_2026_q2#045"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#042",
+        "meridian_tariff_2026_q2#043",
+        "meridian_tariff_2026_h2#043",
+        "meridian_tariff_2026_h2#042",
+        "meridian_tariff_2026_q2#045",
+        "meridian_tariff_2026_h2#045"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#042",
+        "meridian_tariff_2026_q2#042",
+        "meridian_tariff_2026_q2#044",
+        "meridian_tariff_2026_q2#045",
+        "meridian_tariff_2026_h2#045",
+        "meridian_tariff_2026_h2#043"
+      ]
+    },
+    {
+      "id": "G-074",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#025"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#025",
+        "solstice_tariff_2026_q2#025",
+        "solstice_tariff_2026_h2#029",
+        "solstice_tariff_2026_h2#022",
+        "solstice_tariff_2026_h2#026",
+        "solstice_tariff_2026_q2#029"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#025",
+        "solstice_tariff_2026_q2#025",
+        "solstice_tariff_2026_h2#029",
+        "solstice_tariff_2026_q2#029",
+        "rate_policy_note_2026#005",
+        "solstice_tariff_2026_h2#022"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#025",
+        "solstice_tariff_2026_q2#025",
+        "solstice_tariff_2026_h2#027",
+        "solstice_tariff_2026_h2#022",
+        "solstice_tariff_2026_h2#026",
+        "solstice_tariff_2026_h2#028"
+      ]
+    },
+    {
+      "id": "G-075",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#019",
+        "meridian_tariff_2026_q2#054"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#054",
+        "meridian_tariff_2026_q2#056",
+        "meridian_tariff_2026_h2#054",
+        "meridian_tariff_2026_h2#056",
+        "meridian_tariff_2026_q2#058",
+        "meridian_tariff_2026_q2#055"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#054",
+        "meridian_tariff_2026_h2#054",
+        "meridian_tariff_2026_q2#056",
+        "meridian_tariff_2026_h2#056",
+        "meridian_tariff_2026_q2#057",
+        "meridian_tariff_2026_q2#055"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#054",
+        "meridian_tariff_2026_h2#054",
+        "meridian_tariff_2026_h2#056",
+        "meridian_tariff_2026_q2#055",
+        "meridian_tariff_2026_q2#057",
+        "meridian_tariff_2026_q2#058"
+      ]
+    },
+    {
+      "id": "G-076",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#057"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#057",
+        "solstice_tariff_2026_q2#057",
+        "solstice_tariff_2026_h2#050",
+        "solstice_tariff_2026_q2#050",
+        "solstice_tariff_2026_h2#053",
+        "solstice_tariff_2026_h2#068"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#057",
+        "solstice_tariff_2026_q2#057",
+        "solstice_tariff_2026_h2#056",
+        "solstice_tariff_2026_q2#056",
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_q2#058"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#056",
+        "solstice_tariff_2026_h2#057",
+        "solstice_tariff_2026_h2#058",
+        "solstice_tariff_2026_q2#057",
+        "solstice_tariff_2026_q2#056",
+        "solstice_tariff_2026_q2#058"
+      ]
+    },
+    {
+      "id": "G-077",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#068"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#068",
+        "meridian_tariff_2026_h2#068",
+        "meridian_tariff_2026_q2#070",
+        "meridian_tariff_2026_h2#070",
+        "meridian_tariff_2026_q2#069",
+        "meridian_tariff_2026_q2#067"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#068",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#068",
+        "rate_policy_note_2026#004",
+        "meridian_tariff_2026_q2#070",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#070",
+        "meridian_tariff_2026_h2#068",
+        "meridian_tariff_2026_q2#069",
+        "meridian_tariff_2026_q2#068",
+        "meridian_tariff_2026_q2#067",
+        "meridian_tariff_2026_h2#070"
+      ]
+    },
+    {
+      "id": "G-078",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#069"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#069",
+        "solstice_tariff_2026_q2#069",
+        "solstice_tariff_2026_h2#068",
+        "solstice_tariff_2026_q2#068",
+        "solstice_tariff_2026_h2#067",
+        "solstice_tariff_2026_h2#066"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#069",
+        "solstice_tariff_2026_q2#069",
+        "solstice_tariff_2026_h2#067",
+        "solstice_tariff_2026_q2#067",
+        "solstice_tariff_2026_h2#068",
+        "solstice_tariff_2026_q2#068"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#068",
+        "solstice_tariff_2026_h2#069",
+        "solstice_tariff_2026_h2#067",
+        "solstice_tariff_2026_q2#069",
+        "solstice_tariff_2026_q2#068",
+        "solstice_tariff_2026_q2#067"
+      ]
+    },
+    {
+      "id": "G-079",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#029"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#029",
+        "meridian_tariff_2026_h2#029",
+        "meridian_tariff_2026_q2#030",
+        "meridian_tariff_2026_q2#031",
+        "meridian_tariff_2026_q2#027",
+        "meridian_tariff_2026_q2#028"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#029",
+        "meridian_tariff_2026_h2#029",
+        "meridian_tariff_2026_q2#030",
+        "meridian_tariff_2026_h2#030",
+        "meridian_tariff_2026_h2#027",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#027",
+        "meridian_tariff_2026_q2#029",
+        "meridian_tariff_2026_h2#029",
+        "meridian_tariff_2026_q2#031",
+        "meridian_tariff_2026_q2#028",
+        "meridian_tariff_2026_q2#030"
+      ]
+    },
+    {
+      "id": "G-080",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "solstice_tariff_2026_h2#055"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "solstice_tariff_2026_h2#055",
+        "solstice_tariff_2026_q2#055",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_h2#000",
+        "solstice_tariff_2026_h2#025",
+        "solstice_tariff_2026_h2#022"
+      ],
+      "hybrid_top": [
+        "solstice_tariff_2026_h2#055",
+        "solstice_tariff_2026_q2#055",
+        "rate_policy_note_2026#005",
+        "solstice_tariff_2026_h2#070",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_q2#070"
+      ],
+      "reranked_top": [
+        "solstice_tariff_2026_h2#025",
+        "solstice_tariff_2026_h2#030",
+        "solstice_tariff_2026_h2#055",
+        "solstice_tariff_2026_q2#055",
+        "solstice_tariff_2026_h2#000",
+        "solstice_tariff_2026_h2#046"
+      ]
+    }
+  ]
+}

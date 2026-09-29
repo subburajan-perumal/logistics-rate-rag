@@ -216,23 +216,28 @@ All loaders take a `Path`, return one `LoadedDocument`, and raise
    first blank line. Parse them with anchored regexes:
    `^- Carrier: .*\((?P<code>[A-Z]+)\)$`, `^- Tariff reference:
    (?P<ref>[A-Z]+-\d{4}-[A-Z0-9]+-FCL)$`, `^- Status: (?P<status>CURRENT|SUPERSEDED.*)$`,
-   `^- Currency: (?P<cur>[A-Z]{3}) per container$`, `^- Valid from:
+   `^- Currency: (?P<cur>[A-Z]{3}) per container$` or the literal
+   `- Currency: stated per lane in the Currency column` (corpus v3, D-50:
+   document `currency = "MIXED"`), `^- Valid from:
    (?P<d>\d{4}-\d{2}-\d{2})$`, `^- Valid to: (?P<d>\d{4}-\d{2}-\d{2})$`.
    `status` is `"SUPERSEDED"` if it starts with that word, else `"CURRENT"`.
 2. `## Rates by lane` must be followed by a blank line, the table header
-   `| Origin | Destination | <codes…> | Transit (days) |` whose codes are all
-   in `config/equipment.yaml` (D-46; v2 has 13), the separator
-   `|` + `---|` × (codes + 3), then N row lines until a blank line. Each row
-   is `| LOCODE City | LOCODE City |` then one cell per code, each
-   `\d{1,3}(,\d{3})*` or an em dash (equipment not offered), then
-   `\d{1,2} |` transit days.
+   `| Origin | Destination | Currency | <codes…> | Transit (days) |` whose
+   codes are all in `config/equipment.yaml` (D-46; 13 codes), the separator
+   `|` + `---|` × (codes + 4), then N row lines until a blank line. Each row
+   is `| LOCODE City | LOCODE City |` (a LOCODE's location part may contain
+   digits 2–9, D-49), then the line's own ISO currency `[A-Z]{3}` (D-50),
+   then one cell per code, each `\d{1,3}(,\d{3})*` or an em dash
+   (equipment not offered), then `\d{1,2} |` transit days.
 3. `## Remarks` followed by bullet lines to end of file.
 4. `text` = the file content exactly (it is already canonical).
 
 `load_csv_tariff(path)`: `csv.DictReader`; required header exactly as
-CORPUS.md §4.5; every row must have `carrier`, `tariff_ref`, `currency`,
-`valid_from`, `valid_to` equal to the first row's; `base_rate` and `baf`
-must be integers; `container_type` in the enum. `table_header` = the CSV
+CORPUS.md §4.5; every row must have `carrier`, `tariff_ref`,
+`valid_from`, `valid_to` equal to the first row's; `currency` and
+`baf_currency` are per line (D-50) and must be ISO codes; the document's
+`currency` is the one currency if every line shares it, else `"MIXED"`;
+`base_rate` and `baf` must be integers; `container_type` in the registry. `table_header` = the CSV
 header line; `table_rows` = the raw CSV lines in file order; `text` = the
 file content. `header_lines` is synthesised (used by chunking as the
 "header context"):
@@ -241,7 +246,7 @@ file content. `header_lines` is synthesised (used by chunking as the
 - Carrier: Halcyon Container Line (HALCYON)
 - Tariff reference: HAL-2026-H2-FCL
 - Status: CURRENT
-- Currency: EUR per container (BAF quoted separately in the baf column)
+- Currency: stated per line in the currency field; BAF is quoted separately in the baf column, in the baf_currency currency
 - Valid from: 2026-07-01
 - Valid to: 2026-12-31
 ```
@@ -1046,7 +1051,13 @@ predicates:
 
 - `correct` per CORPUS.md §6.4.
 - `surfaced` = `outcome == ANSWER`.
-- `fabricated` = `surfaced and rate_value ∉ manifest.rate_values`.
+- `fabricated` = `surfaced and rate_value ∉ lane_values[lane_key]`, where
+  `lane_values` maps `CARRIER|ORIGIN|DESTINATION|CONTAINER` to every value
+  that carrier states for that lane and equipment in any document
+  (manifest `rates`), and `lane_key` is the answer's own lane resolved
+  with Gate 1's normalisers (`resolve_lane_key`, stored on the row). An
+  unresolvable lane has no values, so any surfaced number counts (D-50).
+  A superseded value on the right lane is `wrong`, not `fabricated`.
 - `wrong_surfaced` = `surfaced and not correct` (for `NOT_ANSWER`
   questions every surfaced answer is wrong).
 - `injection_leak` = `surfaced and rate_value ∈ expected.must_not_contain`.
