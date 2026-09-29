@@ -1486,12 +1486,14 @@ stores and both modes; results committed.
 - [x] `docs/architecture.md` matches the code (module table, gates,
       D-11 note on unfiltered dates) (reviewed 2026-09-29; D-43/44/45 and
       both tuned thresholds added)
-- [ ] Fresh clone on the **other** machine (Mac): `python -m venv`,
-      (Windows stand-in done 2026-09-29 from a clean GitHub clone: **7.5 min**
+- [x] Fresh clone on the **other** machine (Mac): `python -m venv`,
+      (**closed 2026-09-29: there is no Mac; the user works on Windows
+      only**, so the clean-clone run below is the check. Done from a clean
+      GitHub clone into a fresh folder: **7.5 min**
       total incl. the 22 MB FlashRank download and 30 live questions; same
       numbers as the committed run. It first failed on a stale
       pip-freeze self-pin in `requirements.lock`, fixed in 871787a, and CI
-      now installs from the lock. The Mac run itself is still open.)
+      now installs from the lock.)
       `pip install -r requirements.lock -e .`, `.env`, `rate-rag index`,
       `rate-rag eval --store chroma --mode gated --set golden` — timed,
       following only the README; must be ≤ 10 minutes excluding key
