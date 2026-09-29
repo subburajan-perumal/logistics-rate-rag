@@ -60,7 +60,11 @@ class _FakeCandidateResult:
         self.retrieved = tuple(retrieved)
         self.pinned = tuple(pinned)
         self.plan = QueryPlan(
-            question="q", filter=None, as_of=as_of, mentions_surcharge=False, carriers_mentioned=()
+            question="q",
+            filter=None,
+            as_of=as_of,
+            mentions_surcharge=False,
+            carriers_mentioned=("MERIDIAN",),
         )
         self.usage = Usage(
             model="m", input_tokens=1, output_tokens=1, thought_tokens=0, cached=False

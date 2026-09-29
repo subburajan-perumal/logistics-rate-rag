@@ -28,6 +28,22 @@ def carrier_known(
     return _fail("carrier_known", {"carrier": candidate.carrier})
 
 
+def carrier_named(
+    candidate: RateCandidate, ctx: QuestionContext, settings: Settings, params: dict
+) -> GateResult:
+    """The candidate's carrier must be one the question names (PLAN.md D-51).
+    With ten carriers on overlapping lanes, a question that names none ("which
+    carrier is cheapest from Mundra to Jebel Ali?") lets the model pick one
+    real, fully grounded cell and present it as the answer to a comparison
+    the gates cannot check. Choosing the carrier is the user's job."""
+    if candidate.carrier in ctx.carriers_mentioned:
+        return _pass()
+    return _fail(
+        "carrier_named",
+        {"carrier": candidate.carrier, "mentioned": list(ctx.carriers_mentioned)},
+    )
+
+
 def rate_in_range(
     candidate: RateCandidate, ctx: QuestionContext, settings: Settings, params: dict
 ) -> GateResult:
@@ -119,6 +135,7 @@ def surcharge_consistent(
 
 RULES: dict[str, RuleFn] = {
     "carrier_known": carrier_known,
+    "carrier_named": carrier_named,
     "rate_in_range": rate_in_range,
     "currency_matches_source": currency_matches_source,
     "dates_ordered": dates_ordered,

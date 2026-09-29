@@ -876,6 +876,7 @@ class QuestionContext:
     ranks_by_id: Mapping[str, int]          # retrieved only
     similarity_by_id: Mapping[str, float]   # retrieved only
     rerank_by_id: Mapping[str, float | None]
+    carriers_mentioned: tuple[str, ...] = ()   # from the QueryPlanner, for carrier_named (D-51)
 ```
 
 ### 6.2 Gate 1 (`guardrails/gate1_schema.py`)
@@ -914,7 +915,7 @@ Order of checks; the first failure wins:
 
 ```python
 RuleFn = Callable[[RateCandidate, QuestionContext, Settings, dict], GateResult]
-RULES: dict[str, RuleFn] = {"carrier_known": …, "rate_in_range": …, "currency_matches_source": …,
+RULES: dict[str, RuleFn] = {"carrier_known": …, "carrier_named": …, "rate_in_range": …, "currency_matches_source": …,
                             "dates_ordered": …, "not_expired": …, "surcharge_consistent": …}
 def gate2(candidate, ctx, settings) -> GateResult   # runs settings.guardrails.rules in listed order; first failure wins; reason "rule:<name>"
 ```
@@ -922,8 +923,9 @@ def gate2(candidate, ctx, settings) -> GateResult   # runs settings.guardrails.r
 | rule | passes iff | `details` on failure |
 |---|---|---|
 | `carrier_known` | `candidate.carrier ∈ settings.carriers` | `{"carrier": …}` |
+| `carrier_named` | `candidate.carrier ∈ ctx.carriers_mentioned` (the QueryPlanner's carriers found in the question, D-51) | `{"carrier": …, "mentioned": […]}` |
 | `rate_in_range` | `key = f"{carrier}\|{origin}\|{destination}\|{container_type}"` exists in `rate_ranges` and `min·(1−tol) ≤ rate_value ≤ max·(1+tol)` with `tol = params["tolerance_pct"]/100` | `{"key": …, "min": …, "max": …, "value": …}` or `{"key": …, "missing": true}` |
-| `currency_matches_source` | `candidate.currency == chunks_by_id[source_chunk_id].metadata["currency"]` | `{"claimed": …, "source": …}` |
+| `currency_matches_source` | `candidate.currency ==` the cited line's own currency (the row's Currency cell or CSV `currency` field, D-50), falling back to `chunks_by_id[source_chunk_id].metadata["currency"]` | `{"claimed": …, "source": …}` |
 | `dates_ordered` | `valid_from < valid_to` | dates |
 | `not_expired` | `valid_from ≤ ctx.as_of ≤ valid_to` | `{"as_of": …, "valid_from": …, "valid_to": …}` |
 | `surcharge_consistent` | `includes_surcharge == settings.carriers[carrier].baf_included`; **and** if `ctx.mentions_surcharge`: `policy_source_chunk_id is not None` and `chunks_by_id[policy_source_chunk_id].doc_type == "policy_md"` | `{"expected": …, "got": …}` or `{"policy_source": "missing"}` |
@@ -1207,6 +1209,7 @@ currencies: [USD, EUR]
 ```yaml
 rules:                      # run in this order; first failure wins
   - name: carrier_known
+  - name: carrier_named     # D-51
   - name: rate_in_range
     params: {tolerance_pct: 0}
   - name: currency_matches_source

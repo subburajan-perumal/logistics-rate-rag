@@ -22,6 +22,8 @@ class QuestionContext:
     ranks_by_id: Mapping[str, int]
     similarity_by_id: Mapping[str, float]
     rerank_by_id: Mapping[str, float | None]
+    # carriers the question itself names, found by the QueryPlanner (D-51)
+    carriers_mentioned: tuple[str, ...] = ()
 
 
 def build_question_context(result: CandidateResult) -> QuestionContext:
@@ -44,4 +46,5 @@ def build_question_context(result: CandidateResult) -> QuestionContext:
         ranks_by_id=ranks_by_id,
         similarity_by_id=similarity_by_id,
         rerank_by_id=rerank_by_id,
+        carriers_mentioned=result.plan.carriers_mentioned,
     )

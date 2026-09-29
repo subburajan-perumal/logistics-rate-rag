@@ -1,5 +1,6 @@
 rules:
 - name: carrier_known
+- name: carrier_named
 - name: rate_in_range
   params:
     tolerance_pct: 0

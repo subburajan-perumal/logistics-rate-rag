@@ -396,6 +396,7 @@ def load_settings(env_file: Path | None = None, **overrides: object) -> Settings
 
     known_rule_names = {
         "carrier_known",
+        "carrier_named",
         "rate_in_range",
         "currency_matches_source",
         "dates_ordered",

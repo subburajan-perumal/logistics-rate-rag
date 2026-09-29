@@ -10,6 +10,7 @@ from logistics_rate_rag.config import load_settings
 from logistics_rate_rag.guardrails.context import QuestionContext
 from logistics_rate_rag.guardrails.gate2_rules import (
     carrier_known,
+    carrier_named,
     currency_matches_source,
     dates_ordered,
     gate2,
@@ -39,7 +40,10 @@ def _chunk(chunk_id: str, source_doc: str, doc_type: str = "tariff_pdf", **metad
 
 
 def _ctx(
-    chunks: list[Chunk], as_of: date = date(2026, 9, 1), mentions_surcharge: bool = False
+    chunks: list[Chunk],
+    as_of: date = date(2026, 9, 1),
+    mentions_surcharge: bool = False,
+    carriers_mentioned: tuple[str, ...] = ("MERIDIAN",),
 ) -> QuestionContext:
     chunks_by_id = {c.chunk_id: c for c in chunks}
     return QuestionContext(
@@ -50,6 +54,7 @@ def _ctx(
         ranks_by_id={cid: i + 1 for i, cid in enumerate(chunks_by_id)},
         similarity_by_id={cid: 0.9 for cid in chunks_by_id},
         rerank_by_id={cid: None for cid in chunks_by_id},
+        carriers_mentioned=carriers_mentioned,
     )
 
 
@@ -229,3 +234,26 @@ def test_gate2_rejects_the_q2_trap(settings):
     result = gate2(candidate, ctx, settings)
     assert result.passed is False
     assert result.reason == "rule:not_expired"
+
+
+# --- carrier_named (D-51) --------------------------------------------------------
+
+
+def test_carrier_named_passes_when_question_names_it(settings):
+    assert carrier_named(_candidate(), _ctx([]), settings, {}).passed is True
+
+
+def test_carrier_named_rejects_carrier_the_question_did_not_name(settings):
+    # G-099 in the first v3 tuning run: "Which carrier has the lowest 40HC rate
+    # from Mundra to Jebel Ali?" answered with one real, grounded Kestrel cell
+    result = carrier_named(
+        _candidate(carrier="KESTREL"), _ctx([], carriers_mentioned=()), settings, {}
+    )
+    assert result.passed is False
+    assert result.reason == "rule:carrier_named"
+    assert result.details == {"carrier": "KESTREL", "mentioned": []}
+
+
+def test_carrier_named_rejects_a_different_named_carrier(settings):
+    ctx = _ctx([], carriers_mentioned=("MERIDIAN",))
+    assert carrier_named(_candidate(carrier="HALCYON"), ctx, settings, {}).passed is False
