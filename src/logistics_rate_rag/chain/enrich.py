@@ -38,10 +38,25 @@ def cache_key(model: str, chunk: Chunk) -> str:
     ).hexdigest()
 
 
+# Prose dates ("July 1, 2026", "1 July 2026", "July 2026", "H2 2026"), which the
+# prompt allows.
+_MONTH = (
+    r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?"
+    r"|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?"
+)
+_DAY = r"\d{1,2}(?:st|nd|rd|th)?"
+_PROSE_DATE = re.compile(
+    rf"\b(?:{_MONTH}\s+{_DAY},?\s+|{_DAY}\s+{_MONTH},?\s+|{_MONTH},?\s+|[HQ][1-4]\s+)\d{{4}}\b",
+    re.IGNORECASE,
+)
+
+
 def leaked_rate_values(description: str, rate_values: Sequence[int]) -> list[int]:
     """Rate values that appear as a whole number (plain or with a thousands
     comma) in a description. The prompt forbids them; this checks it.
-    Hyphen-joined digits are dates or tariff refs, which the prompt allows."""
+    Hyphen-joined digits and prose dates are dates or tariff refs, which
+    the prompt allows."""
+    description = _PROSE_DATE.sub(" ", description)
     leaked = []
     for v in rate_values:
         variants = {str(v), f"{v:,}"}

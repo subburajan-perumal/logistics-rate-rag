@@ -23,6 +23,14 @@ def test_leak_detector_ignores_dates_and_longer_numbers():
     assert leaked_rate_values("value 12240", [2224, 1224]) == []
 
 
+def test_leak_detector_ignores_prose_dates():
+    text = (
+        "valid from July 1, 2026, through December 31, 2026 (from 1 July 2026, the H2 2026 period)"
+    )
+    assert leaked_rate_values(text, [2026, 31, 1]) == []
+    assert leaked_rate_values("from July 1, 2026 at 2,026 USD", [2026]) == [2026]
+
+
 @pytest.mark.skipif(not ENRICH_CACHE.exists(), reason="no enrichment cache on this machine")
 def test_cached_descriptions_contain_no_rate_values():
     manifest = json.loads((REPO_ROOT / "data" / "corpus" / "manifest.json").read_text("utf-8"))
