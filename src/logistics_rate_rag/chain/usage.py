@@ -59,10 +59,13 @@ class UsageTotals:
     thought_tokens: int
     live_calls: int
     cache_hits: int
+    cost_usd: float = 0.0
 
 
-def sum_usage(usages: Iterable[Usage]) -> UsageTotals:
+def sum_usage(usages: Iterable[Usage], prices: dict[str, Price] | None = None) -> UsageTotals:
+    """Totals over live calls; cache hits cost nothing. `prices` adds cost_usd."""
     input_tokens = output_tokens = thought_tokens = live_calls = cache_hits = 0
+    cost = 0.0
     for u in usages:
         if u.cached:
             cache_hits += 1
@@ -71,10 +74,13 @@ def sum_usage(usages: Iterable[Usage]) -> UsageTotals:
             input_tokens += u.input_tokens
             output_tokens += u.output_tokens
             thought_tokens += u.thought_tokens
+            if prices is not None:
+                cost += u.cost_usd(prices)
     return UsageTotals(
         input_tokens=input_tokens,
         output_tokens=output_tokens,
         thought_tokens=thought_tokens,
         live_calls=live_calls,
         cache_hits=cache_hits,
+        cost_usd=round(cost, 6),
     )

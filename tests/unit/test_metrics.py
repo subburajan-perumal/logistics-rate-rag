@@ -113,3 +113,35 @@ def test_compute_metrics_aggregate():
     assert metrics["adversarial_rejection_rate"] == 1.0
     assert metrics["fabricated_values_surfaced"] == 0
     assert metrics["wrong_values_surfaced"] == 0
+
+
+def test_adversarial_rejection_counts_refusals():
+    # PLAN.md §13.3: outcome != ANSWER. A REFUSED prompt was once scored as
+    # a miss, reporting 0.133 for a run that actually rejected 14 of 15.
+    rows = [
+        _row(
+            id="A-001",
+            set="adversarial",
+            expected_outcome="NOT_ANSWER",
+            outcome="REFUSED",
+            rate_value=None,
+        ),
+        _row(
+            id="A-002",
+            set="adversarial",
+            expected_outcome="NOT_ANSWER",
+            outcome="REJECT",
+            reason="rule:not_expired",
+            rate_value=None,
+        ),
+        _row(
+            id="A-003",
+            set="adversarial",
+            expected_outcome="NOT_ANSWER",
+            outcome="NEEDS_REVIEW",
+            rate_value=None,
+        ),
+        _row(id="A-004", set="adversarial", expected_outcome="NOT_ANSWER", outcome="ANSWER"),
+    ]
+    m = compute_metrics(rows, MANIFEST, ("adversarial",))
+    assert m["adversarial_rejection_rate"] == 0.75

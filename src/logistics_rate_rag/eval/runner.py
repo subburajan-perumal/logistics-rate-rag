@@ -1,8 +1,8 @@
 """Eval runner (docs/SPEC.md §7.2).
 
-`mode="gated"` runs all three real gates (Phases 4-6). `retrieval_mode`
-must still be `"dense"` and `reranker` must still be `"none"` — those
-ship in Phase 2b/7. Pinecone and enrichment are still Phase 7/8.
+`mode="gated"` runs all three real gates (Phases 4-6). Hybrid retrieval
+and re-ranking are real (Phase 2b), both stores work (Phase 7);
+enrichment is still Phase 8. `run_recall` is the LLM-free retrieval check (D-31, D-33).
 """
 
 from __future__ import annotations
@@ -28,9 +28,9 @@ from logistics_rate_rag.guardrails.pipeline import run_gates, to_answer
 from logistics_rate_rag.ingest.chunking import chunk_corpus
 from logistics_rate_rag.ingest.loaders import load_corpus
 from logistics_rate_rag.schema.outcome import Outcome
-from logistics_rate_rag.store.chroma_backend import ChromaBackend
+from logistics_rate_rag.store import build_backend
 from logistics_rate_rag.store.embeddings import GeminiEmbedder
-from logistics_rate_rag.store.retriever import RateRetriever
+from logistics_rate_rag.store.retriever import build_retriever
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,12 +132,7 @@ def _run_one_question(
 
 
 def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
-    if run_cfg.retrieval_mode == "hybrid":
-        raise NotImplementedError("hybrid retrieval ships in Phase 2b")
-    if run_cfg.reranker != "none":
-        raise NotImplementedError("re-ranking ships in Phase 2b/7")
-    if run_cfg.store != "chroma":
-        raise NotImplementedError("Pinecone ships in Phase 7")
+    store = run_cfg.store
     if run_cfg.enriched:
         raise NotImplementedError("enrichment ships in Phase 8")
 
@@ -157,16 +152,9 @@ def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
     embedder = GeminiEmbedder(
         settings.embedding_model, settings.embedding_dim, settings.google_api_key
     )
-    backend = ChromaBackend(
-        settings.project_root / ".chroma", f"rates_v{settings.manifest.corpus_version}", embedder
-    )
+    backend = build_backend(settings, store, embedder)
     all_chunks = backend.all_chunks() or chunks
-    retriever = RateRetriever(
-        backend=backend,
-        embedder=embedder,
-        k_retrieve=settings.retrieval.k_retrieve,
-        k_final=settings.retrieval.k_final,
-    )
+    retriever = build_retriever(effective_settings, backend, embedder, all_chunks)
     cache = None if run_cfg.no_cache else ResponseCache(settings.llm_cache_dir)
     limiter = RateLimiter(settings.llm_min_interval_s)
     chain = CandidateChain(effective_settings, retriever, all_chunks, cache, limiter)
@@ -183,7 +171,7 @@ def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
                 usages.append(usage)
 
     metrics = compute_metrics(rows, settings.manifest.model_dump(mode="json"), run_cfg.sets)
-    usage_totals = sum_usage(usages)
+    usage_totals = sum_usage(usages, settings.prices)
 
     ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     run_id = f"{ts}-{run_cfg.store}-{run_cfg.retrieval_mode}-{run_cfg.reranker}-{run_cfg.mode}"
@@ -263,14 +251,19 @@ def _update_guardrails_yaml(
     )
 
 
-def tune_threshold(settings: Settings, store: str, mode_key: str) -> TuneResult:
+def tune_threshold(
+    settings: Settings, store: str, mode_key: str, retrieval_mode: str | None = None
+) -> TuneResult:
     """docs/PLAN.md §12 tuning procedure. Runs the golden set with Gates
     1-3a on and the confidence gate off (threshold 0), then sets the
-    threshold from the observed score distribution."""
-    if mode_key != "without_reranker":
-        raise NotImplementedError("with_reranker tuning ships once Phase 2b/7 build the reranker")
-    if store != "chroma":
-        raise NotImplementedError("Pinecone ships in Phase 7")
+    threshold from the observed score distribution.
+
+    `with_reranker` tunes with settings' reranker (FlashRank unless it is
+    set to pinecone); `without_reranker` always runs with no reranker."""
+    if mode_key == "with_reranker":
+        reranker = settings.reranker if settings.reranker != "none" else "flashrank"
+    else:
+        reranker = "none"
 
     zeroed_threshold = {**settings.guardrails.confidence.threshold, mode_key: 0.0}
     zeroed_confidence = settings.guardrails.confidence.model_copy(
@@ -282,8 +275,8 @@ def tune_threshold(settings: Settings, store: str, mode_key: str) -> TuneResult:
         guardrails=zeroed_guardrails,
         gates_enabled=True,
         vector_store=store,
-        retrieval_mode="dense",
-        reranker="none",
+        retrieval_mode=retrieval_mode or settings.retrieval_mode,
+        reranker=reranker,
     )
 
     docs = load_corpus(settings.project_root / "data" / "corpus")
@@ -291,16 +284,9 @@ def tune_threshold(settings: Settings, store: str, mode_key: str) -> TuneResult:
     embedder = GeminiEmbedder(
         settings.embedding_model, settings.embedding_dim, settings.google_api_key
     )
-    backend = ChromaBackend(
-        settings.project_root / ".chroma", f"rates_v{settings.manifest.corpus_version}", embedder
-    )
+    backend = build_backend(settings, store, embedder)
     all_chunks = backend.all_chunks() or chunks
-    retriever = RateRetriever(
-        backend=backend,
-        embedder=embedder,
-        k_retrieve=settings.retrieval.k_retrieve,
-        k_final=settings.retrieval.k_final,
-    )
+    retriever = build_retriever(tuning_settings, backend, embedder, all_chunks)
     cache = ResponseCache(settings.llm_cache_dir)
     limiter = RateLimiter(settings.llm_min_interval_s)
     chain = CandidateChain(tuning_settings, retriever, all_chunks, cache, limiter)
@@ -357,3 +343,135 @@ def tune_threshold(settings: Settings, store: str, mode_key: str) -> TuneResult:
         correct_scores=correct_scores,
         run_id=run_id,
     )
+
+
+@dataclass(frozen=True, slots=True)
+class RecallRow:
+    id: str
+    tag: str
+    target_chunk_ids: tuple[str, ...]
+    dense_hit: bool
+    hybrid_hit: bool
+    reranked_hit: bool
+    dense_top: tuple[str, ...]
+    hybrid_top: tuple[str, ...]
+    reranked_top: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class RecallResult:
+    run_id: str
+    config: dict
+    recall: dict[str, float]
+    rows: list[RecallRow]
+
+
+def _target_chunk_ids(chunks, q: Question) -> tuple[str, ...]:
+    """SPEC.md §7.2: the chunk of `expected.source_doc` whose text contains
+    the expected value (same number matcher as Gate 3a)."""
+    from logistics_rate_rag.guardrails.gate3_grounding import contains_number
+
+    e = q.expected
+    return tuple(
+        sorted(
+            c.chunk_id
+            for c in chunks
+            if c.source_doc == e.source_doc and contains_number(c.text, e.rate_value)
+        )
+    )
+
+
+def run_recall(settings: Settings, store: str, reranker: str | None = None) -> RecallResult:
+    """LLM-free recall@k_final over golden ANSWER questions for all three
+    retrieval stages at once: dense, dense+BM25 fused (RRF), and the fused
+    top-k_retrieve re-ranked. One query embedding per question."""
+    from logistics_rate_rag.chain.planner import QueryPlanner
+    from logistics_rate_rag.rerank import build_reranker
+    from logistics_rate_rag.store.lexical import LexicalIndex, fuse_rrf
+
+    reranker_name = reranker or settings.reranker
+    if reranker_name == "none":
+        reranker_name = "flashrank"
+
+    docs = load_corpus(settings.project_root / "data" / "corpus")
+    chunks = chunk_corpus(docs, settings.retrieval, settings.manifest.corpus_version)
+    embedder = GeminiEmbedder(
+        settings.embedding_model, settings.embedding_dim, settings.google_api_key
+    )
+    backend = build_backend(settings, store, embedder)
+    all_chunks = backend.all_chunks() or chunks
+    lexical = LexicalIndex(all_chunks)
+    rr = build_reranker(
+        reranker_name,
+        model_name=settings.rerank_model,
+        cache_dir=settings.flashrank_cache_dir,
+        pinecone_api_key=settings.pinecone_api_key,
+    )
+    planner = QueryPlanner(settings.carriers, settings.guardrails.surcharge_keywords)
+    k_retrieve, k_final = settings.retrieval.k_retrieve, settings.retrieval.k_final
+
+    golden_path = settings.project_root / "data" / "eval" / "golden.yaml"
+    qs = load_question_set(golden_path, settings.manifest.corpus_version)
+    rows: list[RecallRow] = []
+    for q in sorted(qs.questions, key=lambda q: q.id):
+        if q.expected.outcome != "ANSWER":
+            continue
+        targets = set(_target_chunk_ids(all_chunks, q))
+        plan = planner.plan(q.question, q.as_of)
+        dense = backend.query(embedder.embed_query(plan.question), k_retrieve, plan.filter)
+        lex = lexical.query(plan.question, k_retrieve)
+        if plan.filter:
+            allowed = (plan.filter["carrier"], "ALL")
+            lex = [hit for hit in lex if hit[0].metadata.get("carrier") in allowed]
+        fused = fuse_rrf(dense, lex, settings.retrieval.rrf_k)[:k_retrieve]
+        reranked = rr.rerank(plan.question, [f.chunk for f in fused], top_n=k_final)
+
+        dense_top = tuple(h.chunk.chunk_id for h in dense[:k_final])
+        hybrid_top = tuple(f.chunk.chunk_id for f in fused[:k_final])
+        reranked_top = tuple(c.chunk_id for c, _ in reranked)
+        rows.append(
+            RecallRow(
+                id=q.id,
+                tag=q.tag,
+                target_chunk_ids=tuple(sorted(targets)),
+                dense_hit=bool(targets & set(dense_top)),
+                hybrid_hit=bool(targets & set(hybrid_top)),
+                reranked_hit=bool(targets & set(reranked_top)),
+                dense_top=dense_top,
+                hybrid_top=hybrid_top,
+                reranked_top=reranked_top,
+            )
+        )
+
+    n = len(rows) or 1
+    recall = {
+        f"retrieval_recall@{k_final}_dense": round(sum(r.dense_hit for r in rows) / n, 4),
+        f"retrieval_recall@{k_final}_hybrid": round(sum(r.hybrid_hit for r in rows) / n, 4),
+        f"retrieval_recall@{k_final}_reranked": round(sum(r.reranked_hit for r in rows) / n, 4),
+    }
+    ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    run_id = f"{ts}-{store}-recall"
+    config = {
+        "store": store,
+        "reranker": reranker_name,
+        "k_retrieve": k_retrieve,
+        "k_final": k_final,
+        "rrf_k": settings.retrieval.rrf_k,
+        "questions": len(rows),
+        "corpus_version": settings.manifest.corpus_version,
+    }
+    results_dir = settings.project_root / "eval" / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
+    (results_dir / f"{run_id}.json").write_text(
+        json.dumps(
+            {
+                "run_id": run_id,
+                "config": config,
+                "recall": recall,
+                "rows": [dataclasses.asdict(r) for r in rows],
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    return RecallResult(run_id=run_id, config=config, recall=recall, rows=rows)

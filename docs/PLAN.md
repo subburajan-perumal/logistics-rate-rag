@@ -166,6 +166,8 @@ after D-24 is a deviation discovered during the build and must say why.
 | D-40 | **`LoadedDocument` gains `row_page_numbers: tuple[int, ...] = ()`.** SPEC.md §3.1's field list omitted it, but §3.3 ("per-row page numbers, carried into chunk metadata by §3.4") and §3.4 (chunk `page_numbers` = sorted distinct pages of the rows in the chunk) both assume it exists somewhere; there is nowhere else for it to live. PDF-only; empty for md/csv/policy docs. | Found implementing `ingest/pdf_loader.py` in Phase 2 — a genuine spec gap, not a design change. Live-verified: 12 rows on page 1, 8 on page 2, matching the PDF's actual page break. |
 | D-41 | **`Usage.cached` classmethod renamed to `Usage.make_cached`.** SPEC.md §5.7 names both the `cached: bool` field and a `cached()` classmethod the same thing on a `@dataclass(frozen=True, slots=True)` class — the slot descriptor for the field clobbers the classmethod at class-creation time (`TypeError: 'member_descriptor' object is not callable`, live-reproduced). No other code reads the classmethod by its SPEC name, so the rename is a pure implementation fix, not a behaviour change. | Found running `rate-rag ask` for real in Phase 3 — the field/method name collision is provably broken in Python regardless of implementation choices. |
 | D-42 | **Gate 3a's number-grounding boundary refined**: reject a match only when preceded/followed by a single digit or `.`, or by the 2-character shape `digit,` / `,digit` (an actual thousands-separator) — **not** by a bare comma alone. SPEC.md §6.4's literal `(?<![\d,.])VARIANT(?![\d,.])` regex excludes *any* adjacent comma, which empirically breaks grounding for every comma-delimited (CSV/Halcyon) value, since a CSV field delimiter comma is indistinguishable from a thousands-separator comma under that simpler rule. Verified against the real corpus: `1332` inside `",1332,EUR,"` failed under the literal spec regex, passed under the refined one — while all of SPEC.md's own worked examples (`1240` not found in `11,240`/`12400`/`1,2400`/`1240.5`; `240` not found in `1,240`) still hold exactly as before. | Found writing `test_gate3_grounding.py` in Phase 6, before trusting the naive regex against real data — every Halcyon golden/adversarial question would otherwise have failed grounding, which would have silently gutted the project's core "0% hallucinated" claim for half the corpus. |
+| D-43 | **BM25 tokenizer splits on every non-word, non-hyphen character** (`[^\w-]+`) instead of SPEC.md §4.5's `[\s|,]+`. The original split left punctuation glued to words: the real G-008 question "Meridian's 20DRY rate on the Mundra<en dash>Barcelona lane?" produced one token for both ports plus `lane?`, so BM25 matched neither port and ranked chunks on filler words ("on"), which the superseded Q2 tariff's `SUPERSEDED ... on 2026-07-01` line happens to contain. Hyphenated codes (`hal-2026-h2-fcl`, `mer-2026-h2-fcl`) still stay whole; numbers still split at the thousands comma. SPEC.md §4.5 updated in the same change. | Found by the first live `rate-rag recall` (2026-09-29): hybrid recall@6 was **0.9583** against dense **1.0000**, the one miss being G-008 with the current-tariff chunk pushed out of the fused top-6 by five Q2 chunks. After the fix all three stages are **1.0000** on the 24 golden ANSWER questions. `test_tokenize_splits_punctuation_and_en_dash` pins the real question. |
+| D-44 | **`PineconeBackend.existing()`/`all_chunks()` page through `index.list()` + `fetch()`** instead of SPEC.md §4.4's zero-vector `query(top_k=10_000)`. Pinecone rejects an all-zero dense vector under the cosine metric, so the spec's trick would fail on the first `index` run; list+fetch also removes the 10k cap. Everything else in §4.4 is as written (serverless aws/us-east-1, cosine, dimension check, batches of 100, 2 s consistency poll, `prune`). | Found while implementing Phase 7 on 2026-09-29, before any live call. The backend takes an injectable client so `test_pinecone_backend.py` exercises paging, batching, the eventual-consistency wait and its timeout without a key. |
 | D-38 | **Considered from the reference and not adopted** — (a) *LLM re-ranker* (Gemini picks chunk ids with reasoning): puts a second probabilistic step inside retrieval; the cross-encoder is deterministic and 40× cheaper (D-28). (b) *Parent/child chunk graph with BFS expansion*: needed there because table splits lose their header; here every chunk carries its header by construction (§8.2), so there is nothing to expand. (c) *JSON-repair retry on parse failure*: a parse failure is a counted outcome here (`REJECT(parse_error)`), repairing it would hide the metric; `max_retries=3` covers transport errors only. (d) *Docling + TableFormer for PDF tables*: right tool for scanned or irregular PDFs, heavy (torch, model downloads); our born-digital PDF round-trips through pdfplumber verbatim (D-29) — Docling is the named upgrade path if OCR ever enters scope. (e) *Local quantised embedding model (ONNX BGE-M3)*: would remove the API dependency but changes the "used Gemini embeddings" claim; the reranker already demonstrates local ONNX inference. (f) *Orchestrator that plans sub-tasks + parallel per-task extraction with rolling few-shot history* and (g) *`has_more_data` pagination loop*: extraction-of-many-rows patterns; this is single-answer Q&A, and multi-step orchestration is the deferred LangGraph stretch. (h) *Gemini file upload with ephemeral context caching* for whole-document prompts: not applicable to chunked Q&A. (i) *Subprocess isolation with timeout for PDF conversion*: pdfplumber on a 2-page PDF does not need it. | Each is a real technique in the reference; listing them with reasons is the evidence that the reference was mined completely, and the reasons are interview material. |
 
 ## 4. Scope and non-goals
@@ -1262,20 +1264,26 @@ number independently verified back in Phase 1.
 
 ### Phase 2b — Hybrid retrieval + re-ranking (2 sessions, D-28/D-32/D-33/D-35/D-37)
 
-- [ ] `store/lexical.py` (`LexicalIndex`, `fuse_rrf`) per §9.1b;
+- [x] `store/lexical.py` (`LexicalIndex`, `fuse_rrf`) per §9.1b;
       `RateRetriever` becomes dense ∪ BM25 → RRF → top-12;
       `RETRIEVAL_MODE` env + `retrieval.yaml` wiring; `test_lexical.py`
-- [ ] `rerank/base.py`, `noop.py`, `flashrank_reranker.py`,
+      (done 2026-09-29; tokenizer changed per D-43; one `build_retriever`
+      factory now used by `ask`, `eval`, `recall` and threshold tuning)
+- [x] `rerank/base.py`, `noop.py`, `flashrank_reranker.py`,
       `pinecone_reranker.py` per §9.1a; second stage 12 → 6; `RERANKER`
       env wiring; `test_reranker.py` (fake + noop + slow FlashRank
-      determinism)
+      determinism) (done 2026-09-29; `PineconeReranker` written, live
+      check is Phase 7's)
 - [x] `chain/context.py`: document-order rendering + pinned policy block
       (built in Phase 3, not here — `CandidateChain.run` needs it directly,
       see Phase 3's log; `test_context.py` still not written, flagged open)
-- [ ] `rate-rag recall` command; `retrieval_recall@6_dense`, `_hybrid`,
+- [x] `rate-rag recall` command; `retrieval_recall@6_dense`, `_hybrid`,
       `_reranked` computed LLM-free over the golden set on Chroma and
-      recorded in the roadmap progress log
-- [ ] Purity test extended for `rerank` / `flashrank` / `rank_bm25`
+      recorded in the roadmap progress log (done 2026-09-29: **1.000 /
+      1.000 / 1.000** on 24 questions after D-43; 1.000 / 0.958 / 1.000
+      before it)
+- [x] Purity test extended for `rerank` / `flashrank` / `rank_bm25`
+      (already in `FORBIDDEN_TOP_LEVEL` since Phase 4; verified 2026-09-29)
 
 **Acceptance:** `RETRIEVAL_MODE=dense|hybrid` × `RERANKER=none|flashrank`
 all work; recall@6 is non-decreasing dense → hybrid → reranked on the
@@ -1426,7 +1434,9 @@ traceable reasons, not black-box refusals.
 
 - [ ] Pinecone account, Starter plan, API key in `.env`
 - [ ] `store/pinecone_backend.py` per §9.3 with the consistency poll;
-      `rate-rag index --store pinecone`; namespace pruning
+      `rate-rag index --store pinecone`; namespace pruning (**code done
+      2026-09-29** with 12 fake-client unit tests, D-44; the live index
+      run waits on the Pinecone key)
 - [ ] Carrier metadata filter verified in both stores (same top-k doc set
       on G-001…G-012)
 - [ ] `PineconeReranker` verified live on Starter (`bge-reranker-v2-m3`);
@@ -1591,6 +1601,7 @@ section and this plan.
 | 2026-09-23 | Windows | 6 | `guardrails/gate3_grounding.py`, `gate3_confidence.py`, `eval/runner.py`'s `tune_threshold` (writes `config/guardrails.yaml` + a tuning result file — the only code path allowed to touch `config/`); full pipeline wiring (Gate 1 → 2 → 3a → 3b, `NEEDS_REVIEW` on low confidence); `eval --mode gated` now real (removed its `NotImplementedError`); 25 new tests across `test_gate3_grounding.py`, `test_gate3_confidence.py`, plus a `NEEDS_REVIEW` regression in `test_pipeline.py` | **D-42, found before trusting the spec's literal regex against real data**: the naive `[\d,.]` comma exclusion breaks grounding for every CSV-delimited (Halcyon) value; refined to only exclude a true thousands-separator shape. Live results, the headline number: tuned `without_reranker` threshold to `0.810893` (23 correct/0 incorrect on the golden set); full 45-question gated run — `fabricated_values_surfaced=0`, `injection_leak=0` (down from 2), `wrong_values_surfaced=1` (down from 4), 0 `ERROR` rows, $0 cost (100% cache hit, reusing earlier live answers). 109/109 tests green | Phase 7: Pinecone, or Phase 9/10 to publish what's already a complete, evidenced story |
 | 2026-09-23 | Windows | - | User reported all 5 GitHub Actions runs (Phases 2-6) had failed; fixed `.github/workflows/ci.yml` — `ruff format --check .` was scanning `docs/*.md` and reformatting their illustrative Python code fences, failing every run even though the real source tree was clean throughout | Never caught locally since every local ruff run this session was scoped to `src tests`/`src tests scripts`, never bare `.`. Rescoped the workflow to match; confirmed green on run `35837040901` | (housekeeping, not a phase) |
 | 2026-09-23 | Windows | - | User flagged the live Streamlit demo was still showing the Phase 2 maintenance-mode placeholder despite Phases 3-6 landing the real chain and all three gates. Rebuilt `demo/app.py` against the actual gated pipeline (`CandidateChain` + `run_gates`, same as `rate-rag ask`) with a live **Guardrail trace** panel and 5 one-click example questions spanning `ANSWER`/`REJECT`/`REFUSED`; rewrote `demo/requirements.txt` (was still the old scaffold's dependency set with no way to even import `logistics_rate_rag`) | Live-verified locally via headless `streamlit run` + browser automation, not just "it imports": the superseded-tariff trap correctly returned `REJECT` → `rule:not_expired` with real `as_of`/`valid_from`/`valid_to` in the trace; the normal lookup returned `ANSWER` with `rate_value=2224`, matching the Phase 1-verified golden value | (housekeeping, not a phase) |
+| 2026-09-29 | Windows | 2b (+7 code) | `store/lexical.py` (BM25 + RRF), `rerank/` (noop, FlashRank, Pinecone), `build_retriever` factory wired into `ask`/`eval`/tuning, `rate-rag recall`, `with_reranker` threshold tuned; `PineconeBackend` + `build_backend`; `eval` expands `both`/`ablation` into one run per combination; `write_latest` rewritten to the SPEC §7.5 report; `cost_usd` in usage totals; 31 new tests (140 total) | **D-43** (tokenizer) found by the first live recall: hybrid 0.958 < dense 1.000 on G-008; fixed, all three stages 1.000. `with_reranker` threshold **0.664151** (22 correct / 0 incorrect, hybrid + FlashRank). All four `RETRIEVAL_MODE` × `RERANKER` combinations return the verified G-008 value live. **Metric bug fixed**: `adversarial_rejection_rate` counted only REJECT/NEEDS_REVIEW, not REFUSED, so the 2026-09-23 gated run reported 0.133 for what was 14/15 = 0.933 (§13.3 says `outcome ≠ ANSWER`). **D-44** (Pinecone list+fetch). | Phase 7 live run needs `PINECONE_API_KEY`; Phase 8 Chroma half can run now |
 
 ## Appendix B — Sources checked on 2026-09-17
 

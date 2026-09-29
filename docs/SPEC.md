@@ -514,7 +514,7 @@ PineconeBackend(api_key: str, index_name: str, namespace: str, dim: int)
 ### 4.5 `LexicalIndex` and RRF (`store/lexical.py`, D-33)
 
 ```python
-TOKEN_SPLIT = re.compile(r"[\s|,]+")
+TOKEN_SPLIT = re.compile(r"[^\w-]+")   # PLAN.md D-43 (was [\s|,]+)
 
 def tokenize(text: str) -> list[str]:
     return [t for t in TOKEN_SPLIT.split(text.lower()) if t]

@@ -114,9 +114,9 @@ def compute_metrics(
         if golden_unanswerable_rows
         else None
     )
+    # PLAN.md §13.3: any outcome other than ANSWER (a clean REFUSED counts)
     adversarial_rejection_rate = (
-        sum(r.outcome in ("REJECT", "NEEDS_REVIEW") for r in adversarial_rows)
-        / len(adversarial_rows)
+        sum(r.outcome != "ANSWER" for r in adversarial_rows) / len(adversarial_rows)
         if adversarial_rows
         else None
     )

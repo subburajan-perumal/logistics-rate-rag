@@ -1,14 +1,17 @@
 """Retriever (docs/SPEC.md §4.6).
 
-Phase 2: dense-only (the `lexical`/hybrid-fusion and reranker arguments
-exist as `None`-able hooks so Phase 2b can add hybrid retrieval and
-re-ranking without changing this class's shape).
+Dense top-k from the store, optionally fused with a BM25 leg via RRF
+(`RETRIEVAL_MODE=hybrid`, D-33), then cut to `k_final` by a reranker
+(`RERANKER=flashrank|pinecone|none`, D-28). `build_retriever` is the one
+place that turns settings into a retriever, so `ask`, `eval`, `recall`
+and threshold tuning can't drift apart.
 """
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
@@ -18,10 +21,13 @@ from langchain_core.retrievers import BaseRetriever
 from logistics_rate_rag.ingest.models import Chunk
 from logistics_rate_rag.store.base import Hit, StoreBackend
 
-# `lexical` is typed `Any` until Phase 2b adds store/lexical.py's LexicalIndex
-# — pydantic (which BaseRetriever is built on) resolves every field
-# annotation eagerly, so a forward reference to a not-yet-existing class
-# fails at import time even under `if TYPE_CHECKING`.
+if TYPE_CHECKING:
+    from logistics_rate_rag.config import Settings
+
+# `lexical` and `reranker` are typed `Any` so this module imports without
+# rank_bm25/flashrank installed (the Streamlit demo runs dense-only):
+# pydantic, which BaseRetriever is built on, resolves field annotations
+# eagerly, so a TYPE_CHECKING-only import would fail at class creation.
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,3 +138,37 @@ class _FusedHit:
     bm25_score: float | None
     lexical_rank: int | None
     rrf_score: float | None
+
+
+def build_retriever(
+    settings: Settings,
+    backend: StoreBackend,
+    embedder: Embeddings,
+    all_chunks: Sequence[Chunk],
+    *,
+    retrieval_mode: str | None = None,
+    reranker: str | None = None,
+) -> RateRetriever:
+    """Settings -> retriever. `retrieval_mode`/`reranker` override settings."""
+    from logistics_rate_rag.rerank import build_reranker
+
+    mode = retrieval_mode or settings.retrieval_mode
+    lexical = None
+    if mode == "hybrid":
+        from logistics_rate_rag.store.lexical import LexicalIndex
+
+        lexical = LexicalIndex(all_chunks)
+    return RateRetriever(
+        backend=backend,
+        embedder=embedder,
+        lexical=lexical,
+        reranker=build_reranker(
+            reranker or settings.reranker,
+            model_name=settings.rerank_model,
+            cache_dir=settings.flashrank_cache_dir,
+            pinecone_api_key=settings.pinecone_api_key,
+        ),
+        k_retrieve=settings.retrieval.k_retrieve,
+        k_final=settings.retrieval.k_final,
+        rrf_k=settings.retrieval.rrf_k,
+    )
