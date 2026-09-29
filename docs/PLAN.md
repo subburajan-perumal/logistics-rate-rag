@@ -1433,16 +1433,22 @@ traceable reasons, not black-box refusals.
 
 ### Phase 7 — Pinecone (1 session)
 
-- [ ] Pinecone account, Starter plan, API key in `.env`
-- [ ] `store/pinecone_backend.py` per §9.3 with the consistency poll;
-      `rate-rag index --store pinecone`; namespace pruning (**code done
-      2026-09-29** with 12 fake-client unit tests, D-44; the live index
-      run waits on the Pinecone key)
-- [ ] Carrier metadata filter verified in both stores (same top-k doc set
-      on G-001…G-012)
-- [ ] `PineconeReranker` verified live on Starter (`bge-reranker-v2-m3`);
+- [x] Pinecone account, Starter plan, API key in `.env` (2026-09-29, by the user)
+- [x] `store/pinecone_backend.py` per §9.3 with the consistency poll;
+      `rate-rag index --store pinecone`; namespace pruning (2026-09-29:
+      index created live, 26 upserted, rerun 0 upserted; D-44)
+- [x] Carrier metadata filter verified in both stores (same top-k doc set
+      on G-001…G-012) (12/12 identical sets, top similarity equal to 4
+      decimals in both stores, which also confirms the D-06 normalisation)
+- [x] `PineconeReranker` verified live on Starter (`bge-reranker-v2-m3`);
       one golden gated run with `--reranker pinecone` committed (D-28)
-- [ ] `rate-rag eval --store pinecone --mode both --set all` committed
+      (golden 0.958, 0 wrong; scores 0.66–0.996, lowest confidence 0.863,
+      so the FlashRank-tuned 0.664 threshold sent nothing to review; it was
+      not tuned separately for this reranker)
+- [x] `rate-rag eval --store pinecone --mode both --set all` committed
+      (identical to Chroma: wrong 4 → 0, adversarial 0.80 → 1.00, golden
+      0.958; `store_parity` **0.000**; smoke test `tests/smoke` passes live
+      and leaves only `corpus-v1` in the index)
 
 **Acceptance:** Pinecone gated golden accuracy within 5 points of Chroma;
 switching is `VECTOR_STORE=` only; smoke test's Pinecone half passes and
@@ -1619,6 +1625,7 @@ section and this plan.
 | 2026-09-29 | Windows | 2b (+7 code) | `store/lexical.py` (BM25 + RRF), `rerank/` (noop, FlashRank, Pinecone), `build_retriever` factory wired into `ask`/`eval`/tuning, `rate-rag recall`, `with_reranker` threshold tuned; `PineconeBackend` + `build_backend`; `eval` expands `both`/`ablation` into one run per combination; `write_latest` rewritten to the SPEC §7.5 report; `cost_usd` in usage totals; 31 new tests (140 total) | **D-43** (tokenizer) found by the first live recall: hybrid 0.958 < dense 1.000 on G-008; fixed, all three stages 1.000. `with_reranker` threshold **0.664151** (22 correct / 0 incorrect, hybrid + FlashRank). All four `RETRIEVAL_MODE` × `RERANKER` combinations return the verified G-008 value live. **Metric bug fixed**: `adversarial_rejection_rate` counted only REJECT/NEEDS_REVIEW, not REFUSED, so the 2026-09-23 gated run reported 0.133 for what was 14/15 = 0.933 (§13.3 says `outcome ≠ ANSWER`). **D-44** (Pinecone list+fetch). | Phase 7 live run needs `PINECONE_API_KEY`; Phase 8 Chroma half can run now |
 | 2026-09-29 | Windows | 8 (Chroma) + 9 | Phase 8 on Chroma: `eval --mode both --set all` on hybrid + FlashRank, rerank and hybrid ablations, enrichment index + enriched recall; **D-45** (carrier alias resolved in Gate 1) found in the first gated run and all gated runs re-served from cache; `write_latest` keys runs by question set and sums spend across all files; demo labels its real dense/no-reranker settings; README and `architecture.md` rewritten | Hybrid + FlashRank, 45 questions: wrong values **4 → 0**, superseded/injected leaks **2 → 0**, adversarial rejection **0.80 → 1.00**, golden accuracy 0.958 both ways (1 abstention, G-015 `surcharge_consistent`), fabricated 0 both ways. rerank_lift, hybrid_lift, enrichment_lift all **0.000** (ceiling). Spend recorded: $0.28 + $0.022 enrichment. 147 tests | Phase 7 live (needs `PINECONE_API_KEY`), then the uncached both-store Phase 8 run, Mac fresh clone, Phase 10 |
 | 2026-09-29 | Windows | 9 (fresh clone) + 10 (part) | Timed fresh clone from GitHub; lock fix; CI switched to the lock install; second full-history secret scan (repo already public); vault Career Profile note, playbook "guardrail gates" section, Upskilling rows → practicing | Fresh clone **450 s** (install 200 s, index 7 s, 30 live gated questions + FlashRank download 243 s): golden 0.958, 0 wrong, 0 fabricated, matching the committed run. Secret scan: 0 hits for `AIza`/`pcsk_` in `git log -p --all`, no `.env` ever added. CI green on the lock install | Pinecone key → Phase 7 live + uncached both-store run; Mac fresh clone; resume bullet + LinkedIn post (user); GitHub topics (user) |
+| 2026-09-29 | Windows | 7 | Live Pinecone: index created, idempotent rerun, carrier-filter parity on G-001…G-012, recall with FlashRank and with Pinecone's `bge-reranker-v2-m3`, `tests/smoke/test_live_smoke.py` (Chroma half, Pinecone half with a `smoke-*` namespace that is reset, live Pinecone reranker), baseline + gated on all 45, golden gated with the Pinecone reranker | Parity **0.000**: Pinecone numbers identical to Chroma (wrong 4 → 0, leaks 2 → 0, adversarial 0.80 → 1.00, golden 0.958). Recall 1.000 at every stage on Pinecone. Pinecone-reranker run: golden 0.958, 0 wrong, $0.116 for 27 live calls. Smoke 3/3, index left with only `corpus-v1` (26). Recorded spend across all run files $0.40 | Phase 8's uncached both-store run; Mac clone; resume bullet, LinkedIn post, GitHub topics (user) |
 
 ## Appendix B — Sources checked on 2026-09-17
 

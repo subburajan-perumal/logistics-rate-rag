@@ -30,6 +30,19 @@ Regenerated from the newest run per configuration.
 | injection_leak | 2 | 0 | 0 |
 | latency_p50_ms | - | - | reported |
 
+**pinecone · hybrid · reranker flashrank** (`20260929T055934Z-pinecone-hybrid-flashrank-baseline` vs `20260929T060134Z-pinecone-hybrid-flashrank-gated`)
+
+| Metric | Baseline (gates off) | Gated | Target |
+|---|---|---|---|
+| golden_accuracy | 0.958 | 0.958 | ≥ 0.90 |
+| golden_abstention | 0.000 | 0.042 | reported |
+| refusal_correctness | 1.000 | 1.000 | 1.00 |
+| fabricated_values_surfaced | 0 | 0 | 0 |
+| wrong_values_surfaced | 4 | 0 | 0 |
+| adversarial_rejection_rate | 0.800 | 1.000 | ≥ 0.90 |
+| injection_leak | 2 | 0 | 0 |
+| latency_p50_ms | - | - | reported |
+
 ## Every configuration (newest run each)
 
 | store | retrieval | reranker | mode | sets | golden_accuracy | wrong | fabricated | adversarial_rejection | run |
@@ -41,6 +54,9 @@ Regenerated from the newest run per configuration.
 | chroma | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T052503Z-chroma-hybrid-flashrank-gated` |
 | chroma | hybrid | flashrank | gated | golden | 0.958 | 0 | 0 | - | `20260929T052805Z-chroma-hybrid-flashrank-gated` |
 | chroma | hybrid | none | gated | golden | 0.958 | 0 | 0 | - | `20260929T052523Z-chroma-hybrid-none-gated` |
+| pinecone | hybrid | flashrank | baseline | adversarial, golden | 0.958 | 4 | 0 | 0.800 | `20260929T055934Z-pinecone-hybrid-flashrank-baseline` |
+| pinecone | hybrid | flashrank | gated | adversarial, golden | 0.958 | 0 | 0 | 1.000 | `20260929T060134Z-pinecone-hybrid-flashrank-gated` |
+| pinecone | hybrid | pinecone | gated | golden | 0.958 | 0 | 0 | - | `20260929T060624Z-pinecone-hybrid-pinecone-gated` |
 
 ## Retrieval ladder (LLM-free recall over golden ANSWER questions)
 
@@ -48,14 +64,15 @@ Regenerated from the newest run per configuration.
 |---|---|---|---|---|---|
 | chroma | raw | 1.000 | 1.000 | 1.000 | `20260929T044811Z-chroma-recall` |
 | chroma | enriched | 1.000 | 1.000 | 1.000 | `20260929T051554Z-chroma-recall-enriched` |
+| pinecone | raw | 1.000 | 1.000 | 1.000 | `20260929T055643Z-pinecone-recall` |
 
 ## Lifts and parity (gated golden accuracy)
 
 | Metric | Value | Definition |
 |---|---|---|
-| store_parity | - | abs(chroma - pinecone), hybrid + flashrank; target <= 0.05 |
+| store_parity | 0.000 | abs(chroma - pinecone), hybrid + flashrank; target <= 0.05 |
 | rerank_lift | 0.000 | chroma hybrid: flashrank - none |
 | hybrid_lift | 0.000 | chroma flashrank: hybrid - dense |
 | enrichment_lift | 0.000 | chroma hybrid recall: enriched - raw |
 
-Recorded LLM spend across all 17 eval run files: **$0.2753** (answer generation only; cost tracking started 2026-09-29).
+Recorded LLM spend across all 20 eval run files: **$0.3951** (answer generation only; cost tracking started 2026-09-29).

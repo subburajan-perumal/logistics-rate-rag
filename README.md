@@ -83,11 +83,14 @@ first hybrid run scored 0.958 because the BM25 tokenizer kept
 punctuation glued to words (an en-dash between two port names, "lane?").
 Fixed in D-43.
 
-Chroma and Pinecone sit behind one `StoreBackend` interface. The
-Pinecone backend is implemented and unit-tested against a fake client;
-the live Pinecone parity run is the next step and is not claimed here.
+Chroma and Pinecone sit behind one `StoreBackend` interface. On
+Pinecone (serverless, same embeddings, same questions) every number above
+is identical: **store parity 0.000**, and the two stores return the same
+top-6 chunks for all 12 carrier-filtered lookups checked. Pinecone's
+managed reranker (`bge-reranker-v2-m3`) also gives golden accuracy 0.958
+with 0 wrong values.
 
-Recorded LLM spend for every eval run in `eval/results/`: **$0.28**.
+Recorded LLM spend for every eval run in `eval/results/`: **$0.40**.
 
 ## Run it
 
@@ -97,13 +100,14 @@ cd logistics-rate-rag
 python -m venv .venv
 .venv\Scripts\activate                    # Windows; source .venv/bin/activate elsewhere
 pip install -r requirements.lock -e .
-copy .env.example .env                    # add GOOGLE_API_KEY (https://aistudio.google.com/apikey)
+copy .env.example .env                    # add GOOGLE_API_KEY; PINECONE_API_KEY only for --store pinecone
 
 rate-rag index --store chroma
 rate-rag ask "What is Meridian's 40HC rate from Chennai to Rotterdam, and until when is it valid?" --as-of 2026-09-01
 rate-rag eval --store chroma --mode both --set golden     # before/after on 30 golden questions
 rate-rag recall --store chroma                            # retrieval ladder, no LLM calls
 pytest tests/unit                                         # 147 tests, no network, no keys
+pytest tests/smoke -m smoke                               # live Chroma + Pinecone round trip (needs keys)
 ```
 
 A fresh eval makes one Gemini call per question with a 7-second floor
