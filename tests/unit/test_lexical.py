@@ -87,3 +87,19 @@ def test_lexical_query_ranks_code_match_first_and_drops_zero_scores():
 def test_lexical_query_respects_k():
     chunks = [_chunk(f"c#{i:03d}", f"inmaa row {i}") for i in range(5)]
     assert len(LexicalIndex(chunks).query("inmaa", k=3)) == 3
+
+
+def test_query_expander_adds_canonical_codes_longest_name_wins():
+    # D-48: "20' Tank" is 20TK, not also the bare "20'" (20DRY); JNPT is INNSA
+    from logistics_rate_rag.config import load_settings
+    from logistics_rate_rag.store.lexical import QueryExpander
+
+    s = load_settings()
+    x = QueryExpander.from_registries(s.equipment, s.ports)
+    assert sorted(x.codes_in("Meridian 20' Tank from JNPT to Jebel Ali")) == [
+        "20TK",
+        "AEJEA",
+        "INNSA",
+    ]
+    assert x.codes_in("non-operating reefer Tuticorin to Colombo") == ["40NOR", "INTUT", "LKCMB"]
+    assert x.expand("no names here") == "no names here"

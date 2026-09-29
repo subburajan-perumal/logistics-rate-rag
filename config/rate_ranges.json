@@ -20,12 +20,26 @@
     "max": 2764,
     "min": 2764
   },
+  "HALCYON|INCOK|NLRTM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 3045,
+    "min": 3045
+  },
   "HALCYON|INMAA|BEANR|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
     ],
     "max": 905,
     "min": 905
+  },
+  "HALCYON|INMAA|BEANR|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2174,
+    "min": 2174
   },
   "HALCYON|INMAA|BEANR|40DRY": {
     "docs": [
@@ -41,12 +55,68 @@
     "max": 2219,
     "min": 2219
   },
+  "HALCYON|INMAA|BEANR|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 4184,
+    "min": 4184
+  },
+  "HALCYON|INMAA|BEANR|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2645,
+    "min": 2645
+  },
+  "HALCYON|INMAA|CNSHA|20DRY": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1224,
+    "min": 1224
+  },
+  "HALCYON|INMAA|CNSHA|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2313,
+    "min": 2313
+  },
+  "HALCYON|INMAA|CNSHA|40DRY": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2287,
+    "min": 2287
+  },
+  "HALCYON|INMAA|CNSHA|40HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2605,
+    "min": 2605
+  },
+  "HALCYON|INMAA|CNSHA|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 5307,
+    "min": 5307
+  },
   "HALCYON|INMAA|DEHAM|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
     ],
     "max": 1033,
     "min": 1033
+  },
+  "HALCYON|INMAA|DEHAM|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2130,
+    "min": 2130
   },
   "HALCYON|INMAA|DEHAM|40DRY": {
     "docs": [
@@ -61,6 +131,20 @@
     ],
     "max": 2562,
     "min": 2562
+  },
+  "HALCYON|INMAA|DEHAM|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 6250,
+    "min": 6250
+  },
+  "HALCYON|INMAA|DEHAM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2976,
+    "min": 2976
   },
   "HALCYON|INMAA|NLRTM|20DRY": {
     "docs": [
@@ -83,12 +167,26 @@
     "max": 1863,
     "min": 1863
   },
+  "HALCYON|INMAA|NLRTM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2122,
+    "min": 2122
+  },
   "HALCYON|INMUN|AEJEA|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
     ],
     "max": 1228,
     "min": 1228
+  },
+  "HALCYON|INMUN|AEJEA|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2943,
+    "min": 2943
   },
   "HALCYON|INMUN|AEJEA|40DRY": {
     "docs": [
@@ -103,6 +201,13 @@
     ],
     "max": 1976,
     "min": 1976
+  },
+  "HALCYON|INMUN|AEJEA|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 3891,
+    "min": 3891
   },
   "HALCYON|INMUN|NLRTM|20DRY": {
     "docs": [
@@ -125,12 +230,26 @@
     "max": 2214,
     "min": 2214
   },
+  "HALCYON|INMUN|NLRTM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2508,
+    "min": 2508
+  },
   "HALCYON|INNSA|DEHAM|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
     ],
     "max": 1207,
     "min": 1207
+  },
+  "HALCYON|INNSA|DEHAM|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2673,
+    "min": 2673
   },
   "HALCYON|INNSA|DEHAM|40DRY": {
     "docs": [
@@ -145,6 +264,20 @@
     ],
     "max": 2714,
     "min": 2714
+  },
+  "HALCYON|INNSA|DEHAM|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 5015,
+    "min": 5015
+  },
+  "HALCYON|INNSA|DEHAM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 3169,
+    "min": 3169
   },
   "HALCYON|INNSA|ESBCN|20DRY": {
     "docs": [
@@ -167,6 +300,13 @@
     "max": 1915,
     "min": 1915
   },
+  "HALCYON|INNSA|ESBCN|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2084,
+    "min": 2084
+  },
   "HALCYON|INNSA|NLRTM|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
@@ -188,12 +328,54 @@
     "max": 1804,
     "min": 1804
   },
+  "HALCYON|INNSA|NLRTM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1855,
+    "min": 1855
+  },
+  "HALCYON|INPAV|NLRTM|20DRY": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1429,
+    "min": 1429
+  },
+  "HALCYON|INPAV|NLRTM|40DRY": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1659,
+    "min": 1659
+  },
+  "HALCYON|INPAV|NLRTM|40HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1860,
+    "min": 1860
+  },
+  "HALCYON|INPAV|NLRTM|45HC": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 1952,
+    "min": 1952
+  },
   "HALCYON|INVTZ|SGSIN|20DRY": {
     "docs": [
       "halcyon_tariff_2026_h2.csv"
     ],
     "max": 941,
     "min": 941
+  },
+  "HALCYON|INVTZ|SGSIN|20RF": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 2141,
+    "min": 2141
   },
   "HALCYON|INVTZ|SGSIN|40DRY": {
     "docs": [
@@ -208,6 +390,13 @@
     ],
     "max": 2196,
     "min": 2196
+  },
+  "HALCYON|INVTZ|SGSIN|40RH": {
+    "docs": [
+      "halcyon_tariff_2026_h2.csv"
+    ],
+    "max": 4479,
+    "min": 4479
   },
   "MERIDIAN|INCOK|ITGOA|20DRY": {
     "docs": [
@@ -233,6 +422,14 @@
     "max": 2819,
     "min": 2592
   },
+  "MERIDIAN|INCOK|ITGOA|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3378,
+    "min": 3135
+  },
   "MERIDIAN|INCOK|NLRTM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -257,6 +454,14 @@
     "max": 3272,
     "min": 2980
   },
+  "MERIDIAN|INCOK|NLRTM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3450,
+    "min": 3174
+  },
   "MERIDIAN|INMAA|AEJEA|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -264,6 +469,30 @@
     ],
     "max": 984,
     "min": 921
+  },
+  "MERIDIAN|INMAA|AEJEA|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1865,
+    "min": 1748
+  },
+  "MERIDIAN|INMAA|AEJEA|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1669,
+    "min": 1453
+  },
+  "MERIDIAN|INMAA|AEJEA|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1809,
+    "min": 1629
   },
   "MERIDIAN|INMAA|AEJEA|40DRY": {
     "docs": [
@@ -273,6 +502,14 @@
     "max": 2465,
     "min": 2361
   },
+  "MERIDIAN|INMAA|AEJEA|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5221,
+    "min": 4580
+  },
   "MERIDIAN|INMAA|AEJEA|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -281,6 +518,30 @@
     "max": 2565,
     "min": 2428
   },
+  "MERIDIAN|INMAA|AEJEA|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2630,
+    "min": 2416
+  },
+  "MERIDIAN|INMAA|AEJEA|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3846,
+    "min": 3663
+  },
+  "MERIDIAN|INMAA|AEJEA|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4394,
+    "min": 3840
+  },
   "MERIDIAN|INMAA|BEANR|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -288,6 +549,14 @@
     ],
     "max": 1180,
     "min": 1046
+  },
+  "MERIDIAN|INMAA|BEANR|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2971,
+    "min": 2621
   },
   "MERIDIAN|INMAA|BEANR|40DRY": {
     "docs": [
@@ -305,6 +574,70 @@
     "max": 2693,
     "min": 2323
   },
+  "MERIDIAN|INMAA|BEANR|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4829,
+    "min": 4614
+  },
+  "MERIDIAN|INMAA|BEANR|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2982,
+    "min": 2720
+  },
+  "MERIDIAN|INMAA|CNSHA|20DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1362,
+    "min": 1253
+  },
+  "MERIDIAN|INMAA|CNSHA|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2761,
+    "min": 2432
+  },
+  "MERIDIAN|INMAA|CNSHA|40DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2760,
+    "min": 2529
+  },
+  "MERIDIAN|INMAA|CNSHA|40HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2872,
+    "min": 2464
+  },
+  "MERIDIAN|INMAA|CNSHA|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2926,
+    "min": 2542
+  },
+  "MERIDIAN|INMAA|CNSHA|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 6416,
+    "min": 6136
+  },
   "MERIDIAN|INMAA|DEHAM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -312,6 +645,30 @@
     ],
     "max": 1166,
     "min": 1032
+  },
+  "MERIDIAN|INMAA|DEHAM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2358,
+    "min": 2105
+  },
+  "MERIDIAN|INMAA|DEHAM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1581,
+    "min": 1516
+  },
+  "MERIDIAN|INMAA|DEHAM|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2708,
+    "min": 2450
   },
   "MERIDIAN|INMAA|DEHAM|40DRY": {
     "docs": [
@@ -321,6 +678,14 @@
     "max": 3254,
     "min": 2838
   },
+  "MERIDIAN|INMAA|DEHAM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5507,
+    "min": 4866
+  },
   "MERIDIAN|INMAA|DEHAM|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -328,6 +693,30 @@
     ],
     "max": 3203,
     "min": 2988
+  },
+  "MERIDIAN|INMAA|DEHAM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4445,
+    "min": 3917
+  },
+  "MERIDIAN|INMAA|DEHAM|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 7719,
+    "min": 6821
+  },
+  "MERIDIAN|INMAA|DEHAM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3746,
+    "min": 3375
   },
   "MERIDIAN|INMAA|GBFXT|20DRY": {
     "docs": [
@@ -353,6 +742,14 @@
     "max": 3037,
     "min": 2668
   },
+  "MERIDIAN|INMAA|GBFXT|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3418,
+    "min": 3170
+  },
   "MERIDIAN|INMAA|ITGOA|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -377,6 +774,14 @@
     "max": 2350,
     "min": 2138
   },
+  "MERIDIAN|INMAA|ITGOA|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2873,
+    "min": 2539
+  },
   "MERIDIAN|INMAA|NLRTM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -384,6 +789,22 @@
     ],
     "max": 1531,
     "min": 1303
+  },
+  "MERIDIAN|INMAA|NLRTM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2983,
+    "min": 2813
+  },
+  "MERIDIAN|INMAA|NLRTM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2474,
+    "min": 2202
   },
   "MERIDIAN|INMAA|NLRTM|40DRY": {
     "docs": [
@@ -393,6 +814,14 @@
     "max": 2058,
     "min": 1967
   },
+  "MERIDIAN|INMAA|NLRTM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3727,
+    "min": 3201
+  },
   "MERIDIAN|INMAA|NLRTM|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -400,6 +829,22 @@
     ],
     "max": 2534,
     "min": 2224
+  },
+  "MERIDIAN|INMAA|NLRTM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2604,
+    "min": 2310
+  },
+  "MERIDIAN|INMAA|NLRTM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2478,
+    "min": 2120
   },
   "MERIDIAN|INMAA|SGSIN|20DRY": {
     "docs": [
@@ -409,6 +854,30 @@
     "max": 1927,
     "min": 1749
   },
+  "MERIDIAN|INMAA|SGSIN|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3764,
+    "min": 3204
+  },
+  "MERIDIAN|INMAA|SGSIN|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2775,
+    "min": 2431
+  },
+  "MERIDIAN|INMAA|SGSIN|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4252,
+    "min": 3923
+  },
   "MERIDIAN|INMAA|SGSIN|40DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -416,6 +885,14 @@
     ],
     "max": 2882,
     "min": 2723
+  },
+  "MERIDIAN|INMAA|SGSIN|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5739,
+    "min": 5490
   },
   "MERIDIAN|INMAA|SGSIN|40HC": {
     "docs": [
@@ -425,6 +902,30 @@
     "max": 3003,
     "min": 2746
   },
+  "MERIDIAN|INMAA|SGSIN|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3397,
+    "min": 2964
+  },
+  "MERIDIAN|INMAA|SGSIN|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3822,
+    "min": 3313
+  },
+  "MERIDIAN|INMAA|SGSIN|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 6334,
+    "min": 5510
+  },
   "MERIDIAN|INMUN|AEJEA|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -432,6 +933,38 @@
     ],
     "max": 1673,
     "min": 1472
+  },
+  "MERIDIAN|INMUN|AEJEA|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2606,
+    "min": 2336
+  },
+  "MERIDIAN|INMUN|AEJEA|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2307,
+    "min": 2142
+  },
+  "MERIDIAN|INMUN|AEJEA|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3876,
+    "min": 3451
+  },
+  "MERIDIAN|INMUN|AEJEA|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3537,
+    "min": 3308
   },
   "MERIDIAN|INMUN|AEJEA|40DRY": {
     "docs": [
@@ -441,6 +974,14 @@
     "max": 2116,
     "min": 1840
   },
+  "MERIDIAN|INMUN|AEJEA|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4059,
+    "min": 3546
+  },
   "MERIDIAN|INMUN|AEJEA|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -448,6 +989,30 @@
     ],
     "max": 2318,
     "min": 2114
+  },
+  "MERIDIAN|INMUN|AEJEA|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2353,
+    "min": 2239
+  },
+  "MERIDIAN|INMUN|AEJEA|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3244,
+    "min": 2936
+  },
+  "MERIDIAN|INMUN|AEJEA|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4368,
+    "min": 3892
   },
   "MERIDIAN|INMUN|DEHAM|20DRY": {
     "docs": [
@@ -457,6 +1022,30 @@
     "max": 939,
     "min": 878
   },
+  "MERIDIAN|INMUN|DEHAM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2040,
+    "min": 1828
+  },
+  "MERIDIAN|INMUN|DEHAM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1289,
+    "min": 1126
+  },
+  "MERIDIAN|INMUN|DEHAM|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2051,
+    "min": 1866
+  },
   "MERIDIAN|INMUN|DEHAM|40DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -464,6 +1053,14 @@
     ],
     "max": 2167,
     "min": 1909
+  },
+  "MERIDIAN|INMUN|DEHAM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3108,
+    "min": 2731
   },
   "MERIDIAN|INMUN|DEHAM|40HC": {
     "docs": [
@@ -473,6 +1070,30 @@
     "max": 2290,
     "min": 2014
   },
+  "MERIDIAN|INMUN|DEHAM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2535,
+    "min": 2289
+  },
+  "MERIDIAN|INMUN|DEHAM|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5150,
+    "min": 4574
+  },
+  "MERIDIAN|INMUN|DEHAM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2381,
+    "min": 2165
+  },
   "MERIDIAN|INMUN|ESBCN|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -480,6 +1101,14 @@
     ],
     "max": 1010,
     "min": 930
+  },
+  "MERIDIAN|INMUN|ESBCN|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1949,
+    "min": 1707
   },
   "MERIDIAN|INMUN|ESBCN|40DRY": {
     "docs": [
@@ -497,6 +1126,14 @@
     "max": 2984,
     "min": 2730
   },
+  "MERIDIAN|INMUN|ESBCN|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3392,
+    "min": 3243
+  },
   "MERIDIAN|INMUN|NLRTM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -504,6 +1141,30 @@
     ],
     "max": 1444,
     "min": 1299
+  },
+  "MERIDIAN|INMUN|NLRTM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3061,
+    "min": 2724
+  },
+  "MERIDIAN|INMUN|NLRTM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2126,
+    "min": 1964
+  },
+  "MERIDIAN|INMUN|NLRTM|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4148,
+    "min": 3685
   },
   "MERIDIAN|INMUN|NLRTM|40DRY": {
     "docs": [
@@ -513,6 +1174,14 @@
     "max": 2327,
     "min": 2188
   },
+  "MERIDIAN|INMUN|NLRTM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3766,
+    "min": 3552
+  },
   "MERIDIAN|INMUN|NLRTM|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -520,6 +1189,22 @@
     ],
     "max": 2654,
     "min": 2444
+  },
+  "MERIDIAN|INMUN|NLRTM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3038,
+    "min": 2702
+  },
+  "MERIDIAN|INMUN|NLRTM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2817,
+    "min": 2500
   },
   "MERIDIAN|INNSA|AEJEA|20DRY": {
     "docs": [
@@ -529,6 +1214,38 @@
     "max": 1414,
     "min": 1321
   },
+  "MERIDIAN|INNSA|AEJEA|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2489,
+    "min": 2297
+  },
+  "MERIDIAN|INNSA|AEJEA|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1975,
+    "min": 1751
+  },
+  "MERIDIAN|INNSA|AEJEA|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3531,
+    "min": 3051
+  },
+  "MERIDIAN|INNSA|AEJEA|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4340,
+    "min": 4035
+  },
   "MERIDIAN|INNSA|AEJEA|40DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -536,6 +1253,14 @@
     ],
     "max": 2195,
     "min": 2064
+  },
+  "MERIDIAN|INNSA|AEJEA|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4103,
+    "min": 3570
   },
   "MERIDIAN|INNSA|AEJEA|40HC": {
     "docs": [
@@ -545,6 +1270,38 @@
     "max": 2340,
     "min": 2216
   },
+  "MERIDIAN|INNSA|AEJEA|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2502,
+    "min": 2259
+  },
+  "MERIDIAN|INNSA|AEJEA|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3070,
+    "min": 2944
+  },
+  "MERIDIAN|INNSA|AEJEA|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4675,
+    "min": 4212
+  },
+  "MERIDIAN|INNSA|AEJEA|40TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5294,
+    "min": 4561
+  },
   "MERIDIAN|INNSA|BEANR|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -552,6 +1309,14 @@
     ],
     "max": 1814,
     "min": 1710
+  },
+  "MERIDIAN|INNSA|BEANR|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3210,
+    "min": 2902
   },
   "MERIDIAN|INNSA|BEANR|40DRY": {
     "docs": [
@@ -569,6 +1334,22 @@
     "max": 3763,
     "min": 3509
   },
+  "MERIDIAN|INNSA|BEANR|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 7805,
+    "min": 7306
+  },
+  "MERIDIAN|INNSA|BEANR|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4464,
+    "min": 3888
+  },
   "MERIDIAN|INNSA|DEHAM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -576,6 +1357,30 @@
     ],
     "max": 1406,
     "min": 1306
+  },
+  "MERIDIAN|INNSA|DEHAM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2273,
+    "min": 2140
+  },
+  "MERIDIAN|INNSA|DEHAM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1988,
+    "min": 1702
+  },
+  "MERIDIAN|INNSA|DEHAM|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3543,
+    "min": 3136
   },
   "MERIDIAN|INNSA|DEHAM|40DRY": {
     "docs": [
@@ -585,6 +1390,14 @@
     "max": 2977,
     "min": 2768
   },
+  "MERIDIAN|INNSA|DEHAM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5448,
+    "min": 5071
+  },
   "MERIDIAN|INNSA|DEHAM|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -593,6 +1406,30 @@
     "max": 3202,
     "min": 2808
   },
+  "MERIDIAN|INNSA|DEHAM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4437,
+    "min": 4240
+  },
+  "MERIDIAN|INNSA|DEHAM|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 5642,
+    "min": 4996
+  },
+  "MERIDIAN|INNSA|DEHAM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3588,
+    "min": 3391
+  },
   "MERIDIAN|INNSA|ESBCN|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -600,6 +1437,14 @@
     ],
     "max": 1378,
     "min": 1263
+  },
+  "MERIDIAN|INNSA|ESBCN|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3724,
+    "min": 3300
   },
   "MERIDIAN|INNSA|ESBCN|40DRY": {
     "docs": [
@@ -616,6 +1461,14 @@
     ],
     "max": 2305,
     "min": 2210
+  },
+  "MERIDIAN|INNSA|ESBCN|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2495,
+    "min": 2248
   },
   "MERIDIAN|INNSA|GBFXT|20DRY": {
     "docs": [
@@ -641,6 +1494,14 @@
     "max": 2291,
     "min": 1992
   },
+  "MERIDIAN|INNSA|GBFXT|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2735,
+    "min": 2516
+  },
   "MERIDIAN|INNSA|NLRTM|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -648,6 +1509,30 @@
     ],
     "max": 1882,
     "min": 1712
+  },
+  "MERIDIAN|INNSA|NLRTM|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4159,
+    "min": 3733
+  },
+  "MERIDIAN|INNSA|NLRTM|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2991,
+    "min": 2610
+  },
+  "MERIDIAN|INNSA|NLRTM|20TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3584,
+    "min": 3331
   },
   "MERIDIAN|INNSA|NLRTM|40DRY": {
     "docs": [
@@ -657,6 +1542,14 @@
     "max": 1750,
     "min": 1542
   },
+  "MERIDIAN|INNSA|NLRTM|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3056,
+    "min": 2788
+  },
   "MERIDIAN|INNSA|NLRTM|40HC": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -665,6 +1558,182 @@
     "max": 1966,
     "min": 1676
   },
+  "MERIDIAN|INNSA|NLRTM|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2402,
+    "min": 2118
+  },
+  "MERIDIAN|INNSA|NLRTM|40TK": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4397,
+    "min": 4120
+  },
+  "MERIDIAN|INNSA|NLRTM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2242,
+    "min": 1950
+  },
+  "MERIDIAN|INNSA|USSAV|20DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1069,
+    "min": 992
+  },
+  "MERIDIAN|INNSA|USSAV|20FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1850,
+    "min": 1654
+  },
+  "MERIDIAN|INNSA|USSAV|20OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1607,
+    "min": 1441
+  },
+  "MERIDIAN|INNSA|USSAV|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2127,
+    "min": 1932
+  },
+  "MERIDIAN|INNSA|USSAV|40DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2061,
+    "min": 1760
+  },
+  "MERIDIAN|INNSA|USSAV|40FR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3495,
+    "min": 3249
+  },
+  "MERIDIAN|INNSA|USSAV|40HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2288,
+    "min": 2139
+  },
+  "MERIDIAN|INNSA|USSAV|40OT": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 3113,
+    "min": 2779
+  },
+  "MERIDIAN|INNSA|USSAV|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4562,
+    "min": 4070
+  },
+  "MERIDIAN|INPAV|NLRTM|20DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1990,
+    "min": 1733
+  },
+  "MERIDIAN|INPAV|NLRTM|40DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1989,
+    "min": 1869
+  },
+  "MERIDIAN|INPAV|NLRTM|40HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2221,
+    "min": 2101
+  },
+  "MERIDIAN|INPAV|NLRTM|45HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2572,
+    "min": 2367
+  },
+  "MERIDIAN|INTUT|LKCMB|20DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1036,
+    "min": 923
+  },
+  "MERIDIAN|INTUT|LKCMB|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 1872,
+    "min": 1771
+  },
+  "MERIDIAN|INTUT|LKCMB|40DRY": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2283,
+    "min": 2089
+  },
+  "MERIDIAN|INTUT|LKCMB|40HC": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2491,
+    "min": 2220
+  },
+  "MERIDIAN|INTUT|LKCMB|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2243,
+    "min": 2134
+  },
+  "MERIDIAN|INTUT|LKCMB|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4571,
+    "min": 4249
+  },
   "MERIDIAN|INVTZ|SGSIN|20DRY": {
     "docs": [
       "meridian_tariff_2026_h2.pdf",
@@ -672,6 +1741,14 @@
     ],
     "max": 1120,
     "min": 1063
+  },
+  "MERIDIAN|INVTZ|SGSIN|20RF": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2675,
+    "min": 2433
   },
   "MERIDIAN|INVTZ|SGSIN|40DRY": {
     "docs": [
@@ -688,5 +1765,21 @@
     ],
     "max": 2582,
     "min": 2230
+  },
+  "MERIDIAN|INVTZ|SGSIN|40NOR": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 2415,
+    "min": 2088
+  },
+  "MERIDIAN|INVTZ|SGSIN|40RH": {
+    "docs": [
+      "meridian_tariff_2026_h2.pdf",
+      "meridian_tariff_2026_q2.md"
+    ],
+    "max": 4870,
+    "min": 4459
   }
 }

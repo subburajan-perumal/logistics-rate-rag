@@ -9,18 +9,42 @@ import re
 from datetime import date
 from pathlib import Path
 
+from logistics_rate_rag.config import load_equipment_codes
 from logistics_rate_rag.errors import CorpusFormatError
 from logistics_rate_rag.ingest.models import LoadedDocument
 
 DISPLAY_NAMES = {"MERIDIAN": "Meridian Ocean Lines", "HALCYON": "Halcyon Container Line"}
-ALLOWED_CONTAINER_TYPES = {"20DRY", "40DRY", "40HC"}
+# A tariff cell holding NOT_OFFERED (an em dash) means the carrier does not
+# offer that equipment on that lane (D-46): there is no rate to quote.
+NOT_OFFERED = chr(0x2014)
+RATE_CELL = r"(\d{1,3}(,\d{3})*|" + NOT_OFFERED + ")"
+PORT_CELL = r"[A-Z]{5} [A-Za-z ]+"
 
-_ROW_RE = re.compile(
-    r"^\| [A-Z]{5} [A-Za-z ]+ \| [A-Z]{5} [A-Za-z ]+ \| "
-    r"\d{1,3}(,\d{3})* \| \d{1,3}(,\d{3})* \| \d{1,3}(,\d{3})* \| \d{1,2} \|$"
-)
-_HEADER_ROW = "| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |"
-_SEPARATOR_ROW = "|---|---|---|---|---|---|"
+
+def table_header(codes: list[str]) -> str:
+    return "| Origin | Destination | " + " | ".join(codes) + " | Transit (days) |"
+
+
+def separator_row(n_columns: int) -> str:
+    return "|" + "---|" * n_columns
+
+
+def parse_table_header(line: str, error_path: object) -> list[str]:
+    """Equipment codes of a `| Origin | Destination | ... | Transit (days) |`
+    header; every code must be in config/equipment.yaml."""
+    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+    if len(cells) < 4 or cells[:2] != ["Origin", "Destination"] or cells[-1] != "Transit (days)":
+        raise CorpusFormatError(error_path, f"unexpected table header: {line!r}")
+    codes = cells[2:-1]
+    unknown = [c for c in codes if c not in load_equipment_codes()]
+    if unknown:
+        raise CorpusFormatError(error_path, f"unknown equipment in header: {unknown}")
+    return codes
+
+
+def row_regex(n_codes: int) -> re.Pattern[str]:
+    cells = [PORT_CELL, PORT_CELL, *([RATE_CELL] * n_codes), r"\d{1,2}"]
+    return re.compile(r"^\| " + r" \| ".join(cells) + r" \|$")
 
 
 def _read_normalized(path: Path) -> str:
@@ -81,17 +105,19 @@ def parse_tariff_markdown(
     if idx >= len(lines) or lines[idx] != "":
         raise CorpusFormatError(error_path, "expected a blank line after '## Rates by lane'")
     idx += 1
-    if idx >= len(lines) or lines[idx] != _HEADER_ROW:
-        raise CorpusFormatError(error_path, f"expected table header row, got {lines[idx]!r}")
-    table_header = lines[idx]
+    if idx >= len(lines):
+        raise CorpusFormatError(error_path, "expected a table header row")
+    codes = parse_table_header(lines[idx], error_path)
+    header_line = lines[idx]
     idx += 1
-    if idx >= len(lines) or lines[idx] != _SEPARATOR_ROW:
+    if idx >= len(lines) or lines[idx] != separator_row(len(codes) + 3):
         raise CorpusFormatError(error_path, "expected table separator row")
     idx += 1
 
+    row_re = row_regex(len(codes))
     table_rows: list[str] = []
     while idx < len(lines) and lines[idx] != "":
-        if not _ROW_RE.match(lines[idx]):
+        if not row_re.match(lines[idx]):
             raise CorpusFormatError(error_path, f"bad table row: {lines[idx]!r}")
         table_rows.append(lines[idx])
         idx += 1
@@ -125,7 +151,7 @@ def parse_tariff_markdown(
         valid_to=date.fromisoformat(fields["valid_to"]),
         status=status,
         header_lines=tuple(header_lines),
-        table_header=table_header,
+        table_header=header_line,
         table_rows=tuple(table_rows),
         remarks=remarks,
         row_page_numbers=row_page_numbers,
@@ -189,7 +215,7 @@ def load_csv_tariff(path: Path) -> LoadedDocument:
             raise CorpusFormatError(path, f"inconsistent document-level fields in row: {row}")
         if not row["base_rate"].isdigit() or not row["baf"].isdigit():
             raise CorpusFormatError(path, f"base_rate/baf must be integers: {row}")
-        if row["container_type"] not in ALLOWED_CONTAINER_TYPES:
+        if row["container_type"] not in load_equipment_codes():
             raise CorpusFormatError(path, f"unknown container_type: {row['container_type']}")
 
     header_lines = (

@@ -134,6 +134,39 @@ def test_configured_carrier_alias_normalised_to_key(name):
     assert cand.carrier == "MERIDIAN"
 
 
+@pytest.mark.parametrize(
+    ("name", "code"),
+    [("40' Reefer High Cube", "40RH"), ("45G1", "40HC"), ("40HQ", "40HC"), ("20' Tank", "20TK")],
+)
+def test_container_alias_resolved_to_code(name, code):
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(container_type=name), None, _ctx([chunk]), settings)
+    assert result.passed is True
+    assert cand.container_type == code
+
+
+@pytest.mark.parametrize("name", ["reefer", "53' domestic", "20ISO"])
+def test_unknown_container_type_rejected(name):
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(container_type=name), None, _ctx([chunk]), settings)
+    assert result.passed is False
+    assert result.reason == "unknown_container_type"
+    assert cand is None
+
+
+@pytest.mark.parametrize(
+    ("name", "code"), [("JNPT", "INNSA"), ("madras", "INMAA"), ("Vizag", "INVTZ")]
+)
+def test_port_alias_resolved_to_locode(name, code):
+    settings = load_settings()
+    chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")
+    result, cand = gate1(_answerable_candidate(origin=name), None, _ctx([chunk]), settings)
+    assert result.passed is True
+    assert cand.origin == code
+
+
 def test_unconfigured_carrier_left_for_gate2():
     settings = load_settings()
     chunk = _chunk("meridian_tariff_2026_h2#000", "meridian_tariff_2026_h2.pdf")

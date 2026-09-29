@@ -53,7 +53,7 @@ def test_load_markdown_tariff_fields():
     assert doc.status == "SUPERSEDED"
     assert doc.valid_from.isoformat() == "2026-04-01"
     assert doc.valid_to.isoformat() == "2026-06-30"
-    assert len(doc.table_rows) == 20
+    assert len(doc.table_rows) == 24
 
 
 def test_load_pdf_tariff_matches_markdown_shape():
@@ -61,8 +61,8 @@ def test_load_pdf_tariff_matches_markdown_shape():
     assert doc.doc_type == "tariff_pdf"
     assert doc.carrier == "MERIDIAN"
     assert doc.status == "CURRENT"
-    assert len(doc.table_rows) == 20
-    assert len(doc.row_page_numbers) == 20
+    assert len(doc.table_rows) == 24
+    assert len(doc.row_page_numbers) == 24
     assert doc.row_page_numbers[0] == 1
     assert doc.row_page_numbers[-1] == 2
     assert len(doc.page_texts) == 2
@@ -73,7 +73,7 @@ def test_load_csv_tariff_fields():
     assert doc.doc_type == "tariff_csv"
     assert doc.carrier == "HALCYON"
     assert doc.currency == "EUR"
-    assert len(doc.table_rows) == 30
+    assert len(doc.table_rows) == 57  # dry, 45HC and reefer lines only (D-46)
 
 
 def test_load_policy_sections():
@@ -97,7 +97,7 @@ def test_load_policy_sections():
 def test_chunk_corpus_total_count():
     docs = load_corpus(CORPUS_DIR)
     chunks = chunk_corpus(docs, RETRIEVAL_CFG, corpus_version=1)
-    assert len(chunks) == 26  # 6 (pdf) + 6 (md) + 5 (csv) + 9 (policy)
+    assert len(chunks) == 33  # 7 (pdf) + 7 (md) + 10 (csv) + 9 (policy), corpus v2
 
 
 def test_chunk_headers_stay_with_rows():
@@ -105,11 +105,12 @@ def test_chunk_headers_stay_with_rows():
     md_doc = next(d for d in docs if d.source_doc == "meridian_tariff_2026_q2.md")
     chunks = chunk_document(md_doc, RETRIEVAL_CFG, corpus_version=1)
     rate_chunks = [c for c in chunks if c.metadata["section"] == "rates"]
-    assert len(rate_chunks) == 5
+    assert len(rate_chunks) == 6
     for c in rate_chunks:
         assert "- Carrier: Meridian Ocean Lines (MERIDIAN)" in c.text
         assert "## Rates by lane" in c.text
-        assert "|---|---|---|---|---|---|" in c.text
+        assert "| Origin | Destination | 20DRY |" in c.text
+        assert "|" + "---|" * 16 in c.text  # 13 equipment columns + 3
     remarks_chunks = [c for c in chunks if c.metadata["section"] == "remarks"]
     assert len(remarks_chunks) == 1
 

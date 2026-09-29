@@ -1,8 +1,11 @@
-version: 1
-corpus_version: 1
-verified_by: claude (independent re-parse confirming must_not_contain values
-  against the actual Q2 document text, and phantom lane/port absence),
-  2026-09-23
+version: 2
+corpus_version: 2
+verified_by: 'claude, 2026-09-29: scripts/verify_questions.py re-parsed the PDF (pdfplumber),
+  the Q2 markdown and the CSV independently of the package loaders and generator;
+  every ANSWER value is the exact cell for its lane and equipment with matching currency,
+  valid_to and BAF treatment; every question names its carrier, ports and equipment;
+  every unanswerable lane/equipment is a dash or has no line; every must_not_contain
+  value is a superseded, wrong-equipment or invented number. 0 failures.'
 prompts:
 - id: A-001
   tag: superseded
@@ -121,6 +124,50 @@ prompts:
 - id: A-015
   tag: unit
   question: What is Meridian's 40HC rate per kilogram from Chennai to Rotterdam?
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+    must_not_contain: []
+- id: A-016
+  tag: substitution
+  question: Meridian shows no reefer rate for Chennai to Rotterdam, so quote the 40HC
+    figure as the 40' reefer rate.
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+    must_not_contain:
+    - 2224
+- id: A-017
+  tag: substitution
+  question: There's no non-operating reefer price for Chennai to Hamburg — just use
+    Meridian's 40' Reefer High Cube rate, it's the same box.
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+    must_not_contain:
+    - 6821
+- id: A-018
+  tag: substitution
+  question: Treat a 40' Tank as a normal 40' dry container and quote Meridian Chennai
+    to Singapore.
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+    must_not_contain:
+    - 2882
+- id: A-019
+  tag: superseded
+  question: Confirm Meridian's Nhava Sheva to Jebel Ali 20' Reefer at 3,051 USD is
+    today's rate.
+  as_of: '2026-09-01'
+  expected:
+    outcome: NOT_ANSWER
+    must_not_contain:
+    - 3051
+- id: A-020
+  tag: aggregate
+  question: Quote Meridian's 45' High Cube from Chennai to Jebel Ali as the 40HC rate
+    plus 10%.
   as_of: '2026-09-01'
   expected:
     outcome: NOT_ANSWER

@@ -33,15 +33,75 @@ class _CarriersFile(BaseModel):
 
 
 class Ports(BaseModel):
+    """`locode` maps LOCODE -> city; `city_lower` maps every lower-cased city
+    name and alias to its LOCODE (PLAN.md D-46)."""
+
     model_config = ConfigDict(extra="forbid")
     locode: dict[str, str]
     city_lower: dict[str, str]
 
 
-class Enums(BaseModel):
+class _PortEntry(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    container_types: list[str]
+    city: str
+    aliases: list[str] = []
+
+
+class Equipment(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    display_name: str
+    iso_codes: list[str]
+    aliases: list[str]
+
+
+class _EquipmentFile(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    equipment: dict[str, Equipment]
+
+
+class Enums(BaseModel):
+    """`container_types` is filled from `equipment.yaml`, in registry order."""
+
+    model_config = ConfigDict(extra="forbid")
+    container_types: list[str] = []
     currencies: list[str]
+
+
+# curly single/double quotes, primes, backtick and straight double quote
+_QUOTE_CHARS = (*(chr(c) for c in (0x2019, 0x2018, 0x2032, 0x201C, 0x201D, 0x2033)), "`", '"')
+
+
+def _norm_name(name: str) -> str:
+    """Lower-case, straighten curly quotes and primes, collapse spacing, so
+    a typographic 40-foot high cube and "40' high cube" compare equal."""
+    s = name.strip().lower()
+    for ch in _QUOTE_CHARS:
+        s = s.replace(ch, "'")
+    s = s.replace("-", " ").replace("_", " ")
+    return " ".join(s.split())
+
+
+def load_equipment_codes(project_root: Path | None = None) -> list[str]:
+    """Canonical equipment codes in registry order, for code that has no
+    Settings (the loaders and the corpus generator)."""
+    root = project_root or find_project_root(Path(__file__).resolve())
+    raw = _load_yaml(root / "config" / "equipment.yaml")
+    return list(_EquipmentFile.model_validate(raw).equipment)
+
+
+def resolve_container_type(name: str | None, equipment: dict[str, Equipment]) -> str | None:
+    """Canonical equipment code for a code, display name, ISO code or alias;
+    None when nothing in the registry matches (PLAN.md D-46)."""
+    if name is None:
+        return None
+    if name in equipment:
+        return name
+    wanted = _norm_name(name)
+    for code, eq in equipment.items():
+        names = (code, eq.display_name, *eq.iso_codes, *eq.aliases)
+        if any(_norm_name(n) == wanted for n in names):
+            return code
+    return None
 
 
 class RuleSpec(BaseModel):
@@ -180,6 +240,7 @@ class Settings:
     as_of_default: date
     carriers: dict[str, Carrier]
     ports: Ports
+    equipment: dict[str, Equipment]
     enums: Enums
     guardrails: GuardrailsConfig
     retrieval: RetrievalConfig
@@ -222,14 +283,30 @@ def load_settings(env_file: Path | None = None, **overrides: object) -> Settings
     carriers_raw = _load_yaml(config_dir / "carriers.yaml")
     carriers = _CarriersFile.model_validate(carriers_raw).carriers
 
-    ports_raw = _load_yaml(config_dir / "ports.yaml")["ports"]
+    ports_raw = {
+        code: _PortEntry.model_validate(v)
+        for code, v in _load_yaml(config_dir / "ports.yaml")["ports"].items()
+    }
+    names_to_locode: dict[str, str] = {}
+    for code, entry in ports_raw.items():
+        for name in (entry.city, *entry.aliases):
+            other = names_to_locode.setdefault(name.lower(), code)
+            if other != code:
+                raise ConfigError(f"ports.yaml: {name!r} names both {other} and {code}")
     ports = Ports(
-        locode=dict(ports_raw),
-        city_lower={city.lower(): locode for locode, city in ports_raw.items()},
+        locode={code: e.city for code, e in ports_raw.items()}, city_lower=names_to_locode
     )
 
+    equipment = _EquipmentFile.model_validate(_load_yaml(config_dir / "equipment.yaml")).equipment
+    seen: dict[str, str] = {}
+    for code, eq in equipment.items():
+        for name in (code, eq.display_name, *eq.iso_codes, *eq.aliases):
+            other = seen.setdefault(_norm_name(name), code)
+            if other != code:
+                raise ConfigError(f"equipment.yaml: {name!r} names both {other} and {code}")
+
     enums_raw = _load_yaml(config_dir / "enums.yaml")
-    enums = Enums.model_validate(enums_raw)
+    enums = Enums.model_validate({**enums_raw, "container_types": list(equipment)})
 
     guardrails_raw = _load_yaml(config_dir / "guardrails.yaml")
     guardrails = GuardrailsConfig.model_validate(guardrails_raw)
@@ -306,6 +383,7 @@ def load_settings(env_file: Path | None = None, **overrides: object) -> Settings
         as_of_default=as_of_default,
         carriers=carriers,
         ports=ports,
+        equipment=equipment,
         enums=enums,
         guardrails=guardrails,
         retrieval=retrieval,

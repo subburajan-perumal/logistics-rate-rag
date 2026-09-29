@@ -1,0 +1,1415 @@
+{
+  "run_id": "20260929T083209Z-pinecone-recall-noexpand",
+  "config": {
+    "store": "pinecone",
+    "enriched": false,
+    "query_expansion": false,
+    "reranker": "flashrank",
+    "k_retrieve": 12,
+    "k_final": 6,
+    "rrf_k": 60,
+    "questions": 41,
+    "corpus_version": 2
+  },
+  "recall": {
+    "retrieval_recall@6_dense": 0.9512,
+    "retrieval_recall@6_hybrid": 0.9268,
+    "retrieval_recall@6_reranked": 0.9756
+  },
+  "rows": [
+    {
+      "id": "G-001",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#005",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#004"
+      ]
+    },
+    {
+      "id": "G-002",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#002"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-003",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#002"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-004",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#004",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#007"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-005",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#003"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#000"
+      ]
+    },
+    {
+      "id": "G-006",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "rate_policy_note_2026#000",
+        "meridian_tariff_2026_h2#006"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-007",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#002"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#000"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "rate_policy_note_2026#006",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000"
+      ]
+    },
+    {
+      "id": "G-008",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#002",
+        "rate_policy_note_2026#006",
+        "meridian_tariff_2026_q2#006",
+        "meridian_tariff_2026_h2#002"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002"
+      ]
+    },
+    {
+      "id": "G-009",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#008"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#006",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#007"
+      ]
+    },
+    {
+      "id": "G-010",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#004",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#007"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#004",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#001",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#004",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#008"
+      ]
+    },
+    {
+      "id": "G-011",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#006"
+      ],
+      "dense_hit": false,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#005",
+        "rate_policy_note_2026#006",
+        "halcyon_tariff_2026_h2#002",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#005",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#000"
+      ]
+    },
+    {
+      "id": "G-012",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#007"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#003"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#007",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#002",
+        "rate_policy_note_2026#004",
+        "halcyon_tariff_2026_h2#006"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-013",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#000",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001",
+        "meridian_tariff_2026_h2#001",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005"
+      ]
+    },
+    {
+      "id": "G-014",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#003"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#001",
+        "rate_policy_note_2026#006",
+        "rate_policy_note_2026#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#007"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#001",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-015",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#001"
+      ],
+      "dense_hit": false,
+      "hybrid_hit": true,
+      "reranked_hit": false,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#003"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-016",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#006"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#005",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#004"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#005",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#006",
+        "halcyon_tariff_2026_h2#003",
+        "rate_policy_note_2026#003"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#005",
+        "rate_policy_note_2026#006",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#005"
+      ]
+    },
+    {
+      "id": "G-017",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#004",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#004"
+      ]
+    },
+    {
+      "id": "G-018",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#004",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#000"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#004",
+        "halcyon_tariff_2026_h2#003",
+        "rate_policy_note_2026#001",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#001",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#004",
+        "rate_policy_note_2026#001",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#005",
+        "halcyon_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-019",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#006",
+        "rate_policy_note_2026#001",
+        "meridian_tariff_2026_q2#006"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#003"
+      ]
+    },
+    {
+      "id": "G-020",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#006",
+        "meridian_tariff_2026_q2#006",
+        "meridian_tariff_2026_h2#001",
+        "rate_policy_note_2026#001"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#004"
+      ]
+    },
+    {
+      "id": "G-021",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#002"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-022",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#000"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#005",
+        "rate_policy_note_2026#004"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-023",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "rate_policy_note_2026#004",
+        "rate_policy_note_2026#007",
+        "meridian_tariff_2026_h2#004",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004"
+      ]
+    },
+    {
+      "id": "G-024",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#000",
+        "rate_policy_note_2026#004",
+        "meridian_tariff_2026_q2#003"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#005"
+      ]
+    },
+    {
+      "id": "G-031",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#000",
+        "rate_policy_note_2026#006",
+        "meridian_tariff_2026_h2#006"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004"
+      ]
+    },
+    {
+      "id": "G-032",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#002"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-033",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#003",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#003",
+        "rate_policy_note_2026#000"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#004"
+      ]
+    },
+    {
+      "id": "G-034",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#000"
+      ]
+    },
+    {
+      "id": "G-035",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#001"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004"
+      ]
+    },
+    {
+      "id": "G-036",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#004"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-037",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#002"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#000"
+      ]
+    },
+    {
+      "id": "G-038",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#003"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003"
+      ]
+    },
+    {
+      "id": "G-039",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#002"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#000"
+      ]
+    },
+    {
+      "id": "G-040",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#000",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_q2#000"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#000",
+        "rate_policy_note_2026#005"
+      ]
+    },
+    {
+      "id": "G-041",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001"
+      ]
+    },
+    {
+      "id": "G-042",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#004"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#003",
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#002"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#005",
+        "halcyon_tariff_2026_h2#001",
+        "halcyon_tariff_2026_h2#000",
+        "halcyon_tariff_2026_h2#009",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#004"
+      ]
+    },
+    {
+      "id": "G-043",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "halcyon_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "halcyon_tariff_2026_h2#005",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#002",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#008"
+      ],
+      "hybrid_top": [
+        "halcyon_tariff_2026_h2#005",
+        "halcyon_tariff_2026_h2#006",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#001",
+        "halcyon_tariff_2026_h2#003",
+        "halcyon_tariff_2026_h2#002"
+      ],
+      "reranked_top": [
+        "halcyon_tariff_2026_h2#005",
+        "rate_policy_note_2026#001",
+        "halcyon_tariff_2026_h2#006",
+        "halcyon_tariff_2026_h2#007",
+        "halcyon_tariff_2026_h2#008",
+        "halcyon_tariff_2026_h2#000"
+      ]
+    },
+    {
+      "id": "G-044",
+      "tag": "temporal",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_q2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": false,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#005"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#005"
+      ],
+      "reranked_top": [
+        "rate_policy_note_2026#007",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#002",
+        "meridian_tariff_2026_h2#003"
+      ]
+    },
+    {
+      "id": "G-045",
+      "tag": "cross",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#001"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#004"
+      ]
+    },
+    {
+      "id": "G-046",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#003"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#002",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_q2#002"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_q2#001",
+        "rate_policy_note_2026#005",
+        "rate_policy_note_2026#006"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_h2#003",
+        "meridian_tariff_2026_q2#003",
+        "meridian_tariff_2026_h2#002",
+        "rate_policy_note_2026#005",
+        "meridian_tariff_2026_h2#001",
+        "meridian_tariff_2026_q2#002"
+      ]
+    },
+    {
+      "id": "G-047",
+      "tag": "lookup",
+      "target_chunk_ids": [
+        "meridian_tariff_2026_h2#005"
+      ],
+      "dense_hit": true,
+      "hybrid_hit": true,
+      "reranked_hit": true,
+      "dense_top": [
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#000",
+        "meridian_tariff_2026_h2#004"
+      ],
+      "hybrid_top": [
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#002"
+      ],
+      "reranked_top": [
+        "meridian_tariff_2026_q2#005",
+        "meridian_tariff_2026_h2#005",
+        "meridian_tariff_2026_h2#000",
+        "meridian_tariff_2026_q2#001",
+        "meridian_tariff_2026_q2#004",
+        "meridian_tariff_2026_h2#004"
+      ]
+    }
+  ]
+}

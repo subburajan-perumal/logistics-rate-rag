@@ -9,7 +9,10 @@ from pathlib import Path
 from logistics_rate_rag.config import RetrievalConfig
 from logistics_rate_rag.ingest.models import Chunk, LoadedDocument
 
-_SEPARATOR_ROW = "|---|---|---|---|---|---|"
+
+def _separator(table_header: str) -> str:
+    """`|---|` repeated once per column of the table header (D-46)."""
+    return "|" + "---|" * (table_header.count("|") - 1)
 
 
 def _build_chunk(
@@ -69,7 +72,7 @@ def chunk_document(doc: LoadedDocument, cfg: RetrievalConfig, corpus_version: in
                     "## Rates by lane",
                     "",
                     doc.table_header,
-                    _SEPARATOR_ROW,
+                    _separator(doc.table_header),
                     *batch,
                 ]
             )

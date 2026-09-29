@@ -1,14 +1,22 @@
+# UN/LOCODE -> city, plus other names people use for the same port
+# (PLAN.md D-46). Gate 1 resolves a candidate's origin/destination through
+# the LOCODE, the city or an alias (case-insensitive) to the LOCODE.
 ports:
-  INMAA: Chennai
-  INNSA: Nhava Sheva
-  INMUN: Mundra
-  INCOK: Cochin
-  INVTZ: Visakhapatnam
-  NLRTM: Rotterdam
-  DEHAM: Hamburg
-  BEANR: Antwerp
-  GBFXT: Felixstowe
-  ITGOA: Genoa
-  ESBCN: Barcelona
-  AEJEA: Jebel Ali
-  SGSIN: Singapore
+  INMAA: {city: Chennai, aliases: [Madras, Chennai Port]}
+  INNSA: {city: Nhava Sheva, aliases: [JNPT, Jawaharlal Nehru Port, Navi Mumbai, Nhava Sheva JNPT]}
+  INMUN: {city: Mundra, aliases: [Mundra Port]}
+  INCOK: {city: Cochin, aliases: [Kochi, Vallarpadam]}
+  INVTZ: {city: Visakhapatnam, aliases: [Vizag, Vishakhapatnam]}
+  INPAV: {city: Pipavav, aliases: [Pipavav Victor, Port Pipavav]}
+  INTUT: {city: Tuticorin, aliases: [Thoothukudi, VOC Port]}
+  NLRTM: {city: Rotterdam, aliases: [Port of Rotterdam]}
+  DEHAM: {city: Hamburg, aliases: [Port of Hamburg]}
+  BEANR: {city: Antwerp, aliases: [Antwerpen, Antwerp-Bruges]}
+  GBFXT: {city: Felixstowe, aliases: [Port of Felixstowe]}
+  ITGOA: {city: Genoa, aliases: [Genova]}
+  ESBCN: {city: Barcelona, aliases: [Port of Barcelona]}
+  AEJEA: {city: Jebel Ali, aliases: [Jebel Ali Dubai, Dubai Jebel Ali]}
+  SGSIN: {city: Singapore, aliases: [Port of Singapore]}
+  LKCMB: {city: Colombo, aliases: [Port of Colombo]}
+  CNSHA: {city: Shanghai, aliases: [Port of Shanghai, Yangshan]}
+  USSAV: {city: Savannah, aliases: [Port of Savannah, Garden City]}

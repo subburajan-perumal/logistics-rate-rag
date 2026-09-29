@@ -207,7 +207,11 @@ def cmd_recall(args: argparse.Namespace, settings: Settings) -> int:
     from logistics_rate_rag.eval.runner import run_recall
 
     result = run_recall(
-        settings, args.store or settings.vector_store, args.reranker, enriched=args.enriched
+        settings,
+        args.store or settings.vector_store,
+        args.reranker,
+        enriched=args.enriched,
+        expand=not args.no_expand,
     )
     for name, value in result.recall.items():
         print(f"{name:<32} {value:.4f}")
@@ -302,6 +306,7 @@ def build_parser() -> argparse.ArgumentParser:
     rc.add_argument("--store", choices=["chroma", "pinecone"], default=None)
     rc.add_argument("--reranker", choices=["flashrank", "pinecone"], default=None)
     rc.add_argument("--enriched", action="store_true")
+    rc.add_argument("--no-expand", action="store_true", help="BM25 without query expansion (D-48)")
 
     return parser
 

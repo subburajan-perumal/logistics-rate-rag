@@ -15,7 +15,9 @@ class RateCandidate(BaseModel):
     carrier: str | None = None
     origin: str | None = None
     destination: str | None = None
-    container_type: Literal["20DRY", "40DRY", "40HC"] | None = None
+    # Free text on purpose (D-46): Gate 1 resolves it through config/equipment.yaml
+    # and rejects anything unknown, so a new equipment type is config, not code.
+    container_type: str | None = None
     rate_value: int | None = None
     currency: Literal["USD", "EUR"] | None = None
     valid_from: date | None = None

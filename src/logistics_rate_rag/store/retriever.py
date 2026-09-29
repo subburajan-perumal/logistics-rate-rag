@@ -49,6 +49,7 @@ class RateRetriever(BaseRetriever):
     embedder: Embeddings
     lexical: Any = None
     reranker: Any = None
+    query_expander: Any = None  # D-48: BM25-only expansion via the registries
     k_retrieve: int
     k_final: int
     rrf_k: int = 60
@@ -60,7 +61,8 @@ class RateRetriever(BaseRetriever):
         if self.lexical is not None:
             from logistics_rate_rag.store.lexical import fuse_rrf
 
-            lex = self.lexical.query(question, self.k_retrieve)
+            lex_query = self.query_expander.expand(question) if self.query_expander else question
+            lex = self.lexical.query(lex_query, self.k_retrieve)
             if filter:
                 lex = [
                     (chunk, score, rank)
@@ -153,15 +155,17 @@ def build_retriever(
     from logistics_rate_rag.rerank import build_reranker
 
     mode = retrieval_mode or settings.retrieval_mode
-    lexical = None
+    lexical = expander = None
     if mode == "hybrid":
-        from logistics_rate_rag.store.lexical import LexicalIndex
+        from logistics_rate_rag.store.lexical import LexicalIndex, QueryExpander
 
         lexical = LexicalIndex(all_chunks)
+        expander = QueryExpander.from_registries(settings.equipment, settings.ports)
     return RateRetriever(
         backend=backend,
         embedder=embedder,
         lexical=lexical,
+        query_expander=expander,
         reranker=build_reranker(
             reranker or settings.reranker,
             model_name=settings.rerank_model,

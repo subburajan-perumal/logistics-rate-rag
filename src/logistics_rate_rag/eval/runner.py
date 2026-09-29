@@ -18,6 +18,7 @@ import yaml
 
 from logistics_rate_rag.chain.cache import ResponseCache
 from logistics_rate_rag.chain.candidate_chain import CandidateChain
+from logistics_rate_rag.chain.prompt import PROMPT_VERSION
 from logistics_rate_rag.chain.ratelimit import RateLimiter
 from logistics_rate_rag.chain.usage import Usage, UsageTotals, sum_usage
 from logistics_rate_rag.config import Settings
@@ -179,7 +180,7 @@ def run_eval(settings: Settings, run_cfg: RunConfig) -> RunResult:
         "seed": settings.llm_seed,
         "embedding_model": settings.embedding_model,
         "dimension": settings.embedding_dim,
-        "prompt_version": "1",
+        "prompt_version": PROMPT_VERSION,
         "corpus_version": settings.manifest.corpus_version,
         "as_of_default": settings.as_of_default.isoformat(),
         "store": run_cfg.store,
@@ -380,14 +381,19 @@ def _target_chunk_ids(chunks, q: Question) -> tuple[str, ...]:
 
 
 def run_recall(
-    settings: Settings, store: str, reranker: str | None = None, *, enriched: bool = False
+    settings: Settings,
+    store: str,
+    reranker: str | None = None,
+    *,
+    enriched: bool = False,
+    expand: bool = True,
 ) -> RecallResult:
     """LLM-free recall@k_final over golden ANSWER questions for all three
     retrieval stages at once: dense, dense+BM25 fused (RRF), and the fused
     top-k_retrieve re-ranked. One query embedding per question."""
     from logistics_rate_rag.chain.planner import QueryPlanner
     from logistics_rate_rag.rerank import build_reranker
-    from logistics_rate_rag.store.lexical import LexicalIndex, fuse_rrf
+    from logistics_rate_rag.store.lexical import LexicalIndex, QueryExpander, fuse_rrf
 
     reranker_name = reranker or settings.reranker
     if reranker_name == "none":
@@ -401,6 +407,7 @@ def run_recall(
     backend = build_backend(settings, store, embedder, enriched=enriched)
     all_chunks = backend.all_chunks() or chunks
     lexical = LexicalIndex(all_chunks)
+    expander = QueryExpander.from_registries(settings.equipment, settings.ports) if expand else None
     rr = build_reranker(
         reranker_name,
         model_name=settings.rerank_model,
@@ -419,7 +426,8 @@ def run_recall(
         targets = set(_target_chunk_ids(all_chunks, q))
         plan = planner.plan(q.question, q.as_of)
         dense = backend.query(embedder.embed_query(plan.question), k_retrieve, plan.filter)
-        lex = lexical.query(plan.question, k_retrieve)
+        lex_query = expander.expand(plan.question) if expander else plan.question
+        lex = lexical.query(lex_query, k_retrieve)
         if plan.filter:
             allowed = (plan.filter["carrier"], "ALL")
             lex = [hit for hit in lex if hit[0].metadata.get("carrier") in allowed]
@@ -450,10 +458,12 @@ def run_recall(
         f"retrieval_recall@{k_final}_reranked": round(sum(r.reranked_hit for r in rows) / n, 4),
     }
     ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    run_id = f"{ts}-{store}-recall{'-enriched' if enriched else ''}"
+    suffix = ("-enriched" if enriched else "") + ("" if expand else "-noexpand")
+    run_id = f"{ts}-{store}-recall{suffix}"
     config = {
         "store": store,
         "enriched": enriched,
+        "query_expansion": expand,
         "reranker": reranker_name,
         "k_retrieve": k_retrieve,
         "k_final": k_final,

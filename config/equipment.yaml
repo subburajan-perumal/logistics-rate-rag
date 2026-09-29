@@ -1,0 +1,61 @@
+# Container equipment registry (PLAN.md D-46). The key is the canonical code
+# used in every tariff table header, CSV row, candidate and rate range.
+# Gate 1 resolves a candidate's container_type through code, display name,
+# ISO 6346 size-type codes and aliases (case-insensitive, quotes and spacing
+# normalised) to the canonical key; anything else is `unknown_container_type`.
+equipment:
+  20DRY:
+    display_name: "20' Standard Dry"
+    iso_codes: [22G1]
+    aliases: ["20'", 20ft, 20 ft, 20 foot, 20GP, 20DV, 20DC, 20 dry, "20' dry", "20' standard", 20 foot dry]
+  40DRY:
+    display_name: "40' Standard Dry"
+    iso_codes: [42G1]
+    aliases: ["40'", 40ft, 40 ft, 40 foot, 40GP, 40DV, 40DC, 40 dry, "40' dry", "40' standard", 40 foot dry]
+  40HC:
+    display_name: "40' High Cube"
+    iso_codes: [45G1]
+    aliases: [40HQ, 40 high cube, "40' hc", 40 foot high cube, "40' high cube dry"]
+  45HC:
+    display_name: "45' High Cube"
+    iso_codes: [L5G1]
+    aliases: [45HQ, "45'", 45 high cube, "45' hc", 45 foot high cube]
+  20FR:
+    display_name: "20' Flat Rack"
+    iso_codes: [22P1]
+    aliases: [20 flat rack, 20 foot flat rack, 20FL, "20' flat"]
+  40FR:
+    display_name: "40' Flat Rack"
+    iso_codes: [42P1]
+    aliases: [40 flat rack, 40 foot flat rack, 40FL, "40' flat"]
+  20OT:
+    display_name: "20' Open Top"
+    iso_codes: [22U1]
+    aliases: [20 open top, 20 foot open top]
+  40OT:
+    display_name: "40' Open Top"
+    iso_codes: [42U1]
+    aliases: [40 open top, 40 foot open top]
+  20RF:
+    display_name: "20' Reefer"
+    iso_codes: [22R1]
+    aliases: [20RE, 20 reefer, 20 foot reefer, "20' refrigerated", 20 refrigerated]
+  40RH:
+    display_name: "40' Reefer High Cube"
+    iso_codes: [45R1]
+    aliases: [40RQ, 40HR, 40 reefer high cube, "40' reefer hc", 40 foot reefer high cube]
+  40NOR:
+    # A 40' reefer high cube shipped with its refrigeration unit off, carrying
+    # dry cargo. Physically the same box as 40RH (ISO 45R1), commercially a
+    # separate rate, so it deliberately has no ISO code of its own here.
+    display_name: "40' Non-Operating Reefer"
+    iso_codes: []
+    aliases: [NOR, 40 NOR, "40' NOR", non operating reefer, 40 non operating reefer, non operational reefer, reefer used as dry, 40 foot non operating reefer]
+  20TK:
+    display_name: "20' Tank"
+    iso_codes: [22T1]
+    aliases: [20 tank, 20 foot tank, 20 iso tank]
+  40TK:
+    display_name: "40' Tank"
+    iso_codes: [42T1]
+    aliases: [40 tank, 40 foot tank, 40 iso tank]

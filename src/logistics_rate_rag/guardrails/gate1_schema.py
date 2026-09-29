@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from logistics_rate_rag.config import Carrier, Ports, Settings
+from logistics_rate_rag.config import Carrier, Ports, Settings, resolve_container_type
 from logistics_rate_rag.guardrails.context import QuestionContext
 from logistics_rate_rag.schema.answer import GateResult
 from logistics_rate_rag.schema.candidate import RateCandidate
@@ -106,14 +106,29 @@ def gate1(
             ),
             None,
         )
+    container_type = resolve_container_type(candidate.container_type, settings.equipment)
+    if container_type is None:
+        return (
+            GateResult(
+                passed=False,
+                gate="gate1",
+                reason="unknown_container_type",
+                details={"container_type": candidate.container_type},
+            ),
+            None,
+        )
+
     carrier = _normalize_carrier(candidate.carrier, settings.carriers)
-    if (origin, destination, carrier) != (
-        candidate.origin,
-        candidate.destination,
-        candidate.carrier,
-    ):
+    resolved = (origin, destination, carrier, container_type)
+    current = (candidate.origin, candidate.destination, candidate.carrier, candidate.container_type)
+    if resolved != current:
         candidate = candidate.model_copy(
-            update={"origin": origin, "destination": destination, "carrier": carrier}
+            update={
+                "origin": origin,
+                "destination": destination,
+                "carrier": carrier,
+                "container_type": container_type,
+            }
         )
 
     if candidate.source_chunk_id not in ctx.retrieved_ids:

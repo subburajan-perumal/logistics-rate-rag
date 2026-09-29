@@ -1,5 +1,5 @@
 {
-  "corpus_version": 1,
+  "corpus_version": 2,
   "documents": {
     "halcyon_tariff_2026_h2.csv": {
       "carrier": "HALCYON",
@@ -39,12 +39,12 @@
     }
   },
   "files": {
-    "halcyon_tariff_2026_h2.csv": "6b636de85a87883a0645232fdad310d54c62f3b3ec9c5d984adfaec3f454e7ea",
-    "meridian_tariff_2026_h2.pdf": "f9076366cf3326e336b584d791e0fd2fc2aa0f05d1b3cf58ab0a490c2e4497f0",
-    "meridian_tariff_2026_q2.md": "f2d534c315142480c7bf6d4815373dc927f5930d74af02c759ab13a5cfde418f",
-    "rate_policy_note_2026.md": "49084c7b4f99970765c790911ceab7b6e94db65d83420c15daeebe07d7728fb8"
+    "halcyon_tariff_2026_h2.csv": "b64060260dac3b5c3b579345eb6b22d53fb9929254f8c1dc2117182c92ebc9d4",
+    "meridian_tariff_2026_h2.pdf": "a090d06c4c44e26f9ad1a3a7fcf9cd919e23228c1d7fd8870760ba23819bb8d0",
+    "meridian_tariff_2026_q2.md": "2d7d606572b29583a6852474e4d3f4b2edc8b93ecbc0a665ebf7a8ce615aa4bd",
+    "rate_policy_note_2026.md": "0c4cbb05b79b3f453e1344d3159148e2a823608a480c810a11f81ff800da27de"
   },
-  "generated_on": "2026-09-23",
+  "generated_on": "2026-09-29",
   "generated_with_seed": 20260917,
   "lane_ranges": {
     "HALCYON|INCOK|NLRTM|20DRY": {
@@ -68,12 +68,26 @@
       "max": 2764,
       "min": 2764
     },
+    "HALCYON|INCOK|NLRTM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 3045,
+      "min": 3045
+    },
     "HALCYON|INMAA|BEANR|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
       ],
       "max": 905,
       "min": 905
+    },
+    "HALCYON|INMAA|BEANR|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2174,
+      "min": 2174
     },
     "HALCYON|INMAA|BEANR|40DRY": {
       "docs": [
@@ -89,12 +103,68 @@
       "max": 2219,
       "min": 2219
     },
+    "HALCYON|INMAA|BEANR|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 4184,
+      "min": 4184
+    },
+    "HALCYON|INMAA|BEANR|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2645,
+      "min": 2645
+    },
+    "HALCYON|INMAA|CNSHA|20DRY": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1224,
+      "min": 1224
+    },
+    "HALCYON|INMAA|CNSHA|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2313,
+      "min": 2313
+    },
+    "HALCYON|INMAA|CNSHA|40DRY": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2287,
+      "min": 2287
+    },
+    "HALCYON|INMAA|CNSHA|40HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2605,
+      "min": 2605
+    },
+    "HALCYON|INMAA|CNSHA|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 5307,
+      "min": 5307
+    },
     "HALCYON|INMAA|DEHAM|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
       ],
       "max": 1033,
       "min": 1033
+    },
+    "HALCYON|INMAA|DEHAM|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2130,
+      "min": 2130
     },
     "HALCYON|INMAA|DEHAM|40DRY": {
       "docs": [
@@ -109,6 +179,20 @@
       ],
       "max": 2562,
       "min": 2562
+    },
+    "HALCYON|INMAA|DEHAM|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 6250,
+      "min": 6250
+    },
+    "HALCYON|INMAA|DEHAM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2976,
+      "min": 2976
     },
     "HALCYON|INMAA|NLRTM|20DRY": {
       "docs": [
@@ -131,12 +215,26 @@
       "max": 1863,
       "min": 1863
     },
+    "HALCYON|INMAA|NLRTM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2122,
+      "min": 2122
+    },
     "HALCYON|INMUN|AEJEA|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
       ],
       "max": 1228,
       "min": 1228
+    },
+    "HALCYON|INMUN|AEJEA|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2943,
+      "min": 2943
     },
     "HALCYON|INMUN|AEJEA|40DRY": {
       "docs": [
@@ -151,6 +249,13 @@
       ],
       "max": 1976,
       "min": 1976
+    },
+    "HALCYON|INMUN|AEJEA|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 3891,
+      "min": 3891
     },
     "HALCYON|INMUN|NLRTM|20DRY": {
       "docs": [
@@ -173,12 +278,26 @@
       "max": 2214,
       "min": 2214
     },
+    "HALCYON|INMUN|NLRTM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2508,
+      "min": 2508
+    },
     "HALCYON|INNSA|DEHAM|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
       ],
       "max": 1207,
       "min": 1207
+    },
+    "HALCYON|INNSA|DEHAM|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2673,
+      "min": 2673
     },
     "HALCYON|INNSA|DEHAM|40DRY": {
       "docs": [
@@ -193,6 +312,20 @@
       ],
       "max": 2714,
       "min": 2714
+    },
+    "HALCYON|INNSA|DEHAM|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 5015,
+      "min": 5015
+    },
+    "HALCYON|INNSA|DEHAM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 3169,
+      "min": 3169
     },
     "HALCYON|INNSA|ESBCN|20DRY": {
       "docs": [
@@ -215,6 +348,13 @@
       "max": 1915,
       "min": 1915
     },
+    "HALCYON|INNSA|ESBCN|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2084,
+      "min": 2084
+    },
     "HALCYON|INNSA|NLRTM|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
@@ -236,12 +376,54 @@
       "max": 1804,
       "min": 1804
     },
+    "HALCYON|INNSA|NLRTM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1855,
+      "min": 1855
+    },
+    "HALCYON|INPAV|NLRTM|20DRY": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1429,
+      "min": 1429
+    },
+    "HALCYON|INPAV|NLRTM|40DRY": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1659,
+      "min": 1659
+    },
+    "HALCYON|INPAV|NLRTM|40HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1860,
+      "min": 1860
+    },
+    "HALCYON|INPAV|NLRTM|45HC": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 1952,
+      "min": 1952
+    },
     "HALCYON|INVTZ|SGSIN|20DRY": {
       "docs": [
         "halcyon_tariff_2026_h2.csv"
       ],
       "max": 941,
       "min": 941
+    },
+    "HALCYON|INVTZ|SGSIN|20RF": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 2141,
+      "min": 2141
     },
     "HALCYON|INVTZ|SGSIN|40DRY": {
       "docs": [
@@ -256,6 +438,13 @@
       ],
       "max": 2196,
       "min": 2196
+    },
+    "HALCYON|INVTZ|SGSIN|40RH": {
+      "docs": [
+        "halcyon_tariff_2026_h2.csv"
+      ],
+      "max": 4479,
+      "min": 4479
     },
     "MERIDIAN|INCOK|ITGOA|20DRY": {
       "docs": [
@@ -281,6 +470,14 @@
       "max": 2819,
       "min": 2592
     },
+    "MERIDIAN|INCOK|ITGOA|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3378,
+      "min": 3135
+    },
     "MERIDIAN|INCOK|NLRTM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -305,6 +502,14 @@
       "max": 3272,
       "min": 2980
     },
+    "MERIDIAN|INCOK|NLRTM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3450,
+      "min": 3174
+    },
     "MERIDIAN|INMAA|AEJEA|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -312,6 +517,30 @@
       ],
       "max": 984,
       "min": 921
+    },
+    "MERIDIAN|INMAA|AEJEA|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1865,
+      "min": 1748
+    },
+    "MERIDIAN|INMAA|AEJEA|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1669,
+      "min": 1453
+    },
+    "MERIDIAN|INMAA|AEJEA|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1809,
+      "min": 1629
     },
     "MERIDIAN|INMAA|AEJEA|40DRY": {
       "docs": [
@@ -321,6 +550,14 @@
       "max": 2465,
       "min": 2361
     },
+    "MERIDIAN|INMAA|AEJEA|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5221,
+      "min": 4580
+    },
     "MERIDIAN|INMAA|AEJEA|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -329,6 +566,30 @@
       "max": 2565,
       "min": 2428
     },
+    "MERIDIAN|INMAA|AEJEA|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2630,
+      "min": 2416
+    },
+    "MERIDIAN|INMAA|AEJEA|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3846,
+      "min": 3663
+    },
+    "MERIDIAN|INMAA|AEJEA|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4394,
+      "min": 3840
+    },
     "MERIDIAN|INMAA|BEANR|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -336,6 +597,14 @@
       ],
       "max": 1180,
       "min": 1046
+    },
+    "MERIDIAN|INMAA|BEANR|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2971,
+      "min": 2621
     },
     "MERIDIAN|INMAA|BEANR|40DRY": {
       "docs": [
@@ -353,6 +622,70 @@
       "max": 2693,
       "min": 2323
     },
+    "MERIDIAN|INMAA|BEANR|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4829,
+      "min": 4614
+    },
+    "MERIDIAN|INMAA|BEANR|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2982,
+      "min": 2720
+    },
+    "MERIDIAN|INMAA|CNSHA|20DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1362,
+      "min": 1253
+    },
+    "MERIDIAN|INMAA|CNSHA|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2761,
+      "min": 2432
+    },
+    "MERIDIAN|INMAA|CNSHA|40DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2760,
+      "min": 2529
+    },
+    "MERIDIAN|INMAA|CNSHA|40HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2872,
+      "min": 2464
+    },
+    "MERIDIAN|INMAA|CNSHA|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2926,
+      "min": 2542
+    },
+    "MERIDIAN|INMAA|CNSHA|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 6416,
+      "min": 6136
+    },
     "MERIDIAN|INMAA|DEHAM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -360,6 +693,30 @@
       ],
       "max": 1166,
       "min": 1032
+    },
+    "MERIDIAN|INMAA|DEHAM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2358,
+      "min": 2105
+    },
+    "MERIDIAN|INMAA|DEHAM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1581,
+      "min": 1516
+    },
+    "MERIDIAN|INMAA|DEHAM|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2708,
+      "min": 2450
     },
     "MERIDIAN|INMAA|DEHAM|40DRY": {
       "docs": [
@@ -369,6 +726,14 @@
       "max": 3254,
       "min": 2838
     },
+    "MERIDIAN|INMAA|DEHAM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5507,
+      "min": 4866
+    },
     "MERIDIAN|INMAA|DEHAM|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -376,6 +741,30 @@
       ],
       "max": 3203,
       "min": 2988
+    },
+    "MERIDIAN|INMAA|DEHAM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4445,
+      "min": 3917
+    },
+    "MERIDIAN|INMAA|DEHAM|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 7719,
+      "min": 6821
+    },
+    "MERIDIAN|INMAA|DEHAM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3746,
+      "min": 3375
     },
     "MERIDIAN|INMAA|GBFXT|20DRY": {
       "docs": [
@@ -401,6 +790,14 @@
       "max": 3037,
       "min": 2668
     },
+    "MERIDIAN|INMAA|GBFXT|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3418,
+      "min": 3170
+    },
     "MERIDIAN|INMAA|ITGOA|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -425,6 +822,14 @@
       "max": 2350,
       "min": 2138
     },
+    "MERIDIAN|INMAA|ITGOA|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2873,
+      "min": 2539
+    },
     "MERIDIAN|INMAA|NLRTM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -432,6 +837,22 @@
       ],
       "max": 1531,
       "min": 1303
+    },
+    "MERIDIAN|INMAA|NLRTM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2983,
+      "min": 2813
+    },
+    "MERIDIAN|INMAA|NLRTM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2474,
+      "min": 2202
     },
     "MERIDIAN|INMAA|NLRTM|40DRY": {
       "docs": [
@@ -441,6 +862,14 @@
       "max": 2058,
       "min": 1967
     },
+    "MERIDIAN|INMAA|NLRTM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3727,
+      "min": 3201
+    },
     "MERIDIAN|INMAA|NLRTM|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -448,6 +877,22 @@
       ],
       "max": 2534,
       "min": 2224
+    },
+    "MERIDIAN|INMAA|NLRTM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2604,
+      "min": 2310
+    },
+    "MERIDIAN|INMAA|NLRTM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2478,
+      "min": 2120
     },
     "MERIDIAN|INMAA|SGSIN|20DRY": {
       "docs": [
@@ -457,6 +902,30 @@
       "max": 1927,
       "min": 1749
     },
+    "MERIDIAN|INMAA|SGSIN|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3764,
+      "min": 3204
+    },
+    "MERIDIAN|INMAA|SGSIN|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2775,
+      "min": 2431
+    },
+    "MERIDIAN|INMAA|SGSIN|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4252,
+      "min": 3923
+    },
     "MERIDIAN|INMAA|SGSIN|40DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -464,6 +933,14 @@
       ],
       "max": 2882,
       "min": 2723
+    },
+    "MERIDIAN|INMAA|SGSIN|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5739,
+      "min": 5490
     },
     "MERIDIAN|INMAA|SGSIN|40HC": {
       "docs": [
@@ -473,6 +950,30 @@
       "max": 3003,
       "min": 2746
     },
+    "MERIDIAN|INMAA|SGSIN|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3397,
+      "min": 2964
+    },
+    "MERIDIAN|INMAA|SGSIN|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3822,
+      "min": 3313
+    },
+    "MERIDIAN|INMAA|SGSIN|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 6334,
+      "min": 5510
+    },
     "MERIDIAN|INMUN|AEJEA|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -480,6 +981,38 @@
       ],
       "max": 1673,
       "min": 1472
+    },
+    "MERIDIAN|INMUN|AEJEA|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2606,
+      "min": 2336
+    },
+    "MERIDIAN|INMUN|AEJEA|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2307,
+      "min": 2142
+    },
+    "MERIDIAN|INMUN|AEJEA|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3876,
+      "min": 3451
+    },
+    "MERIDIAN|INMUN|AEJEA|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3537,
+      "min": 3308
     },
     "MERIDIAN|INMUN|AEJEA|40DRY": {
       "docs": [
@@ -489,6 +1022,14 @@
       "max": 2116,
       "min": 1840
     },
+    "MERIDIAN|INMUN|AEJEA|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4059,
+      "min": 3546
+    },
     "MERIDIAN|INMUN|AEJEA|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -496,6 +1037,30 @@
       ],
       "max": 2318,
       "min": 2114
+    },
+    "MERIDIAN|INMUN|AEJEA|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2353,
+      "min": 2239
+    },
+    "MERIDIAN|INMUN|AEJEA|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3244,
+      "min": 2936
+    },
+    "MERIDIAN|INMUN|AEJEA|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4368,
+      "min": 3892
     },
     "MERIDIAN|INMUN|DEHAM|20DRY": {
       "docs": [
@@ -505,6 +1070,30 @@
       "max": 939,
       "min": 878
     },
+    "MERIDIAN|INMUN|DEHAM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2040,
+      "min": 1828
+    },
+    "MERIDIAN|INMUN|DEHAM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1289,
+      "min": 1126
+    },
+    "MERIDIAN|INMUN|DEHAM|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2051,
+      "min": 1866
+    },
     "MERIDIAN|INMUN|DEHAM|40DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -512,6 +1101,14 @@
       ],
       "max": 2167,
       "min": 1909
+    },
+    "MERIDIAN|INMUN|DEHAM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3108,
+      "min": 2731
     },
     "MERIDIAN|INMUN|DEHAM|40HC": {
       "docs": [
@@ -521,6 +1118,30 @@
       "max": 2290,
       "min": 2014
     },
+    "MERIDIAN|INMUN|DEHAM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2535,
+      "min": 2289
+    },
+    "MERIDIAN|INMUN|DEHAM|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5150,
+      "min": 4574
+    },
+    "MERIDIAN|INMUN|DEHAM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2381,
+      "min": 2165
+    },
     "MERIDIAN|INMUN|ESBCN|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -528,6 +1149,14 @@
       ],
       "max": 1010,
       "min": 930
+    },
+    "MERIDIAN|INMUN|ESBCN|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1949,
+      "min": 1707
     },
     "MERIDIAN|INMUN|ESBCN|40DRY": {
       "docs": [
@@ -545,6 +1174,14 @@
       "max": 2984,
       "min": 2730
     },
+    "MERIDIAN|INMUN|ESBCN|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3392,
+      "min": 3243
+    },
     "MERIDIAN|INMUN|NLRTM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -552,6 +1189,30 @@
       ],
       "max": 1444,
       "min": 1299
+    },
+    "MERIDIAN|INMUN|NLRTM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3061,
+      "min": 2724
+    },
+    "MERIDIAN|INMUN|NLRTM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2126,
+      "min": 1964
+    },
+    "MERIDIAN|INMUN|NLRTM|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4148,
+      "min": 3685
     },
     "MERIDIAN|INMUN|NLRTM|40DRY": {
       "docs": [
@@ -561,6 +1222,14 @@
       "max": 2327,
       "min": 2188
     },
+    "MERIDIAN|INMUN|NLRTM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3766,
+      "min": 3552
+    },
     "MERIDIAN|INMUN|NLRTM|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -568,6 +1237,22 @@
       ],
       "max": 2654,
       "min": 2444
+    },
+    "MERIDIAN|INMUN|NLRTM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3038,
+      "min": 2702
+    },
+    "MERIDIAN|INMUN|NLRTM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2817,
+      "min": 2500
     },
     "MERIDIAN|INNSA|AEJEA|20DRY": {
       "docs": [
@@ -577,6 +1262,38 @@
       "max": 1414,
       "min": 1321
     },
+    "MERIDIAN|INNSA|AEJEA|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2489,
+      "min": 2297
+    },
+    "MERIDIAN|INNSA|AEJEA|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1975,
+      "min": 1751
+    },
+    "MERIDIAN|INNSA|AEJEA|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3531,
+      "min": 3051
+    },
+    "MERIDIAN|INNSA|AEJEA|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4340,
+      "min": 4035
+    },
     "MERIDIAN|INNSA|AEJEA|40DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -584,6 +1301,14 @@
       ],
       "max": 2195,
       "min": 2064
+    },
+    "MERIDIAN|INNSA|AEJEA|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4103,
+      "min": 3570
     },
     "MERIDIAN|INNSA|AEJEA|40HC": {
       "docs": [
@@ -593,6 +1318,38 @@
       "max": 2340,
       "min": 2216
     },
+    "MERIDIAN|INNSA|AEJEA|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2502,
+      "min": 2259
+    },
+    "MERIDIAN|INNSA|AEJEA|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3070,
+      "min": 2944
+    },
+    "MERIDIAN|INNSA|AEJEA|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4675,
+      "min": 4212
+    },
+    "MERIDIAN|INNSA|AEJEA|40TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5294,
+      "min": 4561
+    },
     "MERIDIAN|INNSA|BEANR|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -600,6 +1357,14 @@
       ],
       "max": 1814,
       "min": 1710
+    },
+    "MERIDIAN|INNSA|BEANR|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3210,
+      "min": 2902
     },
     "MERIDIAN|INNSA|BEANR|40DRY": {
       "docs": [
@@ -617,6 +1382,22 @@
       "max": 3763,
       "min": 3509
     },
+    "MERIDIAN|INNSA|BEANR|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 7805,
+      "min": 7306
+    },
+    "MERIDIAN|INNSA|BEANR|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4464,
+      "min": 3888
+    },
     "MERIDIAN|INNSA|DEHAM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -624,6 +1405,30 @@
       ],
       "max": 1406,
       "min": 1306
+    },
+    "MERIDIAN|INNSA|DEHAM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2273,
+      "min": 2140
+    },
+    "MERIDIAN|INNSA|DEHAM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1988,
+      "min": 1702
+    },
+    "MERIDIAN|INNSA|DEHAM|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3543,
+      "min": 3136
     },
     "MERIDIAN|INNSA|DEHAM|40DRY": {
       "docs": [
@@ -633,6 +1438,14 @@
       "max": 2977,
       "min": 2768
     },
+    "MERIDIAN|INNSA|DEHAM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5448,
+      "min": 5071
+    },
     "MERIDIAN|INNSA|DEHAM|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -641,6 +1454,30 @@
       "max": 3202,
       "min": 2808
     },
+    "MERIDIAN|INNSA|DEHAM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4437,
+      "min": 4240
+    },
+    "MERIDIAN|INNSA|DEHAM|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 5642,
+      "min": 4996
+    },
+    "MERIDIAN|INNSA|DEHAM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3588,
+      "min": 3391
+    },
     "MERIDIAN|INNSA|ESBCN|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -648,6 +1485,14 @@
       ],
       "max": 1378,
       "min": 1263
+    },
+    "MERIDIAN|INNSA|ESBCN|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3724,
+      "min": 3300
     },
     "MERIDIAN|INNSA|ESBCN|40DRY": {
       "docs": [
@@ -664,6 +1509,14 @@
       ],
       "max": 2305,
       "min": 2210
+    },
+    "MERIDIAN|INNSA|ESBCN|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2495,
+      "min": 2248
     },
     "MERIDIAN|INNSA|GBFXT|20DRY": {
       "docs": [
@@ -689,6 +1542,14 @@
       "max": 2291,
       "min": 1992
     },
+    "MERIDIAN|INNSA|GBFXT|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2735,
+      "min": 2516
+    },
     "MERIDIAN|INNSA|NLRTM|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -696,6 +1557,30 @@
       ],
       "max": 1882,
       "min": 1712
+    },
+    "MERIDIAN|INNSA|NLRTM|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4159,
+      "min": 3733
+    },
+    "MERIDIAN|INNSA|NLRTM|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2991,
+      "min": 2610
+    },
+    "MERIDIAN|INNSA|NLRTM|20TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3584,
+      "min": 3331
     },
     "MERIDIAN|INNSA|NLRTM|40DRY": {
       "docs": [
@@ -705,6 +1590,14 @@
       "max": 1750,
       "min": 1542
     },
+    "MERIDIAN|INNSA|NLRTM|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3056,
+      "min": 2788
+    },
     "MERIDIAN|INNSA|NLRTM|40HC": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -713,6 +1606,182 @@
       "max": 1966,
       "min": 1676
     },
+    "MERIDIAN|INNSA|NLRTM|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2402,
+      "min": 2118
+    },
+    "MERIDIAN|INNSA|NLRTM|40TK": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4397,
+      "min": 4120
+    },
+    "MERIDIAN|INNSA|NLRTM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2242,
+      "min": 1950
+    },
+    "MERIDIAN|INNSA|USSAV|20DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1069,
+      "min": 992
+    },
+    "MERIDIAN|INNSA|USSAV|20FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1850,
+      "min": 1654
+    },
+    "MERIDIAN|INNSA|USSAV|20OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1607,
+      "min": 1441
+    },
+    "MERIDIAN|INNSA|USSAV|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2127,
+      "min": 1932
+    },
+    "MERIDIAN|INNSA|USSAV|40DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2061,
+      "min": 1760
+    },
+    "MERIDIAN|INNSA|USSAV|40FR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3495,
+      "min": 3249
+    },
+    "MERIDIAN|INNSA|USSAV|40HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2288,
+      "min": 2139
+    },
+    "MERIDIAN|INNSA|USSAV|40OT": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 3113,
+      "min": 2779
+    },
+    "MERIDIAN|INNSA|USSAV|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4562,
+      "min": 4070
+    },
+    "MERIDIAN|INPAV|NLRTM|20DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1990,
+      "min": 1733
+    },
+    "MERIDIAN|INPAV|NLRTM|40DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1989,
+      "min": 1869
+    },
+    "MERIDIAN|INPAV|NLRTM|40HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2221,
+      "min": 2101
+    },
+    "MERIDIAN|INPAV|NLRTM|45HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2572,
+      "min": 2367
+    },
+    "MERIDIAN|INTUT|LKCMB|20DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1036,
+      "min": 923
+    },
+    "MERIDIAN|INTUT|LKCMB|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 1872,
+      "min": 1771
+    },
+    "MERIDIAN|INTUT|LKCMB|40DRY": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2283,
+      "min": 2089
+    },
+    "MERIDIAN|INTUT|LKCMB|40HC": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2491,
+      "min": 2220
+    },
+    "MERIDIAN|INTUT|LKCMB|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2243,
+      "min": 2134
+    },
+    "MERIDIAN|INTUT|LKCMB|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4571,
+      "min": 4249
+    },
     "MERIDIAN|INVTZ|SGSIN|20DRY": {
       "docs": [
         "meridian_tariff_2026_h2.pdf",
@@ -720,6 +1789,14 @@
       ],
       "max": 1120,
       "min": 1063
+    },
+    "MERIDIAN|INVTZ|SGSIN|20RF": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2675,
+      "min": 2433
     },
     "MERIDIAN|INVTZ|SGSIN|40DRY": {
       "docs": [
@@ -736,6 +1813,22 @@
       ],
       "max": 2582,
       "min": 2230
+    },
+    "MERIDIAN|INVTZ|SGSIN|40NOR": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 2415,
+      "min": 2088
+    },
+    "MERIDIAN|INVTZ|SGSIN|40RH": {
+      "docs": [
+        "meridian_tariff_2026_h2.pdf",
+        "meridian_tariff_2026_q2.md"
+      ],
+      "max": 4870,
+      "min": 4459
     }
   },
   "rate_values": [
@@ -743,17 +1836,22 @@
     878,
     905,
     921,
+    923,
     930,
     939,
     941,
     984,
+    992,
     1010,
     1032,
     1033,
     1034,
+    1036,
     1046,
     1063,
+    1069,
     1120,
+    1126,
     1149,
     1160,
     1166,
@@ -761,9 +1859,12 @@
     1180,
     1207,
     1208,
+    1224,
     1228,
+    1253,
     1263,
     1278,
+    1289,
     1294,
     1299,
     1303,
@@ -771,124 +1872,369 @@
     1307,
     1321,
     1332,
+    1362,
     1378,
     1406,
     1414,
+    1429,
+    1441,
     1444,
+    1453,
     1472,
     1501,
+    1516,
     1521,
     1531,
     1532,
     1542,
     1565,
+    1581,
+    1607,
+    1629,
+    1654,
+    1659,
+    1669,
     1670,
     1673,
     1675,
     1676,
+    1702,
+    1707,
     1710,
     1712,
+    1733,
+    1748,
     1749,
     1750,
+    1751,
+    1760,
+    1771,
     1792,
     1804,
+    1809,
     1814,
+    1828,
     1840,
+    1850,
     1854,
+    1855,
+    1860,
     1863,
+    1865,
+    1866,
+    1869,
+    1872,
     1882,
     1898,
     1909,
     1915,
     1927,
+    1932,
     1939,
+    1949,
+    1950,
+    1952,
+    1964,
     1966,
     1967,
+    1975,
     1976,
+    1988,
+    1989,
+    1990,
     1992,
     1997,
     2014,
+    2040,
+    2051,
     2058,
+    2061,
     2064,
+    2084,
+    2088,
+    2089,
+    2101,
+    2105,
     2110,
     2114,
     2116,
+    2118,
+    2120,
+    2122,
+    2126,
+    2127,
+    2130,
+    2134,
     2137,
     2138,
+    2139,
+    2140,
+    2141,
+    2142,
     2148,
     2150,
     2161,
+    2165,
     2167,
+    2174,
     2188,
     2195,
     2196,
+    2202,
     2207,
     2210,
     2214,
     2216,
     2219,
+    2220,
+    2221,
     2224,
     2229,
     2230,
+    2239,
+    2242,
+    2243,
+    2248,
+    2259,
     2260,
+    2273,
+    2283,
+    2287,
+    2288,
+    2289,
     2290,
     2291,
+    2297,
     2305,
+    2307,
+    2310,
+    2313,
     2318,
     2323,
     2327,
+    2336,
     2340,
     2350,
+    2353,
     2356,
     2357,
+    2358,
     2361,
+    2367,
+    2381,
+    2402,
+    2415,
+    2416,
     2428,
+    2431,
+    2432,
+    2433,
     2440,
     2444,
+    2450,
     2463,
+    2464,
     2465,
+    2474,
+    2478,
     2481,
     2483,
+    2489,
+    2491,
+    2495,
+    2500,
+    2502,
+    2508,
+    2516,
+    2529,
     2534,
+    2535,
+    2539,
+    2542,
     2562,
     2565,
+    2572,
     2582,
     2583,
     2592,
+    2604,
+    2605,
+    2606,
+    2610,
+    2621,
+    2630,
+    2645,
     2654,
     2668,
+    2673,
+    2675,
     2693,
     2701,
+    2702,
+    2708,
     2714,
+    2720,
     2723,
+    2724,
     2730,
+    2731,
+    2735,
     2746,
+    2760,
+    2761,
     2764,
     2768,
     2769,
+    2775,
+    2779,
+    2788,
     2808,
+    2813,
     2814,
+    2817,
     2819,
     2825,
     2838,
+    2872,
+    2873,
     2882,
+    2902,
+    2926,
+    2936,
+    2943,
+    2944,
+    2964,
+    2971,
+    2976,
     2977,
     2980,
+    2982,
+    2983,
     2984,
     2988,
+    2991,
     3003,
     3006,
     3017,
     3037,
+    3038,
+    3045,
+    3051,
+    3056,
+    3061,
+    3070,
+    3108,
     3111,
+    3113,
+    3135,
+    3136,
+    3169,
+    3170,
+    3174,
+    3201,
     3202,
     3203,
+    3204,
+    3210,
+    3243,
+    3244,
+    3249,
     3254,
     3263,
     3272,
+    3300,
+    3308,
+    3313,
+    3331,
+    3375,
+    3378,
+    3391,
+    3392,
     3394,
+    3397,
+    3418,
+    3450,
+    3451,
+    3495,
     3509,
-    3763
+    3531,
+    3537,
+    3543,
+    3546,
+    3552,
+    3570,
+    3584,
+    3588,
+    3663,
+    3685,
+    3724,
+    3727,
+    3733,
+    3746,
+    3763,
+    3764,
+    3766,
+    3822,
+    3840,
+    3846,
+    3876,
+    3888,
+    3891,
+    3892,
+    3917,
+    3923,
+    4035,
+    4059,
+    4070,
+    4103,
+    4120,
+    4148,
+    4159,
+    4184,
+    4212,
+    4240,
+    4249,
+    4252,
+    4340,
+    4368,
+    4394,
+    4397,
+    4437,
+    4445,
+    4459,
+    4464,
+    4479,
+    4561,
+    4562,
+    4571,
+    4574,
+    4580,
+    4614,
+    4675,
+    4829,
+    4866,
+    4870,
+    4996,
+    5015,
+    5071,
+    5150,
+    5221,
+    5294,
+    5307,
+    5448,
+    5490,
+    5507,
+    5510,
+    5642,
+    5739,
+    6136,
+    6250,
+    6334,
+    6416,
+    6821,
+    7306,
+    7719,
+    7805
   ],
   "rates": [
     {
@@ -964,6 +2310,136 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMAA",
       "rate_value": 2534,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2478,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2120,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2813,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2983,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3727,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3201,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2202,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2474,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2604,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2310,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 27,
       "valid_from": "2026-04-01",
@@ -1049,6 +2525,188 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3375,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3746,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2105,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2358,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 5507,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 4866,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 1581,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 1516,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3917,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 4445,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2450,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2708,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 6821,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 7719,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "BEANR",
@@ -1120,6 +2778,84 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMAA",
       "rate_value": 2323,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2982,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2720,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2621,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2971,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 4829,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 4614,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 28,
       "valid_from": "2026-04-01",
@@ -1205,6 +2941,32 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "GBFXT",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3418,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 24,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "GBFXT",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3170,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 24,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "ITGOA",
@@ -1276,6 +3038,32 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMAA",
       "rate_value": 2138,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ITGOA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2539,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ITGOA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2873,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 30,
       "valid_from": "2026-04-01",
@@ -1361,6 +3149,188 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 1865,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 1748,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 4580,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 5221,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 1453,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 1669,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3663,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3846,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 1809,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 1629,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 4394,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3840,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2416,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2630,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 22,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "SGSIN",
@@ -1432,6 +3402,188 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMAA",
       "rate_value": 2746,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3764,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3204,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 5490,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 5739,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2775,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2431,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3822,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3313,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 3923,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 4252,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 6334,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 5510,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2964,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 3397,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 27,
       "valid_from": "2026-04-01",
@@ -1517,6 +3669,188 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2242,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1950,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3733,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4159,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3056,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2788,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2610,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2991,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2402,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2118,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3584,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3331,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4120,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4397,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "DEHAM",
@@ -1588,6 +3922,188 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INNSA",
       "rate_value": 2808,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3588,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3391,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2273,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2140,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 5071,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 5448,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 1988,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1702,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4240,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4437,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3136,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3543,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 5642,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4996,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 23,
       "valid_from": "2026-04-01",
@@ -1673,6 +4189,84 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3888,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4464,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3210,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2902,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 7805,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "BEANR",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 7306,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 29,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "GBFXT",
@@ -1744,6 +4338,32 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INNSA",
       "rate_value": 1992,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 31,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "GBFXT",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2516,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 31,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "GBFXT",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2735,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 31,
       "valid_from": "2026-04-01",
@@ -1829,6 +4449,58 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2495,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2248,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3300,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3724,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "AEJEA",
@@ -1900,6 +4572,240 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INNSA",
       "rate_value": 2216,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2297,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2489,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4103,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3570,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 1975,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1751,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2944,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3070,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3531,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3051,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4212,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4675,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2259,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2502,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4035,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4340,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 5294,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4561,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 28,
       "valid_from": "2026-04-01",
@@ -1985,6 +4891,162 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2817,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2500,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3061,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2724,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3552,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3766,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2126,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 1964,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3038,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2702,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3685,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 4148,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "DEHAM",
@@ -2056,6 +5118,188 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMUN",
       "rate_value": 2290,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2381,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2165,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2040,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 1828,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3108,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2731,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 1289,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 1126,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2535,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2289,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2051,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 1866,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 4574,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "DEHAM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 5150,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 26,
       "valid_from": "2026-04-01",
@@ -2141,6 +5385,58 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3243,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3392,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 1949,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "ESBCN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 1707,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "AEJEA",
@@ -2212,6 +5508,214 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INMUN",
       "rate_value": 2114,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2606,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2336,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3546,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 4059,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2307,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2142,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2936,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3244,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3451,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3876,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 4368,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3892,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 2353,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 2239,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMUN",
+      "rate_value": 3308,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20TK",
+      "currency": "USD",
+      "destination": "AEJEA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMUN",
+      "rate_value": 3537,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 33,
       "valid_from": "2026-04-01",
@@ -2297,6 +5801,32 @@
     },
     {
       "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INCOK",
+      "rate_value": 3450,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INCOK",
+      "rate_value": 3174,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
       "container_type": "20DRY",
       "currency": "USD",
       "destination": "ITGOA",
@@ -2368,6 +5898,32 @@
       "doc": "meridian_tariff_2026_q2.md",
       "origin": "INCOK",
       "rate_value": 2592,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ITGOA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INCOK",
+      "rate_value": 3135,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "ITGOA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INCOK",
+      "rate_value": 3378,
       "tariff_ref": "MER-2026-Q2-FCL",
       "transit_days": 20,
       "valid_from": "2026-04-01",
@@ -2452,6 +6008,734 @@
       "valid_to": "2026-06-30"
     },
     {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INVTZ",
+      "rate_value": 2433,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INVTZ",
+      "rate_value": 2675,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INVTZ",
+      "rate_value": 4870,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INVTZ",
+      "rate_value": 4459,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INVTZ",
+      "rate_value": 2415,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "SGSIN",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INVTZ",
+      "rate_value": 2088,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INPAV",
+      "rate_value": 1733,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INPAV",
+      "rate_value": 1990,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INPAV",
+      "rate_value": 1869,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INPAV",
+      "rate_value": 1989,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INPAV",
+      "rate_value": 2101,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INPAV",
+      "rate_value": 2221,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INPAV",
+      "rate_value": 2367,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "45HC",
+      "currency": "USD",
+      "destination": "NLRTM",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INPAV",
+      "rate_value": 2572,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 923,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 1036,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 2089,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 2283,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 2220,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 2491,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 1771,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 1872,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 4249,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 4571,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INTUT",
+      "rate_value": 2243,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "LKCMB",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INTUT",
+      "rate_value": 2134,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 26,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 1362,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 1253,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2760,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2529,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2872,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2464,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2761,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2432,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 6136,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 6416,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INMAA",
+      "rate_value": 2926,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40NOR",
+      "currency": "USD",
+      "destination": "CNSHA",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INMAA",
+      "rate_value": 2542,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 992,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20DRY",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1069,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2061,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40DRY",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1760,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2288,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40HC",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2139,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 1654,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20FR",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1850,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 3249,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40FR",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3495,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 1441,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20OT",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 1607,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 2779,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40OT",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 3113,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 1932,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "20RF",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 2127,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_h2.pdf",
+      "origin": "INNSA",
+      "rate_value": 4562,
+      "tariff_ref": "MER-2026-H2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "MERIDIAN",
+      "container_type": "40RH",
+      "currency": "USD",
+      "destination": "USSAV",
+      "doc": "meridian_tariff_2026_q2.md",
+      "origin": "INNSA",
+      "rate_value": 4070,
+      "tariff_ref": "MER-2026-Q2-FCL",
+      "transit_days": 34,
+      "valid_from": "2026-04-01",
+      "valid_to": "2026-06-30"
+    },
+    {
       "carrier": "HALCYON",
       "container_type": "20DRY",
       "currency": "EUR",
@@ -2485,6 +6769,19 @@
       "doc": "halcyon_tariff_2026_h2.csv",
       "origin": "INMAA",
       "rate_value": 1863,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 27,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2122,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 27,
       "valid_from": "2026-07-01",
@@ -2531,6 +6828,45 @@
     },
     {
       "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2976,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2130,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 6250,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
       "container_type": "20DRY",
       "currency": "EUR",
       "destination": "BEANR",
@@ -2563,6 +6899,45 @@
       "doc": "halcyon_tariff_2026_h2.csv",
       "origin": "INMAA",
       "rate_value": 2219,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "BEANR",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2645,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "BEANR",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2174,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 28,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "BEANR",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 4184,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 28,
       "valid_from": "2026-07-01",
@@ -2609,6 +6984,19 @@
     },
     {
       "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INNSA",
+      "rate_value": 1855,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
       "container_type": "20DRY",
       "currency": "EUR",
       "destination": "DEHAM",
@@ -2641,6 +7029,45 @@
       "doc": "halcyon_tariff_2026_h2.csv",
       "origin": "INNSA",
       "rate_value": 2714,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INNSA",
+      "rate_value": 3169,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INNSA",
+      "rate_value": 2673,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 23,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "DEHAM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INNSA",
+      "rate_value": 5015,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 23,
       "valid_from": "2026-07-01",
@@ -2687,6 +7114,19 @@
     },
     {
       "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "ESBCN",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INNSA",
+      "rate_value": 2084,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 30,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
       "container_type": "20DRY",
       "currency": "EUR",
       "destination": "NLRTM",
@@ -2719,6 +7159,19 @@
       "doc": "halcyon_tariff_2026_h2.csv",
       "origin": "INMUN",
       "rate_value": 2214,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMUN",
+      "rate_value": 2508,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 33,
       "valid_from": "2026-07-01",
@@ -2765,6 +7218,32 @@
     },
     {
       "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "AEJEA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMUN",
+      "rate_value": 2943,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "AEJEA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMUN",
+      "rate_value": 3891,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 33,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
       "container_type": "20DRY",
       "currency": "EUR",
       "destination": "NLRTM",
@@ -2797,6 +7276,19 @@
       "doc": "halcyon_tariff_2026_h2.csv",
       "origin": "INCOK",
       "rate_value": 2764,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INCOK",
+      "rate_value": 3045,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 18,
       "valid_from": "2026-07-01",
@@ -2838,6 +7330,149 @@
       "rate_value": 2196,
       "tariff_ref": "HAL-2026-H2-FCL",
       "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "SGSIN",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INVTZ",
+      "rate_value": 2141,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "SGSIN",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INVTZ",
+      "rate_value": 4479,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 21,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20DRY",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INPAV",
+      "rate_value": 1429,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40DRY",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INPAV",
+      "rate_value": 1659,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INPAV",
+      "rate_value": 1860,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "45HC",
+      "currency": "EUR",
+      "destination": "NLRTM",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INPAV",
+      "rate_value": 1952,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 18,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20DRY",
+      "currency": "EUR",
+      "destination": "CNSHA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 1224,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40DRY",
+      "currency": "EUR",
+      "destination": "CNSHA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2287,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40HC",
+      "currency": "EUR",
+      "destination": "CNSHA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2605,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "20RF",
+      "currency": "EUR",
+      "destination": "CNSHA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 2313,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 20,
+      "valid_from": "2026-07-01",
+      "valid_to": "2026-12-31"
+    },
+    {
+      "carrier": "HALCYON",
+      "container_type": "40RH",
+      "currency": "EUR",
+      "destination": "CNSHA",
+      "doc": "halcyon_tariff_2026_h2.csv",
+      "origin": "INMAA",
+      "rate_value": 5307,
+      "tariff_ref": "HAL-2026-H2-FCL",
+      "transit_days": 20,
       "valid_from": "2026-07-01",
       "valid_to": "2026-12-31"
     }

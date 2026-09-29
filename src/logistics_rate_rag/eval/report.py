@@ -105,16 +105,34 @@ def _eval_runs(results_dir: Path) -> list[dict]:
     return runs
 
 
+def _corpus_version(run: dict) -> int:
+    return int(run["config"].get("corpus_version", 1))
+
+
 def _latest_runs(runs: list[dict]) -> dict[tuple, dict]:
-    """Newest run per (store, retrieval, reranker, mode, enriched, sets)."""
-    return {_run_key(run): run for run in runs}  # oldest first: last wins
+    """Newest run per (store, retrieval, reranker, mode, enriched, sets), on
+    the newest corpus version only: runs on an older corpus answer different
+    questions over different documents and are kept as history, not compared."""
+    if not runs:
+        return {}
+    current = max(_corpus_version(r) for r in runs)
+    return {_run_key(r): r for r in runs if _corpus_version(r) == current}
 
 
-def _latest_recall(results_dir: Path) -> dict[tuple[str, bool], dict]:
-    latest: dict[tuple[str, bool], dict] = {}
-    for path in sorted(results_dir.glob("*-recall*.json")):
-        run = json.loads(path.read_text(encoding="utf-8"))
-        latest[(run["config"]["store"], bool(run["config"].get("enriched")))] = run
+def _latest_recall(results_dir: Path) -> dict[tuple[str, bool, bool], dict]:
+    runs = [
+        json.loads(p.read_text(encoding="utf-8"))
+        for p in sorted(results_dir.glob("*-recall*.json"))
+    ]
+    if not runs:
+        return {}
+    current = max(_corpus_version(r) for r in runs)
+    latest: dict[tuple[str, bool, bool], dict] = {}
+    for run in runs:
+        c = run["config"]
+        if _corpus_version(run) == current:
+            key = (c["store"], bool(c.get("enriched")), bool(c.get("query_expansion", True)))
+            latest[key] = run
     return latest
 
 
@@ -141,7 +159,14 @@ def write_latest(results_dir: Path) -> Path:
     runs = _eval_runs(results_dir)
     latest = _latest_runs(runs)
     recall = _latest_recall(results_dir)
-    lines = ["# LATEST", "", "Regenerated from the newest run per configuration.", ""]
+    version = _corpus_version(next(iter(latest.values()))) if latest else None
+    lines = [
+        "# LATEST",
+        "",
+        f"Regenerated from the newest run per configuration on corpus v{version}. "
+        "Runs on older corpus versions stay in this folder as history.",
+        "",
+    ]
     if not latest:
         lines.append("No runs yet.")
         path = results_dir / "LATEST.md"
@@ -191,19 +216,22 @@ def write_latest(results_dir: Path) -> Path:
     # Live spend is recorded once, on the run that made the calls; re-runs
     # served from the cache cost 0. So sum every run file, not just the newest.
     total_cost = sum((r.get("usage", {}).get("cost_usd") or 0.0) for r in runs)
+    current_cost = sum(
+        (r.get("usage", {}).get("cost_usd") or 0.0) for r in runs if _corpus_version(r) == version
+    )
 
     if recall:
         lines += [
             "## Retrieval ladder (LLM-free recall over golden ANSWER questions)",
             "",
-            "| store | chunks | dense | hybrid | reranked | run |",
-            "|---|---|---|---|---|---|",
+            "| store | chunks | BM25 query expansion | dense | hybrid | reranked | run |",
+            "|---|---|---|---|---|---|---|",
         ]
-        for (store, enriched), run in sorted(recall.items()):
+        for (store, enriched, expand), run in sorted(recall.items()):
             r = list(run["recall"].values())
             lines.append(
-                f"| {store} | {'enriched' if enriched else 'raw'} | {r[0]:.3f} | {r[1]:.3f} "
-                f"| {r[2]:.3f} | `{run['run_id']}` |"
+                f"| {store} | {'enriched' if enriched else 'raw'} | {'on' if expand else 'off'} "
+                f"| {r[0]:.3f} | {r[1]:.3f} | {r[2]:.3f} | `{run['run_id']}` |"
             )
         lines.append("")
 
@@ -219,7 +247,13 @@ def write_latest(results_dir: Path) -> Path:
         _gated_accuracy(latest, "chroma", "hybrid", "flashrank"),
         _gated_accuracy(latest, "chroma", "dense", "flashrank"),
     )
-    raw, enr = recall.get(("chroma", False)), recall.get(("chroma", True))
+    raw, enr = recall.get(("chroma", False, True)), recall.get(("chroma", True, True))
+    noexp = recall.get(("chroma", False, False))
+    expansion_lift = (
+        _diff(list(raw["recall"].values())[1], list(noexp["recall"].values())[1])
+        if raw and noexp
+        else None
+    )
     enrichment_lift = (
         _diff(list(enr["recall"].values())[1], list(raw["recall"].values())[1])
         if raw and enr
@@ -235,9 +269,12 @@ def write_latest(results_dir: Path) -> Path:
         f"| rerank_lift | {_fmt(rerank_lift)} | chroma hybrid: flashrank - none |",
         f"| hybrid_lift | {_fmt(hybrid_lift)} | chroma flashrank: hybrid - dense |",
         f"| enrichment_lift | {_fmt(enrichment_lift)} | chroma hybrid recall: enriched - raw |",
+        f"| query_expansion_lift | {_fmt(expansion_lift)} | chroma hybrid recall: "
+        "expansion on - off (D-48) |",
         "",
-        f"Recorded LLM spend across all {len(runs)} eval run files: **${total_cost:.4f}** "
-        "(answer generation only; cost tracking started 2026-09-29).",
+        f"Recorded LLM spend on corpus v{version}: **${current_cost:.4f}**; across all "
+        f"{len(runs)} eval run files: ${total_cost:.4f} (answer generation only; cost "
+        "tracking started 2026-09-29).",
     ]
     path = results_dir / "LATEST.md"
     path.write_text(NL.join(lines) + NL, encoding="utf-8")

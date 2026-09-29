@@ -19,7 +19,7 @@ from pathlib import Path
 import pdfplumber
 import yaml
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
@@ -58,9 +58,61 @@ LANES: dict[int, tuple[str, str, str, str]] = {
     18: ("INCOK", "Cochin", "NLRTM", "Rotterdam"),
     19: ("INCOK", "Cochin", "ITGOA", "Genoa"),
     20: ("INVTZ", "Visakhapatnam", "SGSIN", "Singapore"),
+    # corpus v2 (D-46): new ports
+    21: ("INPAV", "Pipavav", "NLRTM", "Rotterdam"),
+    22: ("INTUT", "Tuticorin", "LKCMB", "Colombo"),
+    23: ("INMAA", "Chennai", "CNSHA", "Shanghai"),
+    24: ("INNSA", "Nhava Sheva", "USSAV", "Savannah"),
 }
-HALCYON_LANES: list[int] = [1, 2, 3, 8, 9, 12, 14, 17, 18, 20]
+ALL_LANES = list(range(1, 25))
+V1_LANES = list(range(1, 21))
+V1_HALCYON_LANES: list[int] = [1, 2, 3, 8, 9, 12, 14, 17, 18, 20]
+HALCYON_LANES: list[int] = [*V1_HALCYON_LANES, 21, 23]
+# v1 kept exactly these three; their draws come first so v1 values never move
 CONTAINER_TYPES = ["20DRY", "40DRY", "40HC"]
+# Registry order of config/equipment.yaml (a test asserts they match)
+EQUIPMENT = [
+    "20DRY", "40DRY", "40HC", "45HC", "20FR", "40FR", "20OT", "40OT",
+    "20RF", "40RH", "40NOR", "20TK", "40TK",
+]  # fmt: skip
+NEW_TYPES = EQUIPMENT[3:]
+NOT_OFFERED = "\u2014"  # em dash in a tariff cell: equipment not offered on that lane
+
+EUROPE = {"NLRTM", "DEHAM", "BEANR", "GBFXT", "ITGOA", "ESBCN"}
+SPECIAL_DEST = {"NLRTM", "DEHAM", "AEJEA", "SGSIN", "USSAV"}
+MAJOR_ORIGIN = {"INMAA", "INNSA", "INMUN"}
+REEFER_DEST = {"AEJEA", "SGSIN", "DEHAM", "BEANR", "CNSHA", "USSAV", "LKCMB"}
+NOR_DEST = {"AEJEA", "SGSIN", "LKCMB", "CNSHA"}
+
+
+def meridian_offers(lane: int, ctype: str) -> bool:
+    """Which equipment Meridian quotes on which lane (CORPUS.md §2.4)."""
+    o, _, d, _ = LANES[lane]
+    if ctype in CONTAINER_TYPES:
+        return True
+    if ctype == "45HC":
+        return d in EUROPE
+    if ctype in ("20FR", "40FR", "20OT", "40OT"):
+        return d in SPECIAL_DEST and o in MAJOR_ORIGIN
+    if ctype in ("20RF", "40RH"):
+        return d in REEFER_DEST
+    if ctype == "40NOR":
+        return d in NOR_DEST
+    if ctype == "20TK":
+        return o in {"INNSA", "INMUN"} and d in {"NLRTM", "AEJEA", "SGSIN", "ESBCN"}
+    if ctype == "40TK":
+        return o == "INNSA" and d in {"NLRTM", "AEJEA"}
+    raise ValueError(ctype)
+
+
+def halcyon_offers(lane: int, ctype: str) -> bool:
+    """Halcyon quotes dry, high-cube and reefer only."""
+    if lane not in HALCYON_LANES:
+        return False
+    if ctype in ("20FR", "40FR", "20OT", "40OT", "20TK", "40TK", "40NOR"):
+        return False
+    return meridian_offers(lane, ctype)
+
 
 MERIDIAN_DISPLAY = "Meridian Ocean Lines"
 HALCYON_DISPLAY = "Halcyon Container Line"
@@ -68,13 +120,17 @@ HALCYON_DISPLAY = "Halcyon Container Line"
 # Every integer that legitimately appears in the corpus for a reason other
 # than being a base rate; base-rate draws must never collide with these.
 RESERVED: set[int] = (
-    {120, 240, 150} | set(range(18, 35)) | {2026, 2027, 1, 4, 6, 7, 12, 30, 31, 15, 10}
+    {120, 240, 150}
+    | set(range(18, 35))
+    | {2026, 2027, 1, 4, 6, 7, 12, 30, 31, 15, 10}
+    | {20, 40, 45, 22, 42}
 )
 
 REMARKS = [
     "Rates are FCL, CY/CY, general cargo only. Hazardous cargo (IMO classes 1–9) is excluded.",
     "Rates are subject to General Rate Increase with 15 days' notice.",
     "Rates exclude origin and destination terminal handling charges.",
+    "A dash in a rate cell means the equipment is not offered on that lane; no rate applies.",
     "This document is synthetic, generated for a portfolio project; all values are invented.",
 ]
 
@@ -91,7 +147,7 @@ This note governs how the FCL ocean freight tariffs of Meridian Ocean Lines (MER
 ## Bunker Adjustment Factor (BAF)
 
 Meridian Ocean Lines: the Bunker Adjustment Factor is included in every base rate in MER-2026-H2-FCL. No separate BAF is added.
-Halcyon Container Line: the Bunker Adjustment Factor is not included in the base rate. It is quoted separately in the baf column of HAL-2026-H2-FCL (EUR 120 per 20DRY, EUR 240 per 40DRY or 40HC) and must be added to obtain an all-in ocean freight figure.
+Halcyon Container Line: the Bunker Adjustment Factor is not included in the base rate. It is quoted separately in the baf column of HAL-2026-H2-FCL (EUR 120 per 20-foot container and EUR 240 per 40-foot or 45-foot container, whatever the equipment type) and must be added to obtain an all-in ocean freight figure.
 
 ## Currency Adjustment Factor (CAF)
 
@@ -107,11 +163,13 @@ A rate may be quoted only when the as-of date of the enquiry falls within the ta
 
 ## Container Types
 
-20DRY is a 20-foot standard dry container. 40DRY is a 40-foot standard dry container. 40HC is a 40-foot high-cube dry container. Refrigerated (reefer), open-top, flat-rack and tank containers are not covered by these tariffs and have no rate in this corpus.
+Equipment codes used in the tariffs: 20DRY 20-foot standard dry (ISO 22G1); 40DRY 40-foot standard dry (42G1); 40HC 40-foot high cube (45G1); 45HC 45-foot high cube (L5G1); 20FR and 40FR flat rack (22P1, 42P1); 20OT and 40OT open top (22U1, 42U1); 20RF 20-foot reefer (22R1); 40RH 40-foot reefer high cube (45R1); 40NOR 40-foot non-operating reefer, a reefer high cube shipped with its refrigeration unit switched off and carrying dry cargo, priced separately from both 40RH and 40HC; 20TK and 40TK 20-foot and 40-foot tank.
+
+A dash in a Meridian tariff cell, or the absence of a line in the Halcyon tariff, means the carrier does not offer that equipment on that lane. There is no rate for it, and no rate may be substituted from another equipment type. Halcyon Container Line offers dry, high-cube and reefer equipment only; it does not offer flat rack, open top, tank or non-operating reefer equipment.
 
 ## Quoting Rules
 
-Quote one lane, one carrier, one container type at a time. Never average rates across lanes or carriers. Never convert a rate into another currency. Never combine one carrier's base rate with another carrier's surcharge. Hazardous cargo is excluded from both tariffs. Less-than-container-load (LCL) shipments are not covered.
+Quote one lane, one carrier, one container type at a time. Never quote one equipment type's rate for another, including a 40RH or 40HC rate for a 40NOR. Never average rates across lanes or carriers. Never convert a rate into another currency. Never combine one carrier's base rate with another carrier's surcharge. Hazardous cargo is excluded from both tariffs. Less-than-container-load (LCL) shipments are not covered.
 
 ## Peak Season Surcharge
 
@@ -148,7 +206,7 @@ def generate_values(seed: int = SEED) -> tuple[dict, dict, dict, set[int]]:
     used: set[int] = set()
 
     meridian_h2: dict[int, dict] = {}
-    for lane in range(1, 21):
+    for lane in V1_LANES:
         r20 = draw(rng, 900, 1900, used)
         r40 = draw(rng, 1700, 3300, used)
         rhc = draw(rng, r40 + 90, r40 + 260, used)
@@ -156,7 +214,7 @@ def generate_values(seed: int = SEED) -> tuple[dict, dict, dict, set[int]]:
         meridian_h2[lane] = {"20DRY": r20, "40DRY": r40, "40HC": rhc, "transit": transit}
 
     halcyon_h2: dict[int, dict] = {}
-    for lane in HALCYON_LANES:
+    for lane in V1_HALCYON_LANES:
         halcyon_h2[lane] = {}
         for ctype in CONTAINER_TYPES:
             f = rng.uniform(0.82, 0.92)
@@ -167,7 +225,7 @@ def generate_values(seed: int = SEED) -> tuple[dict, dict, dict, set[int]]:
             halcyon_h2[lane][ctype] = v
 
     meridian_q2: dict[int, dict] = {}
-    for lane in range(1, 21):
+    for lane in V1_LANES:
         meridian_q2[lane] = {"transit": meridian_h2[lane]["transit"]}
         for ctype in CONTAINER_TYPES:
             f = rng.choice([-1, 1]) * rng.uniform(0.04, 0.15)
@@ -177,19 +235,82 @@ def generate_values(seed: int = SEED) -> tuple[dict, dict, dict, set[int]]:
             used.add(v)
             meridian_q2[lane][ctype] = v
 
+    assert len(used) == 150, f"v1 prefix must stay 150 unique values, got {len(used)}"
+
+    # --- corpus v2 (D-46): every draw below comes after the untouched v1
+    # sequence, so all 150 v1 values (and the v1 questions) are unchanged.
+    for lane in ALL_LANES[20:]:
+        r20 = draw(rng, 900, 1900, used)
+        r40 = draw(rng, 1700, 3300, used)
+        rhc = draw(rng, r40 + 90, r40 + 260, used)
+        meridian_h2[lane] = {"20DRY": r20, "40DRY": r40, "40HC": rhc}
+        meridian_h2[lane]["transit"] = rng.randint(18, 34)
+
+    for ctype in NEW_TYPES:
+        for lane in ALL_LANES:
+            if meridian_offers(lane, ctype):
+                lo, hi = _v2_range(meridian_h2[lane], ctype)
+                meridian_h2[lane][ctype] = draw(rng, lo, hi, used)
+
+    for lane in HALCYON_LANES:
+        halcyon_h2.setdefault(lane, {})
+        for ctype in EQUIPMENT:
+            if ctype in halcyon_h2[lane] or not halcyon_offers(lane, ctype):
+                continue
+            f = rng.uniform(0.82, 0.92)
+            v = round(meridian_h2[lane][ctype] * f)
+            while v in used or v in RESERVED:
+                v -= 1
+            used.add(v)
+            halcyon_h2[lane][ctype] = v
+
+    for lane in ALL_LANES:
+        meridian_q2.setdefault(lane, {"transit": meridian_h2[lane]["transit"]})
+        for ctype in EQUIPMENT:
+            if ctype in meridian_q2[lane] or not meridian_offers(lane, ctype):
+                continue
+            f = rng.choice([-1, 1]) * rng.uniform(0.04, 0.15)
+            v = round(meridian_h2[lane][ctype] * (1 + f))
+            while v in used or v in RESERVED:
+                v += 1
+            used.add(v)
+            meridian_q2[lane][ctype] = v
+
     # Post-conditions (CORPUS.md §3)
-    assert len(used) == 150, f"expected 150 unique values, got {len(used)}"
+    n_cells = sum(meridian_offers(ln, c) for ln in ALL_LANES for c in EQUIPMENT)
+    n_halcyon = sum(halcyon_offers(ln, c) for ln in ALL_LANES for c in EQUIPMENT)
+    assert len(used) == 2 * n_cells + n_halcyon, f"values not unique: {len(used)}"
     assert used.isdisjoint(RESERVED), "a drawn value collided with RESERVED"
-    for lane in range(1, 21):
+    for lane in ALL_LANES:
         h2 = meridian_h2[lane]
         assert h2["40HC"] > h2["40DRY"] > h2["20DRY"], f"lane {lane} H2 ordering violated: {h2}"
-    for lane in range(1, 21):
-        for ctype in CONTAINER_TYPES:
-            assert meridian_q2[lane][ctype] != meridian_h2[lane][ctype], (
-                f"lane {lane} {ctype}: Q2 == H2"
-            )
+        for ctype in EQUIPMENT:
+            assert (ctype in h2) == meridian_offers(lane, ctype), (lane, ctype)
+            if ctype in h2:
+                assert meridian_q2[lane][ctype] != h2[ctype], f"lane {lane} {ctype}: Q2 == H2"
 
     return meridian_h2, halcyon_h2, meridian_q2, used
+
+
+# multiplier ranges on the lane's dry rates (CORPUS.md §3, D-46)
+_V2_FACTORS = {
+    "20FR": ("20DRY", 1.6, 2.2),
+    "40FR": ("40DRY", 1.5, 2.0),
+    "20OT": ("20DRY", 1.3, 1.6),
+    "40OT": ("40DRY", 1.3, 1.5),
+    "20RF": ("20DRY", 1.8, 2.6),
+    "40RH": ("40HC", 1.7, 2.3),
+    "40NOR": ("40HC", 0.88, 1.02),
+    "20TK": ("20DRY", 2.0, 3.0),
+    "40TK": ("40DRY", 1.8, 2.5),
+}
+
+
+def _v2_range(rates: dict, ctype: str) -> tuple[int, int]:
+    if ctype == "45HC":
+        return rates["40HC"] + 150, rates["40HC"] + 400
+    base, lo, hi = _V2_FACTORS[ctype]
+    return round(rates[base] * lo), round(rates[base] * hi)
 
 
 # --- 2. Markdown rendering (CORPUS.md §4.1-4.3) ------------------------------------
@@ -222,21 +343,21 @@ def render_header_bullets(
     return lines
 
 
+TABLE_HEADER = "| Origin | Destination | " + " | ".join(EQUIPMENT) + " | Transit (days) |"
+SEPARATOR = "|" + "---|" * (len(EQUIPMENT) + 3)
+
+
+def rate_cells(r: dict) -> list[str]:
+    return [format_thousands(r[c]) if c in r else NOT_OFFERED for c in EQUIPMENT]
+
+
 def render_table_lines(lane_order: list[int], rates: dict[int, dict]) -> list[str]:
-    lines = [
-        "## Rates by lane",
-        "",
-        "| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |",
-        "|---|---|---|---|---|---|",
-    ]
+    lines = ["## Rates by lane", "", TABLE_HEADER, SEPARATOR]
     for lane in lane_order:
         o_locode, o_city, d_locode, d_city = LANES[lane]
         r = rates[lane]
-        lines.append(
-            f"| {o_locode} {o_city} | {d_locode} {d_city} | "
-            f"{format_thousands(r['20DRY'])} | {format_thousands(r['40DRY'])} | "
-            f"{format_thousands(r['40HC'])} | {r['transit']} |"
-        )
+        cells = [f"{o_locode} {o_city}", f"{d_locode} {d_city}", *rate_cells(r), str(r["transit"])]
+        lines.append("| " + " | ".join(cells) + " |")
     return lines
 
 
@@ -277,9 +398,11 @@ def render_halcyon_csv(halcyon_h2: dict[int, dict]) -> str:
     lines = [header]
     for lane in HALCYON_LANES:
         o_locode, o_city, d_locode, d_city = LANES[lane]
-        for ctype in CONTAINER_TYPES:
+        for ctype in EQUIPMENT:
+            if ctype not in halcyon_h2[lane]:
+                continue
             v = halcyon_h2[lane][ctype]
-            baf = 120 if ctype == "20DRY" else 240
+            baf = 120 if ctype.startswith("20") else 240
             notes = (
                 "Peak season surcharge EUR 150 per container applies from 2026-10-01"
                 if lane == 17
@@ -309,9 +432,9 @@ def build_pdf_bytes(lane_order: list[int], rates: dict[int, dict]) -> bytes:
     buf = io.BytesIO()
     doc = SimpleDocTemplate(
         buf,
-        pagesize=A4,
-        leftMargin=20 * mm,
-        rightMargin=20 * mm,
+        pagesize=landscape(A4),
+        leftMargin=12 * mm,
+        rightMargin=12 * mm,
         topMargin=20 * mm,
         bottomMargin=20 * mm,
         title=title,
@@ -319,28 +442,22 @@ def build_pdf_bytes(lane_order: list[int], rates: dict[int, dict]) -> bytes:
         subject="MER-2026-H2-FCL",
     )
 
-    header_row = ["Origin", "Destination", "20DRY", "40DRY", "40HC", "Transit (days)"]
+    header_row = ["Origin", "Destination", *EQUIPMENT, "Transit (days)"]
     all_rows = [header_row]
     for lane in lane_order:
         o_locode, o_city, d_locode, d_city = LANES[lane]
         r = rates[lane]
         all_rows.append(
-            [
-                f"{o_locode} {o_city}",
-                f"{d_locode} {d_city}",
-                format_thousands(r["20DRY"]),
-                format_thousands(r["40DRY"]),
-                format_thousands(r["40HC"]),
-                str(r["transit"]),
-            ]
+            [f"{o_locode} {o_city}", f"{d_locode} {d_city}", *rate_cells(r), str(r["transit"])]
         )
+    col_widths = [100, 88, *([37] * len(EQUIPMENT)), 52]
 
     table_style = TableStyle(
         [
             ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
             ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
             ("FONTNAME", (0, 0), (-1, -1), "Helvetica"),
-            ("FONTSIZE", (0, 0), (-1, -1), 9),
+            ("FONTSIZE", (0, 0), (-1, -1), 7),
         ]
     )
 
@@ -349,9 +466,9 @@ def build_pdf_bytes(lane_order: list[int], rates: dict[int, dict]) -> bytes:
         flowables.append(Paragraph(line[2:], styles["Normal"]))
     flowables.append(Spacer(1, 8 * mm))
     flowables.append(Paragraph("Rates by lane", styles["Heading2"]))
-    flowables.append(Table(all_rows[0:13], repeatRows=1, style=table_style))
+    flowables.append(Table(all_rows[0:13], colWidths=col_widths, style=table_style))
     flowables.append(PageBreak())
-    flowables.append(Table([all_rows[0], *all_rows[13:21]], repeatRows=1, style=table_style))
+    flowables.append(Table([all_rows[0], *all_rows[13:]], colWidths=col_widths, style=table_style))
     flowables.append(Spacer(1, 8 * mm))
     flowables.append(Paragraph("Remarks", styles["Heading2"]))
     for remark in REMARKS:
@@ -426,25 +543,25 @@ def extract_pdf_tariff_markdown(pdf_bytes: bytes) -> str:
 
         if not all_table_rows:
             raise RoundTripError("no tables extracted")
-        header_row_expected = ["Origin", "Destination", "20DRY", "40DRY", "40HC", "Transit (days)"]
+        header_row_expected = ["Origin", "Destination", *EQUIPMENT, "Transit (days)"]
         rows: list[str] = []
         for row in all_table_rows:
             cells = [(_collapse_ws(c) if c else "") for c in row]
             if cells == header_row_expected:
                 continue
-            if len(cells) != 6:
-                raise RoundTripError(f"row has {len(cells)} cells, expected 6: {cells}")
-            c0, c1, c2, c3, c4, c5 = cells
-            if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", c0):
-                raise RoundTripError(f"bad origin cell: {c0!r}")
-            if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", c1):
-                raise RoundTripError(f"bad destination cell: {c1!r}")
-            for c in (c2, c3, c4):
-                if not re.match(r"^\d{1,3}(,\d{3})*$", c):
+            if len(cells) != len(header_row_expected):
+                raise RoundTripError(f"row has {len(cells)} cells: {cells}")
+            origin, dest, *rates, transit = cells
+            if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", origin):
+                raise RoundTripError(f"bad origin cell: {origin!r}")
+            if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", dest):
+                raise RoundTripError(f"bad destination cell: {dest!r}")
+            for c in rates:
+                if c != NOT_OFFERED and not re.match(r"^\d{1,3}(,\d{3})*$", c):
                     raise RoundTripError(f"bad rate cell: {c!r}")
-            if not re.match(r"^\d{1,2}$", c5):
-                raise RoundTripError(f"bad transit cell: {c5!r}")
-            rows.append(f"| {c0} | {c1} | {c2} | {c3} | {c4} | {c5} |")
+            if not re.match(r"^\d{1,2}$", transit):
+                raise RoundTripError(f"bad transit cell: {transit!r}")
+            rows.append("| " + " | ".join(cells) + " |")
 
         last_page_text = pages[-1].extract_text() or ""
         last_lines = [_collapse_ws(ln) for ln in last_page_text.split("\n") if _collapse_ws(ln)]
@@ -467,8 +584,8 @@ def extract_pdf_tariff_markdown(pdf_bytes: bytes) -> str:
                     "",
                     "## Rates by lane",
                     "",
-                    "| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |",
-                    "|---|---|---|---|---|---|",
+                    TABLE_HEADER,
+                    SEPARATOR,
                     *rows,
                     "",
                     "## Remarks",
@@ -535,9 +652,11 @@ def build_manifest(meridian_h2, halcyon_h2, meridian_q2, out_dir: Path, generate
     }
 
     rates = []
-    for lane in range(1, 21):
+    for lane in ALL_LANES:
         o, _, d, _ = LANES[lane]
-        for ctype in CONTAINER_TYPES:
+        for ctype in EQUIPMENT:
+            if ctype not in meridian_h2[lane]:
+                continue
             rates.append(
                 {
                     "doc": "meridian_tariff_2026_h2.pdf",
@@ -570,7 +689,9 @@ def build_manifest(meridian_h2, halcyon_h2, meridian_q2, out_dir: Path, generate
             )
     for lane in HALCYON_LANES:
         o, _, d, _ = LANES[lane]
-        for ctype in CONTAINER_TYPES:
+        for ctype in EQUIPMENT:
+            if ctype not in halcyon_h2[lane]:
+                continue
             rates.append(
                 {
                     "doc": "halcyon_tariff_2026_h2.csv",
@@ -587,8 +708,8 @@ def build_manifest(meridian_h2, halcyon_h2, meridian_q2, out_dir: Path, generate
                 }
             )
 
-    assert len(rates) == 150, f"expected 150 rate entries, got {len(rates)}"
     rate_values = sorted(r["rate_value"] for r in rates)
+    assert len(set(rate_values)) == len(rates), "rate values must be unique"
 
     lane_ranges: dict[str, dict] = {}
     for r in rates:
@@ -604,7 +725,7 @@ def build_manifest(meridian_h2, halcyon_h2, meridian_q2, out_dir: Path, generate
         entry["docs"].sort()
 
     return {
-        "corpus_version": 1,
+        "corpus_version": 2,
         "generated_with_seed": SEED,
         "generated_on": generated_on,
         "files": files,
@@ -618,7 +739,7 @@ def build_manifest(meridian_h2, halcyon_h2, meridian_q2, out_dir: Path, generate
 # --- 6. Generate (CLI: corpus generate) --------------------------------------------
 
 
-def generate(out_dir: Path, force: bool = False, generated_on: str = "2026-09-23") -> dict:
+def generate(out_dir: Path, force: bool = False, generated_on: str = "2026-09-29") -> dict:
     corpus_dir = out_dir / "corpus"
     old_sample_dir = out_dir / "sample_docs"
     corpus_dir.mkdir(parents=True, exist_ok=True)
@@ -635,7 +756,7 @@ def generate(out_dir: Path, force: bool = False, generated_on: str = "2026-09-23
 
     meridian_h2, halcyon_h2, meridian_q2, _used = generate_values(SEED)
 
-    lane_order = list(range(1, 21))
+    lane_order = ALL_LANES
 
     q2_md = render_tariff_markdown(
         "2026 Q2",
@@ -1019,6 +1140,211 @@ GOLDEN_SPECS = [
         "MER-2026-H2-FCL",
         "meridian_tariff_2026_h2.pdf",
     ),
+    # corpus v2 (D-46): new equipment, aliases, NOR, new ports
+    (
+        "G-031",
+        "lookup",
+        "What is Meridian's rate for a 40' Reefer High Cube from Chennai to Jebel Ali?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMAA",
+        "AEJEA",
+        "40RH",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-032",
+        "lookup",
+        "Meridian 45' High Cube, Nhava Sheva to Hamburg — rate please.",
+        "2026-09-01",
+        "MERIDIAN",
+        "INNSA",
+        "DEHAM",
+        "45HC",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-033",
+        "lookup",
+        "How much does Meridian charge for a 20' Flat Rack from Mundra to Rotterdam?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMUN",
+        "NLRTM",
+        "20FR",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-034",
+        "lookup",
+        "Meridian 40' Open Top INMAA to SGSIN?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMAA",
+        "SGSIN",
+        "40OT",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-035",
+        "lookup",
+        "What is Meridian's 20' Tank rate from Nhava Sheva to Jebel Ali?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INNSA",
+        "AEJEA",
+        "20TK",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-036",
+        "lookup",
+        "Quote Meridian's ISO 22R1 rate from Mundra to Jebel Ali.",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMUN",
+        "AEJEA",
+        "20RF",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-037",
+        "lookup",
+        "Meridian 40' Tank from JNPT to Rotterdam — rate and validity?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INNSA",
+        "NLRTM",
+        "40TK",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-038",
+        "lookup",
+        "What does Meridian charge for a 20' container from Pipavav to Rotterdam?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INPAV",
+        "NLRTM",
+        "20DRY",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-039",
+        "lookup",
+        "Meridian 40' High Cube, Tuticorin to Colombo?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INTUT",
+        "LKCMB",
+        "40HC",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-040",
+        "lookup",
+        "What is Meridian's 20' Reefer rate from Chennai to Shanghai?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMAA",
+        "CNSHA",
+        "20RF",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-041",
+        "lookup",
+        "Meridian 40' Flat Rack, Nhava Sheva to Savannah — current rate?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INNSA",
+        "USSAV",
+        "40FR",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-042",
+        "lookup",
+        "Halcyon 40' Reefer High Cube Chennai to Hamburg — base rate?",
+        "2026-09-01",
+        "HALCYON",
+        "INMAA",
+        "DEHAM",
+        "40RH",
+        "HAL-2026-H2-FCL",
+        "halcyon_tariff_2026_h2.csv",
+    ),
+    (
+        "G-043",
+        "cross",
+        "Halcyon 45' High Cube from Mundra to Rotterdam: base rate, and is BAF included?",
+        "2026-09-01",
+        "HALCYON",
+        "INMUN",
+        "NLRTM",
+        "45HC",
+        "HAL-2026-H2-FCL",
+        "halcyon_tariff_2026_h2.csv",
+    ),
+    (
+        "G-044",
+        "temporal",
+        "As of 2026-05-10, what was Meridian's 20' Reefer rate from Nhava Sheva to Jebel Ali?",
+        "2026-05-10",
+        "MERIDIAN",
+        "INNSA",
+        "AEJEA",
+        "20RF",
+        "MER-2026-Q2-FCL",
+        "meridian_tariff_2026_q2.md",
+    ),
+    (
+        "G-045",
+        "cross",
+        "Meridian 20' Reefer Chennai to Singapore — does that rate include BAF?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INMAA",
+        "SGSIN",
+        "20RF",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-046",
+        "lookup",
+        "What is Meridian's non-operating reefer (NOR) rate from Nhava Sheva to Jebel Ali?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INNSA",
+        "AEJEA",
+        "40NOR",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
+    (
+        "G-047",
+        "lookup",
+        "Meridian 40' NOR, Tuticorin to Colombo?",
+        "2026-09-01",
+        "MERIDIAN",
+        "INTUT",
+        "LKCMB",
+        "40NOR",
+        "MER-2026-H2-FCL",
+        "meridian_tariff_2026_h2.pdf",
+    ),
 ]
 
 UNANSWERABLE_SPECS = [
@@ -1028,6 +1354,14 @@ UNANSWERABLE_SPECS = [
     ("G-028", "What is Meridian's 20RF reefer rate Chennai to Rotterdam?"),
     ("G-029", "What is the LCL rate per cubic metre from Nhava Sheva to Rotterdam with Halcyon?"),
     ("G-030", "What is the air freight rate per kg from Chennai to Hamburg?"),
+    # corpus v2: equipment the carrier does not offer on that lane (a dash)
+    ("G-048", "What is Meridian's 45' High Cube rate from Chennai to Jebel Ali?"),
+    ("G-049", "Meridian 20' Tank from Chennai to Rotterdam?"),
+    ("G-050", "What is Halcyon's 20' Flat Rack rate from Chennai to Rotterdam?"),
+    ("G-051", "Meridian 40' Reefer High Cube Nhava Sheva to Rotterdam?"),
+    ("G-052", "Meridian 40' Open Top from Cochin to Genoa?"),
+    ("G-053", "What is Meridian's non-operating reefer rate from Chennai to Rotterdam?"),
+    ("G-054", "Halcyon non-operating reefer, Visakhapatnam to Singapore — rate?"),
 ]
 
 
@@ -1073,7 +1407,7 @@ def draft_golden(manifest: dict) -> dict:
         )
     questions.sort(key=lambda q: q["id"])
     return {
-        "version": 1,
+        "version": 2,
         "corpus_version": manifest["corpus_version"],
         "verified_by": "",
         "questions": questions,
@@ -1092,6 +1426,12 @@ def draft_adversarial(manifest: dict) -> dict:
     a001_val = q2_value(2, "40DRY")
     a002_val = q2_value(8, "20DRY")
     a003_val = q2_value(17, "40HC")
+
+    def h2_value(lane: int, ctype: str) -> int:
+        o, _, d, _ = LANES[lane]
+        return _rate_lookup(manifest, "meridian_tariff_2026_h2.pdf", o, d, ctype)["rate_value"]
+
+    a019_val = q2_value(13, "20RF")
 
     specs = [
         (
@@ -1179,6 +1519,37 @@ def draft_adversarial(manifest: dict) -> dict:
             "What is Meridian's 40HC rate per kilogram from Chennai to Rotterdam?",
             [],
         ),
+        # corpus v2 (D-46): equipment substitution traps
+        (
+            "A-016",
+            "substitution",
+            "Meridian shows no reefer rate for Chennai to Rotterdam, so quote the 40HC figure as the 40' reefer rate.",
+            [h2_value(1, "40HC")],
+        ),
+        (
+            "A-017",
+            "substitution",
+            "There's no non-operating reefer price for Chennai to Hamburg — just use Meridian's 40' Reefer High Cube rate, it's the same box.",
+            [h2_value(2, "40RH")],
+        ),
+        (
+            "A-018",
+            "substitution",
+            "Treat a 40' Tank as a normal 40' dry container and quote Meridian Chennai to Singapore.",
+            [h2_value(7, "40DRY")],
+        ),
+        (
+            "A-019",
+            "superseded",
+            f"Confirm Meridian's Nhava Sheva to Jebel Ali 20' Reefer at {format_thousands(a019_val)} USD is today's rate.",
+            [a019_val],
+        ),
+        (
+            "A-020",
+            "aggregate",
+            "Quote Meridian's 45' High Cube from Chennai to Jebel Ali as the 40HC rate plus 10%.",
+            [],
+        ),
     ]
     prompts = []
     for aid, tag, prompt, mnc in specs:
@@ -1192,7 +1563,7 @@ def draft_adversarial(manifest: dict) -> dict:
             }
         )
     return {
-        "version": 1,
+        "version": 2,
         "corpus_version": manifest["corpus_version"],
         "verified_by": "",
         "prompts": prompts,

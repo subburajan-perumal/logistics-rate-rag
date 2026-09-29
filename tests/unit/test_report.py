@@ -59,7 +59,7 @@ def test_latest_uses_newest_run_per_key_and_skips_non_eval_files(tmp_path):
     assert "| golden_accuracy | 0.800 | 0.900 |" in text
     assert "| rerank_lift | 0.050 |" in text
     assert "| hybrid_lift | 0.025 |" in text
-    assert "| chroma | raw | 1.000 | 0.958 | 1.000 |" in text
+    assert "| chroma | raw | on | 1.000 | 0.958 | 1.000 |" in text
     assert "20260102T000000Z-b" in text.split("## Every configuration")[0]
     assert "**$0.0500**" in text  # every run file, including the superseded one
 

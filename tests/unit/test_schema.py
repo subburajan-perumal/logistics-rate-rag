@@ -51,9 +51,10 @@ def test_confidence_default_zero():
     assert c.confidence == 0.0
 
 
-def test_unknown_container_type_rejected():
-    with pytest.raises(ValidationError):
-        RateCandidate(answerable=True, container_type="20RF")
+def test_container_type_is_free_text_resolved_later():
+    # D-46: the schema no longer fixes the list; Gate 1 resolves the name
+    # through config/equipment.yaml and rejects what it cannot resolve.
+    assert RateCandidate(answerable=True, container_type="40' Reefer High Cube").container_type
 
 
 def test_extra_field_rejected():

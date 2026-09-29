@@ -8,7 +8,14 @@ from pathlib import Path
 import pdfplumber
 
 from logistics_rate_rag.errors import CorpusFormatError, PdfTableError
-from logistics_rate_rag.ingest.loaders import parse_tariff_markdown
+from logistics_rate_rag.ingest.loaders import (
+    PORT_CELL,
+    RATE_CELL,
+    parse_table_header,
+    parse_tariff_markdown,
+    separator_row,
+    table_header,
+)
 from logistics_rate_rag.ingest.models import LoadedDocument
 
 _HEADER_PREFIXES = (
@@ -22,7 +29,6 @@ _HEADER_PREFIXES = (
     "Bunker Adjustment Factor",
     "Terminal handling",
 )
-_EXPECTED_TABLE_HEADER = ["Origin", "Destination", "20DRY", "40DRY", "40HC", "Transit (days)"]
 
 
 def _collapse_ws(s: str) -> str:
@@ -49,30 +55,34 @@ def extract_pdf_tariff(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...
                 break
             header_lines.append(f"- {line}")
 
+        codes: list[str] | None = None
         rows: list[str] = []
         row_pages: list[int] = []
         for page in pages:
             for table in page.extract_tables():
                 for row_index, row in enumerate(table):
                     cells = [(_collapse_ws(c) if c else "") for c in row]
-                    if cells == _EXPECTED_TABLE_HEADER:
-                        continue
-                    if len(cells) != 6:
-                        raise PdfTableError(path, page.page_number, row_index, cells)
-                    c0, c1, c2, c3, c4, c5 = cells
-                    if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", c0):
-                        raise PdfTableError(path, page.page_number, row_index, cells)
-                    if not re.match(r"^[A-Z]{5} [A-Za-z ]+$", c1):
-                        raise PdfTableError(path, page.page_number, row_index, cells)
-                    for c in (c2, c3, c4):
-                        if not re.match(r"^\d{1,3}(,\d{3})*$", c):
+                    if cells and cells[0] == "Origin":
+                        header_codes = parse_table_header("| " + " | ".join(cells) + " |", path)
+                        if codes is not None and header_codes != codes:
                             raise PdfTableError(path, page.page_number, row_index, cells)
-                    if not re.match(r"^\d{1,2}$", c5):
+                        codes = header_codes
+                        continue
+                    if codes is None or len(cells) != len(codes) + 3:
                         raise PdfTableError(path, page.page_number, row_index, cells)
-                    rows.append(f"| {c0} | {c1} | {c2} | {c3} | {c4} | {c5} |")
+                    origin, dest, *rates, transit = cells
+                    ok = (
+                        re.fullmatch(PORT_CELL, origin)
+                        and re.fullmatch(PORT_CELL, dest)
+                        and all(re.fullmatch(RATE_CELL, r) for r in rates)
+                        and re.fullmatch(r"\d{1,2}", transit)
+                    )
+                    if not ok:
+                        raise PdfTableError(path, page.page_number, row_index, cells)
+                    rows.append("| " + " | ".join(cells) + " |")
                     row_pages.append(page.page_number)
 
-        if not rows:
+        if not rows or codes is None:
             raise CorpusFormatError(path, "no table rows extracted")
 
         last_page_lines = [
@@ -97,8 +107,8 @@ def extract_pdf_tariff(path: Path) -> tuple[str, tuple[str, ...], tuple[int, ...
                     "",
                     "## Rates by lane",
                     "",
-                    "| Origin | Destination | 20DRY | 40DRY | 40HC | Transit (days) |",
-                    "|---|---|---|---|---|---|",
+                    table_header(codes),
+                    separator_row(len(codes) + 3),
                     *rows,
                     "",
                     "## Remarks",

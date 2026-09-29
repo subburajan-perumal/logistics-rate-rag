@@ -28,6 +28,51 @@ def tokenize(text: str) -> list[str]:
     return [t for t in TOKEN_SPLIT.split(text.lower()) if t]
 
 
+class QueryExpander:
+    """Appends canonical codes for equipment and port names found in a
+    question, for the BM25 leg only (PLAN.md D-48). Tables hold `20TK` and
+    `INNSA`; people write "20' Tank" and "JNPT". Longest name wins, so
+    "20' Tank" expands to 20TK and not also to the bare "20'" (20DRY)."""
+
+    def __init__(self, names: dict[str, str]) -> None:
+        # normalised name -> canonical code, longest names first
+        self._names = sorted(names.items(), key=lambda kv: -len(kv[0]))
+
+    @classmethod
+    def from_registries(cls, equipment: dict, ports: object) -> QueryExpander:
+        from logistics_rate_rag.config import _norm_name
+
+        names: dict[str, str] = {}
+        for code, eq in equipment.items():
+            for n in (code, eq.display_name, *eq.iso_codes, *eq.aliases):
+                names[_norm_name(n)] = code
+        for name_lower, locode in ports.city_lower.items():
+            names[_norm_name(name_lower)] = locode
+        for locode in ports.locode:
+            names[locode.lower()] = locode
+        return cls(names)
+
+    def codes_in(self, question: str) -> list[str]:
+        from logistics_rate_rag.config import _norm_name
+
+        text = " " + _norm_name(question) + " "
+        taken: list[tuple[int, int]] = []
+        found: list[str] = []
+        for name, code in self._names:
+            for m in re.finditer(r"(?<![\w'])" + re.escape(name) + r"(?![\w])", text):
+                span = (m.start(), m.end())
+                if any(s < span[1] and span[0] < e for s, e in taken):
+                    continue
+                taken.append(span)
+                if code not in found:
+                    found.append(code)
+        return found
+
+    def expand(self, question: str) -> str:
+        codes = self.codes_in(question)
+        return f"{question} {' '.join(codes)}" if codes else question
+
+
 @dataclass(frozen=True, slots=True)
 class FusedHit:
     chunk: Chunk
